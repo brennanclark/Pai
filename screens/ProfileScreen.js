@@ -5,62 +5,84 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  FlatList,
   TouchableOpacity,
+  ListView,
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+  constructor() {
+    super();
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows([
+        {
+          question: "What is your favorite movie?",
+          answer: "ReactNative Version II"
+        },
+        {
+          question: "What is favorite place to travel?",
+          answer: "Germany"
+        },
+        {
+          question: "What is favorite place to travel?",
+          answer: "Germany"
+        },
+        {
+          question: "What is favorite place to travel?",
+          answer: "Germany"
+        },
+        {
+          question: "What is favorite place to travel?",
+          answer: "Germany"
+        },
+        {
+          question: "What is favorite place to travel?",
+          answer: "Germany"
+        },
+      ])
+    }
+  }
+
+  renderRow(data) {
+    return (
+      <View style={styles.nugget}>
+        <Text>{data.question}</Text>
+        <Text>{data.answer}</Text>
+      </View>
+    );
+  }
+  
 
   render() {
+
     return (
+
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                // This is a global variable in JS to determine if we're using React Native Packager or Not.
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
 
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
 
-            <Text style={styles.getStartedText}>Livin' the Pai life</Text>
+          <Image source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg"}} style ={styles.profileImage}/>
+          <Text style={styles.profileName}>Jane</Text>
+          <Text style={styles.friendCounter}>Friends</Text>
+          <Text style={styles.friendCounter}>10</Text>
+          <Text style={styles.title}>Nuggets</Text>
+       
 
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Get it... the Pai life...
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
-          </View>
+          <ListView
+            style={styles.nuggetContainer}
+            dataSource={this.state.dataSource}
+            renderRow={this.renderRow}
+          />
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     );
   }
@@ -104,6 +126,47 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+
+  profileName: {
+    fontSize: 50,
+    textAlign: 'center',
+  },
+
+  profileImage: {
+    width: 200,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    marginLeft: 90,
+    borderRadius: 50,
+  },
+
+  title: {
+    fontSize:30,
+    textAlign: 'center',
+    margin: 10,
+  },
+
+  nuggetContainer: {
+    padding: 20,
+  },
+
+  nuggetPicture: {
+    width:50,
+    height:50,
+    borderRadius: 5,
+  },
+
+  nugget: {
+    padding: 5,
+  },
+
+  friendCounter: {
+    textAlign: 'left',
+  },
+
+  // already created content
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
@@ -113,18 +176,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
   },
   getStartedContainer: {
     alignItems: 'center',
