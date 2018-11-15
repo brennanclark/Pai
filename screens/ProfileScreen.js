@@ -14,7 +14,7 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -71,7 +71,10 @@ export default class HomeScreen extends React.Component {
 
           <Image source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg"}} style ={styles.profileImage}/>
           <Text style={styles.profileName}>Jane</Text>
+          <Text style={styles.friendCounter}>Friends</Text>
+          <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>
+       
 
           <ListView
             style={styles.nuggetContainer}
@@ -157,6 +160,10 @@ const styles = StyleSheet.create({
 
   nugget: {
     padding: 5,
+  },
+
+  friendCounter: {
+    textAlign: 'left',
   },
 
   // already created content

@@ -3,15 +3,15 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import LinksScreen from '../screens/LinksScreen';
 import TrackScreen from '../screens/TrackScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
 });
 
-HomeStack.navigationOptions = {
+ProfileStack.navigationOptions = {
   // Name of tabs on nav bar
   tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
@@ -57,7 +57,7 @@ TrackStack.navigationOptions = {
 
 
 export default createBottomTabNavigator({
-  HomeStack,
+  ProfileStack,
   LinksStack,
   TrackStack,
 });
