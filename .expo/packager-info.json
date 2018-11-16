@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://rr-t4f.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.rr-t4f.anonymous.pai.exp.direct",
+  "ngrokPid": 12555
 }
