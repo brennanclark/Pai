@@ -1,18 +1,22 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import { ScrollView, StyleSheet, View, Text, Image } from 'react-native';
 
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
-    title: 'Links',
+    // Here we can change the title at the top of the page
+    title: 'Connections',
   };
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.connectionProfile}>
+          <Image style={styles.connectionImage} source={{uri:'http://www.asianage.com/sites/default/files/images/ZOOLANDER.jpg'}}/>
+          <View>
+            <Text style={styles.name}> Derek Zoolander </Text>
+            <Text style={styles.expiry}> X Days Remaining </Text>
+          </View>
+        </View>
       </ScrollView>
     );
   }
@@ -20,8 +24,36 @@ export default class LinksScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
     paddingTop: 15,
+    paddingBottom: 15,
     backgroundColor: '#fff',
   },
+  connectionProfile: {
+    height: 100,
+    width: 340,
+    margin: 7,
+    backgroundColor: 'lightsteelblue',
+    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 1,
+    flexDirection: 'row',
+  },
+  connectionImage: {
+    margin: 9,
+    height: 80,
+    width: 80,
+    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  name: {
+    textAlign: 'center',
+  },
+  expiry: {
+    textAlign: 'right'
+  }
+
 });
