@@ -1,18 +1,9 @@
 {
   "devToolsPort": 19002,
-<<<<<<< HEAD
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 10564,
-  "expoServerNgrokUrl": "https://tn-f8d.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.tn-f8d.anonymous.pai.exp.direct",
-  "ngrokPid": 10605
-=======
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
->>>>>>> upstream/master
+  "packagerPid": 2339,
+  "expoServerNgrokUrl": "https://a5-858.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.a5-858.anonymous.pai.exp.direct",
+  "ngrokPid": 2357
 }

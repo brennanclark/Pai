@@ -3,9 +3,5 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-<<<<<<< HEAD
-  "urlRandomness": "tn-f8d"
-=======
-  "urlRandomness": "rr-t4f"
->>>>>>> upstream/master
+  "urlRandomness": "a5-858"
 }
