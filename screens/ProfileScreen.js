@@ -13,6 +13,8 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+var Users = require('../HardCodedData.json');
+
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
