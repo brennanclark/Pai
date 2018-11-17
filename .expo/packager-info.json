@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "devToolsPort": 19002,
   "expoServerPort": null,
@@ -7,3 +8,6 @@
   "packagerNgrokUrl": "https://packager.rr-t4f.anonymous.pai.exp.direct",
   "ngrokPid": 14486
 }
+=======
+{}
+>>>>>>> upstream/master
