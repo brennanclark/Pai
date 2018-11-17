@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   name: {
-    textAlign: 'center',
+    flex:1
   },
   expiry: {
     textAlign: 'right'
