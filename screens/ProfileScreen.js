@@ -51,6 +51,7 @@ export default class ProfileScreen extends React.Component {
     }
   }
 
+
   renderRow(data) {
     return (
       <View style={styles.nugget}>
