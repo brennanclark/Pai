@@ -3,10 +3,11 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('nuggets', (table) =>  {
     table.increments('id').primary();
     table.integer('user_id').unsigned().notNull();
-    table.string('question');
+    table.integer('question_id').unsigned().notNull();
     table.string('answer').notNull();
 
-    table.foreign('user_id').references('id').inTable('users'); 
+    table.foreign('question_id').references('id').inTable('questions');
+    table.foreign('user_id').references('id').inTable('users');
   })
 };
 
