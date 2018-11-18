@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     table.increments('id').primary();
     table.integer('first_user_id').unsigned().notNull();
     table.integer('second_user_id').unsigned().notNull();
-    table.dateTime('expires_at').notNull();
+    table.dateTime('connected_at').notNull();
     table.dateTime('friends_at');
     table.boolean('is_connected').notNull();
 
@@ -15,4 +15,4 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema.dropTable('connections');
-};  
+};
