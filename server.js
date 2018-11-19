@@ -24,12 +24,16 @@ app.use(express.static("public"));
 
 
 app.get('/', (req, res) => {
-  res.send("HELLO")
-})
+  res.send("HELLO");
+});
 
 
-app.get('user/:id/connections', (req, res) => {
-
+app.get('/user/:id/connections', (req, res) => {
+  console.log("HELLO!", req.params.id);
+  dataHelpers.getUsersConnectionsById(req.params.id)
+  .then((data)=> {
+    res.json(data)
+  })
 });
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//

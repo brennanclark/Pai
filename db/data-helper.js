@@ -5,8 +5,13 @@ module.exports = function(knex) {
   return {
 
     getUsersConnectionsById(id, cb) {
-      return knex.select('*')
-      .where("first_user_id")
+      return knex('connections')
+      .select('*')
+      .where('first_user_id', id)
+      .union(function() {
+        this.select('*').from('connections').where('second_user_id', id);
+      })
+      .then()
     },
 
     deleteConnectionById(id) {
