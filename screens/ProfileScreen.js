@@ -13,6 +13,8 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+var Users = require('../HardCodedData.json');
+
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -20,34 +22,11 @@ export default class ProfileScreen extends React.Component {
   };
   constructor() {
     super();
+    //List view is depracated look into doing something different here
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([
-        {
-          question: "What is your favorite movie?",
-          answer: "ReactNative Version II"
-        },
-        {
-          question: "What is favorite place to travel?",
-          answer: "Germany"
-        },
-        {
-          question: "What is favorite place to travel?",
-          answer: "Germany"
-        },
-        {
-          question: "What is favorite place to travel?",
-          answer: "Germany"
-        },
-        {
-          question: "What is favorite place to travel?",
-          answer: "Germany"
-        },
-        {
-          question: "What is favorite place to travel?",
-          answer: "Germany"
-        },
-      ])
+      user: Users,
+      dataSource: ds.cloneWithRows(Users[0].nuggets)
     }
   }
 
@@ -61,8 +40,13 @@ export default class ProfileScreen extends React.Component {
     );
   }
 
+  findLoggedInUser(){
+    if(this.state.user)
+    return
+  }
 
   render() {
+
 
     return (
 
@@ -70,8 +54,8 @@ export default class ProfileScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
 
-          <Image source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg"}} style ={styles.profileImage}/>
-          <Text style={styles.profileName}>Jane</Text>
+          <Image source={{uri: this.state.user[0].profileImage}} style ={styles.profileImage}/>
+          <Text style={styles.profileName}>{this.state.user[0].firstName}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>

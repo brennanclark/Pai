@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "primaryUserId": 1,
+    "secondaryUserId": 2,
+    "createAt": "1 day ago",
+    "isMatched": true
+  },
+    {
+    "id": 2,
+    "primaryUserId": 1,
+    "secondaryUserId": 3,
+    "createAt": "2 days ago",
+    "isMatched": true
+  },
+    {
+    "id": 3,
+    "primaryUserId": 1,
+    "secondaryUserId": 4,
+    "createAt": "6 days ago",
+    "isMatched": true
+  },
+]
