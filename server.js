@@ -29,23 +29,27 @@ app.get('/', (req, res) => {
 
 
 app.get('/user/:id/connections', (req, res) => {
-  console.log("HELLO!", req.params.id);
-  dataHelpers.getUsersConnectionsById(req.params.id)
+  dataHelpers.getUsersConnectionsById(Number(req.params.id))
   .then((data)=> {
-    res.json(data)
+    res.json(data);
+    console.log("FROM SEVER", data)
   })
 });
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
 app.post('/connections/:connection_id/delete', (req, res) => {
   dataHelpers.deleteConnectionById(req.params.connection_id)
-    .then(() => {
-      res.send("HURRAY")
+    .then((data) => {
+      console.log('THIS IS FROM THE SERVER.JS', data)
     })
 });
 
 //----------------------GO TO TARGET PAGE----------------------//
-app.get('user/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
+  dataHelpers.getUsersProfileById(req.params.id)
+  .then((data) => {
+    res.json(data);
+  })
 
 });
 
