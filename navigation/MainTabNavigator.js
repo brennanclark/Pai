@@ -59,5 +59,5 @@ TrackStack.navigationOptions = {
 export default createBottomTabNavigator({
   ProfileStack,
   LinksStack,
-  TrackStack,
+  // TrackStack,
 });

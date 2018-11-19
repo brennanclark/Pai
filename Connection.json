@@ -4,7 +4,6 @@
     "primaryUserId": 1,
     "secondaryUserId": 2,
     "createAt": "1 day ago",
-    "expireAt": "7 days",
     "isMatched": true
   },
     {
@@ -12,7 +11,6 @@
     "primaryUserId": 1,
     "secondaryUserId": 3,
     "createAt": "2 days ago",
-    "expireAt": "5 days",
     "isMatched": true
   },
     {
@@ -20,7 +18,6 @@
     "primaryUserId": 1,
     "secondaryUserId": 4,
     "createAt": "6 days ago",
-    "expireAt": "1 day",
     "isMatched": true
   },
 ]
