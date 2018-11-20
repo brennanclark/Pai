@@ -12,6 +12,15 @@ function CardClosed(props) {
   )
 }
 
+function BlankPage(props) {
+  return (
+    <View style={styles.content}>
+      <Text style={styles.name}>MY blank page </Text>
+      <Text style={styles.expiry}> 5 Days Remaining </Text>
+    </View>
+  )
+}
+
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
   // let listItem = nuggets.map((nugget) =>
@@ -27,7 +36,6 @@ function CardOpen(props) {
             <Text>Q:{nugget.question}</Text>
             <Text>A:{nugget.answer}</Text>
            </View>
-
          )
        )
        }
@@ -50,10 +58,14 @@ class Card extends React.Component {
       }
     });
   }
+  _onLongPress = (event) => {
+    this.props.navigation.navigate('Track', { user: this.props.person });
+    console.log("It was pressed for long");
+  }
 
   render() {
     return (
-       <TouchableOpacity underLayColor="white" onPress={this._onPress}>
+       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={this.state.open ? styles.connectionProfileOpen : styles.connectionProfileClosed}>
           <Image style={styles.connectionImage} source={{uri: this.props.person.profileImage}}/>
           {
@@ -88,6 +100,7 @@ export default class LinksScreen extends React.Component {
   // }
 
   render() {
+    console.log(this.props)
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -103,6 +116,7 @@ export default class LinksScreen extends React.Component {
             });
             return (
               <Card
+              { ...this.props }
               person={tempUser}
               key={index}/>
             )
