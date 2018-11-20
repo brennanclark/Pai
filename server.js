@@ -20,9 +20,11 @@ app.use(express.static("public"));
 
 //----------------------CONNECTIONS ROUTE----------------------//
 
-
 app.get('/', (req, res) => {
-  res.send("HELLO");
+  dataHelpers.testing('1')
+  .then((data)=>{
+    res.json(data);
+  })
 });
 
 app.get('/user/:id', (req,res) => {

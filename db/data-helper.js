@@ -5,7 +5,7 @@ module.exports = function(knex) {
   return {
     getUsersConnectionsById(id) { 
       return knex
-      .select('users.id', 'users.first_name', 'users.profile_picture')
+      .select('connections.connected_at' ,'users.id', 'users.first_name', 'users.profile_picture')
       .from('connections')
       .innerJoin('users', function() {
         this.on('users.id', '=', 'connections.first_user_id').orOn('users.id', '=', 'connections.second_user_id')
@@ -45,5 +45,19 @@ module.exports = function(knex) {
     getNuggetsForConnectionsById(id) {
 
     },
+
+    testing(id) {
+      return knex
+      .select('*')
+      .from('nuggets')
+      .join('questions', function() {
+        this.on(function() {
+          this.on('questions.id','=','nuggets.question_id')
+        })
+      })
+      .then(function(data) {
+        
+      })
+    }
   }
 }

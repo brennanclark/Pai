@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 
@@ -48,7 +48,8 @@ function CardOpen(props) {
 class Card extends React.Component {
   state = {
     open: false,
-    nuggets: Users.nuggets
+    nuggets: Users.nuggets,
+    currentUserId: 1
   }
 
   _onPress = (event) => {
@@ -123,6 +124,17 @@ export default class LinksScreen extends React.Component {
             )
           })
         }
+        <Button 
+        onPress={()=> {this.setState({currentUserId:1})}}
+        title="User 1"
+        color="blue"
+        />
+        <Button 
+        onPress={()=> {this.setState({currentUserId:2})}}
+        title="User 1"
+        color="blue"
+        />
+
       </ScrollView>
     );
   }
