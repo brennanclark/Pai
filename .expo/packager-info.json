@@ -1,1 +1,9 @@
-{}
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://x5-i4z.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.x5-i4z.anonymous.pai.exp.direct",
+  "ngrokPid": 26404,
+  "devToolsPort": 19002,
+  "packagerPort": 19001,
+  "packagerPid": 26375
+}
