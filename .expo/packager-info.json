@@ -1,5 +1,16 @@
 
 {
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://hy-ecr.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.hy-ecr.anonymous.pai.exp.direct",
+  "ngrokPid": 20899,
+  "devToolsPort": 19002,
+  "packagerPort": 19003,
+  "packagerPid": 20869
+}
+
+
+{
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
@@ -8,4 +19,5 @@
   "packagerNgrokUrl": "https://packager.wj-7ig.anonymous.pai.exp.direct",
   "ngrokPid": 47321
 }
+
 
