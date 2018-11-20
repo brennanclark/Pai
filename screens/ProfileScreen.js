@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json'
+const {ipv4} = require('../config.json');
 
 const Nugget = ({
   question,
@@ -131,7 +131,10 @@ export default class ProfileScreen extends React.Component {
           />
 
           <FlatList
+<<<<<<< HEAD
+=======
 >>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
+>>>>>>> upstream/master
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
