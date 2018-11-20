@@ -1,35 +1,9 @@
-<<<<<<< HEAD
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
   "devToolsPort": 19003,
-  "packagerPort": null,
-  "packagerPid": null
-}
-=======
-
-{
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://hy-ecr.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.hy-ecr.anonymous.pai.exp.direct",
-  "ngrokPid": 20899,
-  "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 20869
+  "packagerPort": 19004,
+  "packagerPid": 25686,
+  "expoServerNgrokUrl": "https://k8-phx.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.k8-phx.anonymous.pai.exp.direct",
+  "ngrokPid": 25725
 }
-
-
-{
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 47297,
-  "expoServerNgrokUrl": "https://wj-7ig.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.wj-7ig.anonymous.pai.exp.direct",
-  "ngrokPid": 47321
-}
-
-
->>>>>>> 93ee665fc1e90b4ceeea2b9a5ac84429e920f002

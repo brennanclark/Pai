@@ -5,6 +5,7 @@ import AppNavigator from './navigation/AppNavigator'
 // var customData = require('./customData.json');
 
 export default class App extends React.Component {
+
   state = {
     isLoadingComplete: false,
   };
