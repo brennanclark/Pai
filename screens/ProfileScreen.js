@@ -38,11 +38,12 @@ export default class ProfileScreen extends React.Component {
       nuggets: [],
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
-  
+    this.sendLocationToServer = this.sendLocationToServer.bind(this);
   }
 
   componentDidMount() {
     this.getProfileInformation();
+    this.sendLocationToServer();
   }
 
   sendLocationToServer() {
@@ -54,12 +55,6 @@ export default class ProfileScreen extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
-<<<<<<< HEAD
-=======
-      data.forEach(function(item) {
-
-      })
->>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,
@@ -80,7 +75,6 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
 
-<<<<<<< HEAD
           <Text style={styles.title}>Nuggets</Text>
       
         <Button 
@@ -123,15 +117,6 @@ export default class ProfileScreen extends React.Component {
         color="blue"
         />
           <FlatList 
-=======
-          <Button
-            onPress={this.getProfileInformation}
-            title="Learn More"
-            color="#841584"
-          />
-
-          <FlatList
->>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
