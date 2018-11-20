@@ -13,9 +13,11 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
+import {ipv4} from '../config.json'
 
 import { MonoText } from '../components/StyledText';
 var Users = require('../HardCodedData.json');
+
 
 
 export default class ProfileScreen extends React.Component {
@@ -27,22 +29,34 @@ export default class ProfileScreen extends React.Component {
     //List view is depracated look into doing something different here
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      ipv4: "http://192.168.88.119:8080", 
-      user: Users,
+      user: null,
       dataSource: ds.cloneWithRows(Users[0].nuggets),
-      firstName : null,
-      profileImage : null,
-      nuggets: null,
+      profileImage : " ",
+      nuggets: [],
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
+    
+  }
+
+  componentDidMount() {
+    this.getProfileInformation();
   }
 
 
   getProfileInformation() {
-    axios.get(`${this.state.ipv4}/user/1/connections`)
+    axios.get(`${ipv4}/user/1`)
     .then((response)=> {
       const data = response.data
-      console.log(data);
+      var nugget = {}
+      data.forEach(function(item) {
+        nugget.key = item.answer
+      })
+      this.state.nuggets.push(nugget);
+      this.setState({
+        user: data[0].first_name,
+        profileImage: data[0].profile_picture,
+      })
+
     })
   }
 
@@ -63,16 +77,15 @@ export default class ProfileScreen extends React.Component {
 
   render() {
 
+    console.log(this.state.nuggets)
 
     return (
 
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-
-
-          <Image source={{uri: this.state.user[0].profileImage}} style ={styles.profileImage}/>
-          <Text style={styles.profileName}>{this.state.user[0].firstName}</Text>
+          <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+          <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>
@@ -82,13 +95,20 @@ export default class ProfileScreen extends React.Component {
             title="Learn More"
             color="#841584"
           />
+          <Text>
+            
 
+          </Text>
+          <FlatList 
+            data={this.state.nuggets}
+            renderItem={({item}) => <Text style={styles.nuggetContainer}>{item}</Text>}
+          />
 
-          <ListView
+          {/* <ListView
             style={styles.nuggetContainer}
             dataSource={this.state.dataSource}
             renderRow={this.renderRow}
-          />
+          /> */}
         </ScrollView>
 
       </View>
@@ -172,6 +192,12 @@ const styles = StyleSheet.create({
 
   friendCounter: {
     textAlign: 'left',
+  },
+
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
 
 })

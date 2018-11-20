@@ -27,7 +27,10 @@ module.exports = function(knex) {
 
     getUsersProfileById(id) {
       return knex('users')
-      .where("id", id)
+      .select('first_name','profile_picture','question','answer')
+      .innerJoin('nuggets', 'nuggets.user_id', 'users.id')
+      .innerJoin('questions', 'nuggets.question_id', 'questions.id')
+      .where('users.id', id)
       .then()
     },
 
