@@ -85,12 +85,13 @@ export default class LinksScreen extends React.Component {
       connections: Connections
     }
 
+
     // this.findUserByIdFromConnections= this.findUserByIdFromConnections.bind(this);
   }
   static navigationOptions = {
     title: 'Your Connections',
   };
-
+  
   // findUserByIdFromConnections(id) {
   //   if (Connections[id].secondaryUserId) {
   //     return Connections[id].secondaryUserId

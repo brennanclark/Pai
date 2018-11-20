@@ -25,6 +25,13 @@ app.get('/', (req, res) => {
   res.send("HELLO");
 });
 
+app.get('/user/:id', (req,res) => {
+  dataHelpers.getUsersProfileById(Number(req.params.id))
+  .then((data) => {
+    res.json(data);
+  })
+})
+
 //----------------------GET USER PROFILE PAGE NUGGETS----------------------//
 app.get('/user/:id/nuggets', (req,res) => {
   dataHelpers.getPersonalProfileNuggetsById(Number(req.params.id))
@@ -55,12 +62,6 @@ app.post('/connections/:connection_id/delete', (req, res) => {
 });
 
 //----------------------GO TO TARGET PAGE----------------------//
-app.get('/users/:id', (req, res) => {
-  dataHelpers.getUsersProfileById(req.params.id)
-  .then((data) => {
-    res.json(data);
-  })
-});
 
 
 

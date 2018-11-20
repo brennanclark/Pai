@@ -13,10 +13,20 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
+import {ipv4} from '../config.json'
 
 import { MonoText } from '../components/StyledText';
 var Users = require('../HardCodedData.json');
 
+const Nugget = ({
+  question,
+  answer,
+}) => (
+  <View style={styles.nuggetContainer}>
+    <Text style={styles.nugget}>{ question }</Text>
+    <Text style={styles.nugget}>{ answer }</Text>
+  </View>
+)
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -27,64 +37,67 @@ export default class ProfileScreen extends React.Component {
     //List view is depracated look into doing something different here
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      ipv4: "http://192.168.88.119:8080", 
-      user: Users,
-      dataSource: ds.cloneWithRows(Users[0].nuggets)
+      user: null,
+      dataSource: ds.cloneWithRows(Users[0].nuggets),
+      profileImage : " ",
+      nuggets: [],
     }
-    this.getUsers = this.getUsers.bind(this);
+    this.getProfileInformation = this.getProfileInformation.bind(this);
+    this.getProfileNuggets = this.getProfileNuggets.bind(this);
   }
 
+  componentDidMount() {
+    this.getProfileInformation();
+    this.getProfileNuggets();
+  }
 
-  getUsers() {
-    axios.get(`${this.state.ipv4}/user/1/connections`)
+  getProfileInformation() {
+    axios.get(`${ipv4}/user/1`)
     .then((response)=> {
-      console.log(response.data);
+      const data = response.data
+      data.forEach(function(item) {
+        
+      })
+      this.setState({
+        user: data[0].first_name,
+        profileImage: data[0].profile_picture,
+      })
+
     })
   }
 
-
-  renderRow(data) {
-    return (
-      <View style={styles.nugget}>
-        <Text>Q:{data.question}</Text>
-        <Text>A:{data.answer}</Text>
-      </View>
-    );
-  }
-
-  findLoggedInUser(){
-    if(this.state.user)
-    return
+  getProfileNuggets() {
+    axios.get(`${ipv4}/user/1/nuggets`)
+    .then(({ data }) => {
+      this.setState({ nuggets: data });
+    })
   }
 
   render() {
-
 
     return (
 
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-
-
-          <Image source={{uri: this.state.user[0].profileImage}} style ={styles.profileImage}/>
-          <Text style={styles.profileName}>{this.state.user[0].firstName}</Text>
+          <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+          <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>
 
           <Button
-            onPress={this.getUsers}
+            onPress={this.getProfileInformation}
             title="Learn More"
             color="#841584"
           />
-
-
-          <ListView
-            style={styles.nuggetContainer}
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow}
+            
+          <FlatList 
+            data={this.state.nuggets}
+            renderItem={({item}) => <Nugget { ...item }/>}
+            keyExtractor={(item, index) => index.toString()}
           />
+
         </ScrollView>
 
       </View>
@@ -168,6 +181,12 @@ const styles = StyleSheet.create({
 
   friendCounter: {
     textAlign: 'left',
+  },
+
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
 
 })
