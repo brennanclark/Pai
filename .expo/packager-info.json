@@ -1,9 +1,1 @@
-{
-  "devToolsPort": 19003,
-  "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 25686,
-  "expoServerNgrokUrl": "https://k8-phx.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.k8-phx.anonymous.pai.exp.direct",
-  "ngrokPid": 25725
-}
+{}
