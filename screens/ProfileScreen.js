@@ -18,7 +18,16 @@ import {ipv4} from '../config.json'
 import { MonoText } from '../components/StyledText';
 var Users = require('../HardCodedData.json');
 
-
+const Nugget = ({
+  question,
+  answer,
+  key
+}) => (
+  <View>
+    <Text style={styles.nuggetContainer}>{ question }</Text>
+    <Text style={styles.nuggetContainer}>{ answer }</Text>
+  </View>
+)
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -35,11 +44,13 @@ export default class ProfileScreen extends React.Component {
       nuggets: [],
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
+    this.getProfileNuggets = this.getProfileNuggets.bind(this);
     
   }
 
   componentDidMount() {
     this.getProfileInformation();
+    this.getProfileNuggets();
   }
 
 
@@ -47,16 +58,21 @@ export default class ProfileScreen extends React.Component {
     axios.get(`${ipv4}/user/1`)
     .then((response)=> {
       const data = response.data
-      var nugget = {}
       data.forEach(function(item) {
-        nugget.key = item.answer
+        
       })
-      this.state.nuggets.push(nugget);
       this.setState({
         user: data[0].first_name,
         profileImage: data[0].profile_picture,
       })
 
+    })
+  }
+
+  getProfileNuggets() {
+    axios.get(`${ipv4}/user/1/nuggets`)
+    .then(({ data }) => {
+      this.setState({ nuggets: data });
     })
   }
 
@@ -77,8 +93,6 @@ export default class ProfileScreen extends React.Component {
 
   render() {
 
-    console.log(this.state.nuggets)
-
     return (
 
       <View style={styles.container}>
@@ -95,13 +109,10 @@ export default class ProfileScreen extends React.Component {
             title="Learn More"
             color="#841584"
           />
-          <Text>
             
-
-          </Text>
           <FlatList 
             data={this.state.nuggets}
-            renderItem={({item}) => <Text style={styles.nuggetContainer}>{item}</Text>}
+            renderItem={({item}) => <Nugget { ...item }/>}
           />
 
           {/* <ListView
