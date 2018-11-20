@@ -29,16 +29,20 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       ipv4: "http://192.168.88.119:8080", 
       user: Users,
-      dataSource: ds.cloneWithRows(Users[0].nuggets)
+      dataSource: ds.cloneWithRows(Users[0].nuggets),
+      firstName : null,
+      profileImage : null,
+      nuggets: null,
     }
-    this.getUsers = this.getUsers.bind(this);
+    this.getProfileInformation = this.getProfileInformation.bind(this);
   }
 
 
-  getUsers() {
+  getProfileInformation() {
     axios.get(`${this.state.ipv4}/user/1/connections`)
     .then((response)=> {
-      console.log(response.data);
+      const data = response.data
+      console.log(data);
     })
   }
 
@@ -74,7 +78,7 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.title}>Nuggets</Text>
 
           <Button
-            onPress={this.getUsers}
+            onPress={this.getProfileInformation}
             title="Learn More"
             color="#841584"
           />

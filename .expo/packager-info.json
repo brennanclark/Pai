@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19003,
+  "devToolsPort": 19002,
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://ab-4sy.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.ab-4sy.anonymous.pai.exp.direct",
-  "ngrokPid": 47571
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
