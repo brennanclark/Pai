@@ -18,8 +18,6 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 
-
-
 //----------------------CONNECTIONS ROUTE----------------------//
 
 
@@ -32,7 +30,6 @@ app.get('/user/:id/connections', (req, res) => {
   dataHelpers.getUsersConnectionsById(Number(req.params.id))
   .then((data)=> {
     res.json(data);
-    console.log("FROM SEVER", data)
   })
 });
 
@@ -50,11 +47,10 @@ app.get('/users/:id', (req, res) => {
   .then((data) => {
     res.json(data);
   })
-
 });
 
 
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log("PAI is running on port: " + PORT);
 });
