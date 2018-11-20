@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
 const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
@@ -41,7 +41,8 @@ function CardOpen(props) {
 class Card extends React.Component {
   state = {
     open: false,
-    nuggets: Users.nuggets
+    nuggets: Users.nuggets,
+    currentUserId: 1
   }
 
   _onPress = (event) => {
