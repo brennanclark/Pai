@@ -21,11 +21,10 @@ var Users = require('../HardCodedData.json');
 const Nugget = ({
   question,
   answer,
-  key
 }) => (
-  <View>
-    <Text style={styles.nuggetContainer}>{ question }</Text>
-    <Text style={styles.nuggetContainer}>{ answer }</Text>
+  <View style={styles.nuggetContainer}>
+    <Text style={styles.nugget}>{ question }</Text>
+    <Text style={styles.nugget}>{ answer }</Text>
   </View>
 )
 
@@ -45,14 +44,12 @@ export default class ProfileScreen extends React.Component {
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.getProfileNuggets = this.getProfileNuggets.bind(this);
-    
   }
 
   componentDidMount() {
     this.getProfileInformation();
     this.getProfileNuggets();
   }
-
 
   getProfileInformation() {
     axios.get(`${ipv4}/user/1`)
@@ -74,21 +71,6 @@ export default class ProfileScreen extends React.Component {
     .then(({ data }) => {
       this.setState({ nuggets: data });
     })
-  }
-
-
-  renderRow(data) {
-    return (
-      <View style={styles.nugget}>
-        <Text>Q:{data.question}</Text>
-        <Text>A:{data.answer}</Text>
-      </View>
-    );
-  }
-
-  findLoggedInUser(){
-    if(this.state.user)
-    return
   }
 
   render() {
@@ -113,13 +95,9 @@ export default class ProfileScreen extends React.Component {
           <FlatList 
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
+            keyExtractor={(item, index) => index.toString()}
           />
 
-          {/* <ListView
-            style={styles.nuggetContainer}
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow}
-          /> */}
         </ScrollView>
 
       </View>
