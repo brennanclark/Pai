@@ -56,7 +56,7 @@ export default class ProfileScreen extends React.Component {
     .then((response)=> {
       const data = response.data
       data.forEach(function(item) {
-        
+
       })
       this.setState({
         user: data[0].first_name,
@@ -91,8 +91,8 @@ export default class ProfileScreen extends React.Component {
             title="Learn More"
             color="#841584"
           />
-            
-          <FlatList 
+
+          <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
