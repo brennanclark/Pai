@@ -12,15 +12,6 @@ function CardClosed(props) {
   )
 }
 
-function BlankPage(props) {
-  return (
-    <View style={styles.content}>
-      <Text style={styles.name}>MY blank page </Text>
-      <Text style={styles.expiry}> 5 Days Remaining </Text>
-    </View>
-  )
-}
-
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
   // let listItem = nuggets.map((nugget) =>
@@ -60,7 +51,6 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.person });
-    console.log("It was pressed for long");
   }
 
   render() {
