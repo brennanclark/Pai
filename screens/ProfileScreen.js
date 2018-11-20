@@ -46,9 +46,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-
   }
-
 
   getProfileInformation() {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
