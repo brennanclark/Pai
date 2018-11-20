@@ -2,14 +2,14 @@
 
 require('dotenv').config();
 
-const PORT = process.env.PORT || 8080;
-const ENV = process.env.ENV || 'development';
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
+const PORT        = process.env.PORT || 8080;
+const ENV         = process.env.ENV || 'development';
+const express     = require('express');
+const bodyParser  = require('body-parser');
+const app         = express();
 
-const knexConfig = require('./knexfile');
-const knex = require('knex')(knexConfig[ENV]);
+const knexConfig  = require('./knexfile');
+const knex        = require('knex')(knexConfig[ENV]);
 const dataHelpers = require('./db/data-helper.js')(knex);
 
 app.use(bodyParser.urlencoded({
@@ -27,33 +27,24 @@ app.get('/', (req, res) => {
   })
 });
 
-app.get('/user/:id', (req,res) => {
-  dataHelpers.getUsersProfileById(Number(req.params.id))
-  .then((data) => {
-    res.json(data);
-  })
-})
 
-//----------------------GET USER PROFILE PAGE NUGGETS----------------------//
-app.get('/user/:id/nuggets', (req,res) => {
-  dataHelpers.getPersonalProfileNuggetsById(Number(req.params.id))
+//----------------------GET USER PROFILE With NUGGETS----------------------//
+app.get('/user/:id', (req,res) => {
+  dataHelpers.getMyProfileWithNuggets(Number(req.params.id))
   .then((data) => {
     res.json(data);
   })
 });
 
-//----------------------GET NUGGETS FOR THE CONNECTIONS -------------------//
-
 
 //----------------------GET CONNECTION ROUTE----------------------//
 app.get('/user/:id/connections', (req, res) => {
-  dataHelpers.getUsersConnectionsById(Number(req.params.id))
+  dataHelpers.getConnectUsersWithNuggets(Number(req.params.id))
   .then((data)=> {
     res.json(data);
   })
 });
 
-app.get('')
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
 app.post('/connections/:connection_id/delete', (req, res) => {

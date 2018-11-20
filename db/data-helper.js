@@ -1,23 +1,75 @@
+function groupBy(arr, grouper){
+  const output = {};
+  for(const item of arr){
+    const key = grouper(item);
+    if(output[key]){
+      output[key].push(item);
+    } else {
+      output[key] = [item];
+    }
+  }
+  return output;
+}
 
 
 module.exports = function(knex) {
 
   return {
-    getUsersConnectionsById(id) { 
-      return knex
-      .select('connections.connected_at' ,'users.id', 'users.first_name', 'users.profile_picture')
-      .from('connections')
-      .innerJoin('users', function() {
-        this.on('users.id', '=', 'connections.first_user_id').orOn('users.id', '=', 'connections.second_user_id')
-      })
-      .where(function() {
-        this.where('connections.first_user_id', id).orWhere('connections.second_user_id', id)
-      })
-      .andWhere('users.id', '!=', id);
+    getConnectUsersWithNuggets(userId) {
+      function runConnectedUsers(){
+        this.distinct('first_user_id AS user_id')
+          .from('connections')
+          .where('second_user_id', userId)
+          .union(function(){
+            this.distinct('second_user_id AS user_id')
+            .from('connections')
+            .where('first_user_id', userId)
+          });
+      }
+      const myConnectedUsers = knex('users')
+        .select('*')
+        .whereIn('id', runConnectedUsers);
+
+      const myConnectedUsersNuggets =  knex('nuggets')
+        .select('nuggets.*', 'questions.*')
+        .innerJoin('questions', 'nuggets.question_id', 'questions.id')
+        .whereIn('nuggets.user_id', runConnectedUsers);
+
+      const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]);
+      return usersAndNuggets
+        .then(([users, nuggets]) => {
+          const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
+          return users.map(user => {
+            return {
+              ...user,
+              nuggets: nuggetsGroupedByUserId[user.id] || []
+            }
+          });
+        });
+    },
+
+    getMyProfileWithNuggets(userId) {
+      const myProfile = knex('users')
+        .first('*')
+        .where('id', userId);
+
+      const myNuggets = knex('nuggets')
+        .select('nuggets.*', 'questions.*')
+        .innerJoin('questions', 'nuggets.question_id', 'questions.id')
+        .where('nuggets.user_id', userId);
+
+      const profileAndNuggets = Promise.all([myProfile, myNuggets]);
+      return profileAndNuggets
+        .then(([user, nuggets]) => {
+            return {
+              ...user,
+              nuggets: nuggets
+            }
+        });
     },
 
     deleteConnectionById(id) {
-      return knex('connections')  
+      return knex('connections')
       .where('id', id)
       .update({
         'is_connected': false
@@ -25,39 +77,5 @@ module.exports = function(knex) {
       .then()
     },
 
-    getUsersProfileById(id) {
-      return knex('users')
-      .select('first_name','profile_picture','question','answer')
-      .innerJoin('nuggets', 'nuggets.user_id', 'users.id')
-      .innerJoin('questions', 'nuggets.question_id', 'questions.id')
-      .where('users.id', id)
-      .then()
-    },
-
-    getPersonalProfileNuggetsById(id){
-      return knex('nuggets')
-      .innerJoin('questions','nuggets.question_id', 'questions.id')
-      .select('question', 'answer')
-      .where('user_id', id)
-      .then();
-    },
-
-    getNuggetsForConnectionsById(id) {
-
-    },
-
-    testing(id) {
-      return knex
-      .select('*')
-      .from('nuggets')
-      .join('questions', function() {
-        this.on(function() {
-          this.on('questions.id','=','nuggets.question_id')
-        })
-      })
-      .then(function(data) {
-        
-      })
-    }
   }
 }
