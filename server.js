@@ -25,17 +25,26 @@ app.get('/', (req, res) => {
   res.send("HELLO");
 });
 
-
-app.get('/user/:id/connections', (req, res) => {
-  // dataHelpers.getUsersConnectionsById(Number(req.params.id))
-  // .then((data)=> {
-  //   res.json(data);
-  // })
-  dataHelpers.getUsersNuggetsById(Number(req.params.id))
+//----------------------GET USER PROFILE PAGE NUGGETS----------------------//
+app.get('/user/:id/nuggets', (req,res) => {
+  dataHelpers.getPersonalProfileNuggetsById(Number(req.params.id))
   .then((data) => {
-    res.json(data)
-  });
+    res.json(data);
+  })
 });
+
+//----------------------GET NUGGETS FOR THE CONNECTIONS -------------------//
+
+
+//----------------------GET CONNECTION ROUTE----------------------//
+app.get('/user/:id/connections', (req, res) => {
+  dataHelpers.getUsersConnectionsById(Number(req.params.id))
+  .then((data)=> {
+    res.json(data);
+  })
+});
+
+app.get('')
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
 app.post('/connections/:connection_id/delete', (req, res) => {

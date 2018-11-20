@@ -31,13 +31,16 @@ module.exports = function(knex) {
       .then()
     },
 
-    getUsersNuggetsById(id){
+    getPersonalProfileNuggetsById(id){
       return knex('nuggets')
       .innerJoin('questions','nuggets.question_id', 'questions.id')
       .select('question', 'answer')
       .where('user_id', id)
       .then();
-    }
+    },
 
+    getNuggetsForConnectionsById(id) {
+
+    },
   }
 }
