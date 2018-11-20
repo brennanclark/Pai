@@ -102,7 +102,6 @@ export default class LinksScreen extends React.Component {
   // }
 
   render() {
-    console.log(this.props)
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
