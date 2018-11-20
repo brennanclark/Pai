@@ -7,16 +7,12 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  ListView,
   View,
   Button,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
 import {ipv4} from '../config.json'
-
-import { MonoText } from '../components/StyledText';
-var Users = require('../HardCodedData.json');
 
 const Nugget = ({
   question,
@@ -35,41 +31,40 @@ export default class ProfileScreen extends React.Component {
   constructor() {
     super();
     //List view is depracated look into doing something different here
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       user: null,
-      dataSource: ds.cloneWithRows(Users[0].nuggets),
+      currentUserId: 1,
       profileImage : " ",
       nuggets: [],
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
-    this.getProfileNuggets = this.getProfileNuggets.bind(this);
+  
   }
 
   componentDidMount() {
     this.getProfileInformation();
-    this.getProfileNuggets();
   }
 
+  sendLocationToServer() {
+    
+  }
+
+
   getProfileInformation() {
-    axios.get(`${ipv4}/user/1`)
+    axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
+<<<<<<< HEAD
+=======
       data.forEach(function(item) {
 
       })
+>>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
       this.setState({
-        user: data[0].first_name,
-        profileImage: data[0].profile_picture,
+        user: data.first_name,
+        profileImage: data.profile_picture,
+        nuggets: data.nuggets,
       })
-
-    })
-  }
-
-  getProfileNuggets() {
-    axios.get(`${ipv4}/user/1/nuggets`)
-    .then(({ data }) => {
-      this.setState({ nuggets: data });
     })
   }
 
@@ -84,8 +79,51 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
-          <Text style={styles.title}>Nuggets</Text>
 
+<<<<<<< HEAD
+          <Text style={styles.title}>Nuggets</Text>
+      
+        <Button 
+        onPress={()=>{
+          this.setState({
+            currentUserId:1,
+          }, this.getProfileInformation)
+        }}
+        title="User 1"
+        color="blue"
+        />
+       
+       <Button 
+        onPress={()=>{
+          this.setState({
+            currentUserId:2,
+          }, this.getProfileInformation)
+        }}
+        title="User 2"
+        color="blue"
+        />
+      
+      <Button 
+        onPress={()=>{
+          this.setState({
+            currentUserId:3,
+          }, this.getProfileInformation)
+        }}
+        title="User 3"
+        color="blue"
+        />
+              
+              <Button 
+        onPress={()=>{
+          this.setState({
+            currentUserId:4,
+          }, this.getProfileInformation)
+        }}
+        title="User 4"
+        color="blue"
+        />
+          <FlatList 
+=======
           <Button
             onPress={this.getProfileInformation}
             title="Learn More"
@@ -93,10 +131,13 @@ export default class ProfileScreen extends React.Component {
           />
 
           <FlatList
+>>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
           />
+
+
 
         </ScrollView>
 
