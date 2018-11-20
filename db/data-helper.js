@@ -33,9 +33,10 @@ module.exports = function(knex) {
 
     getUsersNuggetsById(id){
       return knex('nuggets')
-      .select('answer', 'question')
+      .innerJoin('questions','nuggets.question_id', 'questions.id')
+      .select('question', 'answer')
       .where('user_id', id)
-      .innerJoin('question_id', '=', 'questions.id')
+      .then();
     }
 
   }

@@ -27,10 +27,14 @@ app.get('/', (req, res) => {
 
 
 app.get('/user/:id/connections', (req, res) => {
-  dataHelpers.getUsersConnectionsById(Number(req.params.id))
-  .then((data)=> {
-    res.json(data);
-  })
+  // dataHelpers.getUsersConnectionsById(Number(req.params.id))
+  // .then((data)=> {
+  //   res.json(data);
+  // })
+  dataHelpers.getUsersNuggetsById(Number(req.params.id))
+  .then((data) => {
+    res.json(data)
+  });
 });
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
