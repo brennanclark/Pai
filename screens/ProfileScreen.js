@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
   ListView,
   View,
+  Button,
 } from 'react-native';
 import { WebBrowser } from 'expo';
+import axios from 'react-native-axios';
 
 import { MonoText } from '../components/StyledText';
 var Users = require('../HardCodedData.json');
@@ -25,9 +27,19 @@ export default class ProfileScreen extends React.Component {
     //List view is depracated look into doing something different here
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      ipv4: "http://192.168.88.119:8080", 
       user: Users,
       dataSource: ds.cloneWithRows(Users[0].nuggets)
     }
+    this.getUsers = this.getUsers.bind(this);
+  }
+
+
+  getUsers() {
+    axios.get(`${this.state.ipv4}/user/1/connections`)
+    .then((response)=> {
+      console.log(response.data);
+    })
   }
 
 
@@ -54,11 +66,18 @@ export default class ProfileScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
 
+
           <Image source={{uri: this.state.user[0].profileImage}} style ={styles.profileImage}/>
           <Text style={styles.profileName}>{this.state.user[0].firstName}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>
+
+          <Button
+            onPress={this.getUsers}
+            title="Learn More"
+            color="#841584"
+          />
 
 
           <ListView

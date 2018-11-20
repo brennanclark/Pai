@@ -2,49 +2,68 @@
 
 require('dotenv').config();
 
-const PORT        = process.env.PORT || 8080;
-const ENV         = process.env.ENV || 'development';
-const express     = require('express');
-const bodyParser  = require('body-parser');
-const app         = express();
+const PORT = process.env.PORT || 8080;
+const ENV = process.env.ENV || 'development';
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
-const webpack          = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const config           = require('./webpack.config');
+const knexConfig = require('./knexfile');
+const knex = require('knex')(knexConfig[ENV]);
+const dataHelpers = require('./db/data-helper.js')(knex);
 
-const knexConfig  = require('./knexfile');
-const knex        = require('knex')(knexConfig[ENV]);
-const morgan      = require('morgan');
-const knexLogger  = require('knex-logger');
-
-
-app.use(morgan('dev'));
-
-app.use(knexLogger(knex));
-app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
-
-
 
 
 //----------------------CONNECTIONS ROUTE----------------------//
 
-app.get('user/:id/connections', (req, res) => {
 
+app.get('/', (req, res) => {
+  res.send("HELLO");
 });
+
+//----------------------GET USER PROFILE PAGE NUGGETS----------------------//
+app.get('/user/:id/nuggets', (req,res) => {
+  dataHelpers.getPersonalProfileNuggetsById(Number(req.params.id))
+  .then((data) => {
+    res.json(data);
+  })
+});
+
+//----------------------GET NUGGETS FOR THE CONNECTIONS -------------------//
+
+
+//----------------------GET CONNECTION ROUTE----------------------//
+app.get('/user/:id/connections', (req, res) => {
+  dataHelpers.getUsersConnectionsById(Number(req.params.id))
+  .then((data)=> {
+    res.json(data);
+  })
+});
+
+app.get('')
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
-app.post('user/:id/connections/:connection_id', (req, res) => {
-
+app.post('/connections/:connection_id/delete', (req, res) => {
+  dataHelpers.deleteConnectionById(req.params.connection_id)
+    .then((data) => {
+      console.log('THIS IS FROM THE SERVER.JS', data)
+    })
 });
-
 
 //----------------------GO TO TARGET PAGE----------------------//
-app.get('user/:id', (req, res) => {
-
+app.get('/users/:id', (req, res) => {
+  dataHelpers.getUsersProfileById(req.params.id)
+  .then((data) => {
+    res.json(data);
+  })
 });
 
-app.listen(PORT, () => {
+
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log("PAI is running on port: " + PORT);
 });
