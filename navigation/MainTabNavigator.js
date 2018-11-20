@@ -28,6 +28,7 @@ ProfileStack.navigationOptions = {
 
 const LinksStack = createStackNavigator({
   Links: LinksScreen,
+  Track: TrackScreen,
 });
 
 LinksStack.navigationOptions = {
@@ -41,23 +42,22 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const TrackStack = createStackNavigator({
-  Track: TrackScreen,
-});
-
-TrackStack.navigationOptions = {
-  tabBarLabel: 'Target Mode',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-disc' : 'md-link'}
-    />
-  ),
-};
+// const TrackStack = createStackNavigator({
+//
+// });
+//
+// TrackStack.navigationOptions = {
+//   tabBarLabel: 'Target Mode',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-disc' : 'md-link'}
+//     />
+//   ),
+// };
 
 
 export default createBottomTabNavigator({
   ProfileStack,
-  LinksStack,
-  // TrackStack,
+  LinksStack
 });

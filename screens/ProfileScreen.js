@@ -50,8 +50,8 @@ export default class ProfileScreen extends React.Component {
   renderRow(data) {
     return (
       <View style={styles.nugget}>
-        <Text>{data.question}</Text>
-        <Text>{data.answer}</Text>
+        <Text>Q:{data.question}</Text>
+        <Text>A:{data.answer}</Text>
       </View>
     );
   }
