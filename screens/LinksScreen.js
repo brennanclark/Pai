@@ -1,15 +1,21 @@
 import React from 'react';
-import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
-const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
-
 
 function CardClosed(props) {
   return (
     <View style={styles.content}>
-      <Text style={styles.name}> {props.person.first_name} </Text>
+      <Text style={styles.name}> {props.person.firstName} </Text>
+      <Text style={styles.expiry}> 5 Days Remaining </Text>
+    </View>
+  )
+}
+
+function BlankPage(props) {
+  return (
+    <View style={styles.content}>
+      <Text style={styles.name}>MY blank page </Text>
       <Text style={styles.expiry}> 5 Days Remaining </Text>
     </View>
   )
@@ -19,18 +25,19 @@ function CardOpen(props) {
   let nuggets = props.person.nuggets;
   // let listItem = nuggets.map((nugget) =>
 
+
     return (
       <View style={styles.content}>
-        <Text style={styles.name}> {props.person.first_name} </Text>
+        <Text style={styles.name}> {props.person.firstName} </Text>
         <View style={styles.nuggets}>
-          {
-           nuggets.map((nugget, i) => (
-             <View key={i}>
-              <Text>Q:{nugget.question}</Text>
-              <Text>A:{nugget.answer}</Text>
-             </View>
-           )
+        {
+         nuggets.map((nugget, i) => (
+           <View key={i}>
+            <Text>Q:{nugget.question}</Text>
+            <Text>A:{nugget.answer}</Text>
+           </View>
          )
+       )
        }
         </View>
         <Text style={styles.expiry}> 5 Days Remaining </Text>
@@ -54,59 +61,79 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.person });
+    console.log("It was pressed for long");
   }
 
   render() {
-    console.log('Card >>>', this.props);
-
-    const { user = {} } = this.props;
-    const { first_name, profile_picture } = user;
-
     return (
        <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={this.state.open ? styles.connectionProfileOpen : styles.connectionProfileClosed}>
-          <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+          <Image style={styles.connectionImage} source={{uri: this.props.person.profileImage}}/>
           {
-            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } />
+            this.state.open ? <CardOpen  person={ this.props.person } /> : <CardClosed  person={ this.props.person } />
           }
          </View>
         </TouchableOpacity>
     )
   }
 }
-//---------------------------------------------------------------------------------------------------------------------------------//
-
 export default class LinksScreen extends React.Component {
-
-  static navigationOptions = {
-    title: 'Your Connections',
-  };
 
   constructor(props){
     super(props)
     this.state = {
-      users: [],
+      cards: Users,
       connections: Connections
     }
+
+
     // this.findUserByIdFromConnections= this.findUserByIdFromConnections.bind(this);
   }
-
-  componentDidMount() {
-    axios.get(`${ipv4}/user/1/connections`)
-    .then((res) => {
-      console.log(res);
-      this.setState({ users: res.data })
-    })
-    .catch(err => console.warn(err))
-  }
+  static navigationOptions = {
+    title: 'Your Connections',
+  };
+  
+  // findUserByIdFromConnections(id) {
+  //   if (Connections[id].secondaryUserId) {
+  //     return Connections[id].secondaryUserId
+  //   } else {
+  //     console.log("FAILED")
+  //   }
+  // }
 
   render() {
 
-    const { users } = this.state;
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        { users.map((user, index) => <Card user={ user } key={index}/>)}
+        {
+          this.state.connections.map((card, index) => {
+            var users = this.state.cards;
+            var tempUser;
+            users.forEach(function(result){
+              // console.log("rohit result ",result);
+              if(card.secondaryUserId === result.id){
+                tempUser = result;
+              }
+            });
+            return (
+              <Card
+              { ...this.props }
+              person={tempUser}
+              key={index}/>
+            )
+          })
+        }
+        <Button 
+        onPress={()=> {this.setState({currentUserId:1})}}
+        title="User 1"
+        color="blue"
+        />
+        <Button 
+        onPress={()=> {this.setState({currentUserId:2})}}
+        title="User 1"
+        color="blue"
+        />
+
       </ScrollView>
     );
   }
