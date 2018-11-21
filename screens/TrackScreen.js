@@ -12,7 +12,7 @@ export default class TrackScreen extends React.Component {
     this.fake_props = {
       user: {
         name: 'nonsense',
-        // more shit here... except it all comes from props anyway
+        // more here... except it all comes from props anyway
       },
     };
   }

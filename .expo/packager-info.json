@@ -1,19 +1,9 @@
 {
-<<<<<<< HEAD
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
-=======
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://x5-i4z.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.x5-i4z.anonymous.pai.exp.direct",
-  "ngrokPid": 26404,
-  "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 26375
->>>>>>> feature/longpressdb
+  "packagerPort": 19003,
+  "packagerPid": 28006,
+  "expoServerNgrokUrl": "https://z5-ru4.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.z5-ru4.anonymous.pai.exp.direct",
+  "ngrokPid": 28023
 }

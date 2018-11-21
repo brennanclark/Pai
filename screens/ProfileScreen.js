@@ -46,10 +46,6 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/longpressdb
   }
 
   getProfileInformation() {
@@ -75,15 +71,9 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
-<<<<<<< HEAD
-          <Text style={styles.title}>Nuggets</Text>
-
-
-=======
 
           <Text style={styles.title}>Nuggets</Text>
 
->>>>>>> feature/longpressdb
         <Button
         onPress={()=>{
           this.setState({
@@ -123,11 +113,7 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
-<<<<<<< HEAD
 
-
-=======
->>>>>>> feature/longpressdb
           <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}

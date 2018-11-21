@@ -68,7 +68,7 @@ class Card extends React.Component {
         <View style={this.state.open ? styles.connectionProfileOpen : styles.connectionProfileClosed}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           {
-            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } />
+            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } {...this.props} />
           }
          </View>
         </TouchableOpacity>
