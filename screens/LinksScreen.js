@@ -53,13 +53,14 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    this.props.navigation.navigate('Track', { user: this.props.person });
+    // console.log("Longpress", this.props.person);
+    console.log("Navagation", this.props.navigation);
+    this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
   render() {
-    console.log('Card >>>', this.props);
-
-    const { user = {} } = this.props;
+    const { user = {} } = this.props
+    // console.log("Render", user);
     const { first_name, profile_picture } = user;
 
     return (
@@ -67,7 +68,7 @@ class Card extends React.Component {
         <View style={this.state.open ? styles.connectionProfileOpen : styles.connectionProfileClosed}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           {
-            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } />
+            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } {...this.props} />
           }
          </View>
         </TouchableOpacity>
@@ -94,7 +95,7 @@ export default class LinksScreen extends React.Component {
   componentDidMount() {
     axios.get(`${ipv4}/user/1/connections`)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       this.setState({ users: res.data })
     })
     .catch(err => console.warn(err))
@@ -106,7 +107,7 @@ export default class LinksScreen extends React.Component {
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        { users.map((user, index) => <Card user={ user } key={index}/>)}
+        { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
       </ScrollView>
     );
   }

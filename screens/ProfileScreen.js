@@ -46,9 +46,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-
   }
-
 
   getProfileInformation() {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
@@ -73,8 +71,8 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
-          <Text style={styles.title}>Nuggets</Text>
 
+          <Text style={styles.title}>Nuggets</Text>
 
         <Button
         onPress={()=>{
@@ -116,14 +114,11 @@ export default class ProfileScreen extends React.Component {
         color="blue"
         />
 
-
           <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
           />
-
-
 
         </ScrollView>
 

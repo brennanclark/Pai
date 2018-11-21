@@ -12,19 +12,19 @@ export default class TrackScreen extends React.Component {
     this.fake_props = {
       user: {
         name: 'nonsense',
-        // more shit here... except it all comes from props anyway
+        // more here... except it all comes from props anyway
       },
     };
   }
 
   render() {
-    console.log(this.props.navigation.state.params.user);
+    console.log("Navigation params",this.props.navigation.state.params.user);
     return (
       <View style={styles.container}>
-      <Image style={styles.connectionImage} source={{uri: this.props.navigation.state.params.user.profileImage}}/>
+      <Image style={styles.connectionImage} source={{uri: this.props.navigation.state.params.user.profile_picture}}/>
        <Text>
 
-          { this.props.navigation.state.params.user.firstName }
+          { this.props.navigation.state.params.user.first_name }
        </Text>
      </View>
     );
