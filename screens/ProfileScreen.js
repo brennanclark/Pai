@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
-const {ipv4} = require('../config.json');
+import {ipv4} from '../config.json'
 
 const Nugget = ({
   question,
@@ -54,7 +54,6 @@ export default class ProfileScreen extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
-
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,
@@ -74,9 +73,8 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
-
-
           <Text style={styles.title}>Nuggets</Text>
+
 
         <Button
         onPress={()=>{
@@ -117,16 +115,9 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
-          <FlatList
 
-          <Button
-            onPress={this.getProfileInformation}
-            title="Learn More"
-            color="#841584"
-          />
 
           <FlatList
-
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
