@@ -38,7 +38,7 @@ export default class ProfileScreen extends React.Component {
       nuggets: [],
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
-  
+
   }
 
   componentDidMount() {
@@ -46,7 +46,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-    
+
   }
 
 
@@ -54,12 +54,7 @@ export default class ProfileScreen extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
-<<<<<<< HEAD
-=======
-      data.forEach(function(item) {
 
-      })
->>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,
@@ -80,10 +75,10 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
 
-<<<<<<< HEAD
+
           <Text style={styles.title}>Nuggets</Text>
-      
-        <Button 
+
+        <Button
         onPress={()=>{
           this.setState({
             currentUserId:1,
@@ -92,8 +87,8 @@ export default class ProfileScreen extends React.Component {
         title="User 1"
         color="blue"
         />
-       
-       <Button 
+
+       <Button
         onPress={()=>{
           this.setState({
             currentUserId:2,
@@ -102,8 +97,8 @@ export default class ProfileScreen extends React.Component {
         title="User 2"
         color="blue"
         />
-      
-      <Button 
+
+      <Button
         onPress={()=>{
           this.setState({
             currentUserId:3,
@@ -112,8 +107,8 @@ export default class ProfileScreen extends React.Component {
         title="User 3"
         color="blue"
         />
-              
-              <Button 
+
+              <Button
         onPress={()=>{
           this.setState({
             currentUserId:4,
@@ -122,8 +117,8 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
-          <FlatList 
-=======
+          <FlatList
+
           <Button
             onPress={this.getProfileInformation}
             title="Learn More"
@@ -131,10 +126,7 @@ export default class ProfileScreen extends React.Component {
           />
 
           <FlatList
-<<<<<<< HEAD
-=======
->>>>>>> 36e42fb541227e10dd7463160aeb8f0e9eee56ab
->>>>>>> upstream/master
+
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
