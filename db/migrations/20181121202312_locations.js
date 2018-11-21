@@ -2,6 +2,8 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('locations', (table) => {
     table.increments('id').primary();
     table.integer('user_id').unsigned().notNull();
+    table.unique('user_id');
+    table.index('user_id');
     table.float('lat');
     table.float('long');
     table.dateTime('last_check_in');
