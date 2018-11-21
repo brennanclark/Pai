@@ -1,4 +1,5 @@
 import React from 'react';
+import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
 const {ipv4} = require('../config.json');
@@ -80,7 +81,7 @@ class Card extends React.Component {
 export default class LinksScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Your Connections',
+    header: null,
   };
 
   constructor(props){
@@ -106,41 +107,43 @@ export default class LinksScreen extends React.Component {
     const { users } = this.state;
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
-      </ScrollView>
+      <View style={app.container}>
+        <ScrollView contentContainerStyle={styles.page} >
+          { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
+        </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
 
-  container: {
+  page: {
     flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: '#fff',
   },
   connectionProfileClosed: {
     height: 100,
     width: 340,
     margin: 7,
     backgroundColor: 'lightsteelblue',
-    borderRadius: 5,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderRadius: 10,
     flexDirection: 'row',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowColor: 'grey',
+    shadowOpacity: 0.5,
+    shadowRadius: 0.5,
   },
   connectionProfileOpen: {
     height: 'auto',
     width: 340,
     margin: 7,
     backgroundColor: 'lightsteelblue',
-    borderRadius: 5,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderRadius: 10,
     flexDirection: 'row',
   },
   connectionImage: {
@@ -148,8 +151,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 5,
-    borderColor: 'black',
-    borderWidth: 1
   },
   content: {
     flex: 1,

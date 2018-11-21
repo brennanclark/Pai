@@ -1,10 +1,7 @@
 import React from 'react';
 import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 
-// 1. The user opens the app.
-// 2. The app loads some authentication state from persistent storage (for example, AsyncStorage).
-// 3. When the state has loaded, the user is presented with either authentication screens or the main app, depending on whether valid authentication state was loaded.
-// 4. When the user signs out, we clear the authentication state and send them back to authentication screens.
+
 
 
 export default class LoginScreen extends React.Component {
@@ -28,7 +25,7 @@ export default class LoginScreen extends React.Component {
   render() {
 
     return (
-      <View style={styles.container}>
+      <View style={styles.page}>
       <Text style={styles.animatedLogo}> mamihlapinatapai </Text>
         <TouchableOpacity onPress={()=> this.props.navigation.navigate('Profile')}>
           <Image
@@ -42,7 +39,7 @@ export default class LoginScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

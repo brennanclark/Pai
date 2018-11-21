@@ -1,4 +1,5 @@
 import React from 'react';
+import app from '../styles/container.js';
 import {
   Image,
   Platform,
@@ -12,7 +13,8 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json'
+import {ipv4} from '../config.json';
+
 
 const Nugget = ({
   question,
@@ -64,60 +66,63 @@ export default class ProfileScreen extends React.Component {
 
     return (
 
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <View style={app.container}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
 
           <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
           <Text style={styles.profileName}>{this.state.user}</Text>
-          <Text style={styles.friendCounter}>Friends</Text>
-          <Text style={styles.friendCounter}>10</Text>
+          <Text>Friends</Text>
+          <Text>10</Text>
 
-          <Text style={styles.title}>Nuggets</Text>
 
-        <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:1,
-          }, this.getProfileInformation)
-        }}
-        title="User 1"
-        color="blue"
-        />
+            <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:1,
+              }, this.getProfileInformation)
+            }}
+            title="User 1"
+            color="blue"
+            />
 
-       <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:2,
-          }, this.getProfileInformation)
-        }}
-        title="User 2"
-        color="blue"
-        />
+           <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:2,
+              }, this.getProfileInformation)
+            }}
+            title="User 2"
+            color="blue"
+            />
 
-      <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:3,
-          }, this.getProfileInformation)
-        }}
-        title="User 3"
-        color="blue"
-        />
+          <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:3,
+              }, this.getProfileInformation)
+            }}
+            title="User 3"
+            color="blue"
+            />
 
-              <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:4,
-          }, this.getProfileInformation)
-        }}
-        title="User 4"
-        color="blue"
-        />
+                  <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:4,
+              }, this.getProfileInformation)
+            }}
+            title="User 4"
+            color="blue"
+            />
+
+
+        <Text style={styles.title}>About me</Text>
 
           <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
+            style={styles.info}
           />
 
         </ScrollView>
@@ -161,42 +166,25 @@ export default class ProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 5,
-    flex: 1,
-    backgroundColor: '#fff',
+
+  profileImage: {
+    width: 175,
+    height: 175,
+    alignSelf: 'center',
+    borderRadius: 5,
   },
 
   profileName: {
     fontSize: 50,
     textAlign: 'center',
-  },
-
-  profileImage: {
-    width: 200,
-    height: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
     margin: 5,
-    marginLeft: 90,
-    borderRadius: 50,
   },
 
   title: {
     fontSize:30,
     textAlign: 'center',
-    margin: 10,
   },
 
-  nuggetContainer: {
-    padding: 20,
-  },
-
-  nuggetPicture: {
-    width:50,
-    height:50,
-    borderRadius: 5,
-  },
 
   nugget: {
     padding: 5,
@@ -211,6 +199,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+
 
 })
   // already created content
