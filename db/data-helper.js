@@ -76,18 +76,22 @@ module.exports = function(knex) {
       .then()
     },
 
-    sendLocationToDatabase(userId, lat, long, lastCheckIn){
-      return knex('locations')
-      .insert([
-        {user_id: userId},
-        {lat: lat},
-        {long: long},
-        {last_check_in: lastCheckIn},
-      ])
+    sendLocationToDatabase(userId, lat, long){
+      // return knex('locations')
+      // .insert(
+      //   {user_id: userId, lat: lat, long: long, last_check_in: lastCheckIn},
+      // )
+
+      return knex.raw(
+        `INSERT INTO locations(user_id, lat, long)
+        VALUES (${userId}, ${lat}, ${long})
+        ON CONFLICT (user_id) DO UPDATE
+        SET lat = ${lat}, long = ${long}`
+      )
       // .whereNotExists(function() {
       //   this.from('locations')
       //   .select('user_id')
-      //   .where('user_id',userId)
+      //   .where('user_id', userId)
       // })
       // .update({
       //   'lat' : lat,
@@ -95,6 +99,15 @@ module.exports = function(knex) {
       //   'last_check_in': lastCheckIn
       // })
     }
+
+    // knex.raw(
+    //   `insert into account ( id, body ) as original
+    //   values ( :id, :body::jsonb )
+    //   on conflict ( id ) do update
+    //   set body = jsonb_merge_recurse ( original.body::jsonb, excluded.body::jsonb )
+    //   returning *`,
+    //   { id, body }
+    // )
 
   }
 }

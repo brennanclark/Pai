@@ -58,9 +58,9 @@ app.post('/user/:id/location/', (req,res) => {
   const latitude = Number(req.body.latitude);
   const userId = Number(req.body.user)
   
-  dataHelpers.sendLocationToDatabase(userId, latitude, longitude, '2018-11-17 10:23:58+00')
+  dataHelpers.sendLocationToDatabase(userId, latitude, longitude)
   .then((data) => {
-    console.log(data);
+    console.log("Location was added");
   })  
 })
 
