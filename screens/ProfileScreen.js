@@ -13,6 +13,8 @@ import {
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
 import {ipv4} from '../config.json'
+import QRCode from 'react-native-qrcode';
+
 
 const Nugget = ({
   question,
@@ -23,6 +25,26 @@ const Nugget = ({
     <Text style={styles.nugget}>{ answer }</Text>
   </View>
 )
+
+function ProfileImage(props) {
+  return (
+    <View>
+      <Image source={{uri: props.Image}} style={styles.profileImage}/>
+    </View>
+  )
+}
+
+function QrCode(props) {
+  return (
+    <View style={styles.profileImage}>
+    <QRCode
+        value="somestring"
+        size={200}
+        bgColor='purple'
+        fgColor='white'/>
+    </View>
+  )
+}
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -39,7 +61,6 @@ export default class ProfileScreen extends React.Component {
       qr_code: "some random string",
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
-
   }
 
   componentDidMount() {
@@ -57,24 +78,29 @@ export default class ProfileScreen extends React.Component {
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
+        qrcode: data.qr_code,
+        isImage: true,
       })
     })
   }
 
-  _onPress = (event) => {
-    console.log("Image")
-    this.setState({
-      profileImage: "https://www.google.ca/url?sa=i&source=images&cd=&ved=2ahUKEwiYieijx-TeAhVDHTQIHYs2AWgQjRx6BAgBEAU&url=https%3A%2F%2Fwww.pexels.com%2Fphoto%2Fportrait-of-a-dog-257540%2F&psig=AOvVaw0a1v3fEjEL0LKQbqyRv8ur&ust=1542857786174693"
+  _handleOnPress = (event) => {
+    this.setState((prevState) => {
+      return {
+        isImage: !prevState.isImage
+      }
     });
   }
 
   render() {
-    return (
 
+    return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <TouchableOpacity onPress={this._onPress}>
-            <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+          <TouchableOpacity onPress={this._handleOnPress}>
+          {
+            this.state.isImage ? <ProfileImage Image={ this.state.profileImage }/> : <QrCode/>
+          }
           </TouchableOpacity>
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
@@ -83,53 +109,52 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.title}>Nuggets</Text>
 
         <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:1,
-          }, this.getProfileInformation)
-        }}
-        title="User 1"
-        color="blue"
-        />
+          onPress={()=>{
+            this.setState({
+              currentUserId:1,
+            }, this.getProfileInformation)
+          }}
+          title="User 1"
+          color="blue"
+          />
 
-       <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:2,
-          }, this.getProfileInformation)
-        }}
-        title="User 2"
-        color="blue"
-        />
+        <Button
+          onPress={()=>{
+            this.setState({
+              currentUserId:2,
+            }, this.getProfileInformation)
+          }}
+          title="User 2"
+          color="blue"
+          />
 
-      <Button
+        <Button
         onPress={()=>{
           this.setState({
             currentUserId:3,
-          }, this.getProfileInformation)
-        }}
-        title="User 3"
-        color="blue"
-        />
+            }, this.getProfileInformation)
+          }}
+          title="User 3"
+          color="blue"
+          />
 
-              <Button
+        <Button
         onPress={()=>{
           this.setState({
             currentUserId:4,
-          }, this.getProfileInformation)
-        }}
-        title="User 4"
-        color="blue"
-        />
-
-          <FlatList
-            data={this.state.nuggets}
-            renderItem={({item}) => <Nugget { ...item }/>}
-            keyExtractor={(item, index) => index.toString()}
+            }, this.getProfileInformation)
+          }}
+          title="User 4"
+          color="blue"
           />
 
-        </ScrollView>
+        <FlatList
+          data={this.state.nuggets}
+          renderItem={({item}) => <Nugget { ...item }/>}
+          keyExtractor={(item, index) => index.toString()}
+        />
 
+        </ScrollView>
       </View>
     );
   }

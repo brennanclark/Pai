@@ -54,7 +54,7 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     // console.log("Longpress", this.props.person);
-    console.log("Navagation", this.props.navigation);
+    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 

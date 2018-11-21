@@ -1,5 +1,27 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image} from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import QRCode from 'react-native-qrcode';
+
+
+function ProfileImage(props) {
+  return (
+    <View>
+      <Image style={styles.connectionImage} source={{uri: props.Image}} />
+    </View>
+  )
+}
+
+function QrCode(props) {
+  return (
+    <View>
+      <QRCode
+          value="somestring"
+          size={200}
+          bgColor='purple'
+          fgColor='white'/>
+    </View>
+  )
+}
 
 export default class TrackScreen extends React.Component {
   static navigationOptions = {
@@ -13,18 +35,30 @@ export default class TrackScreen extends React.Component {
       user: {
         name: 'nonsense',
         distance: 50,
+        isImage: true,
         // more here... except it all comes from props anyway
       },
     };
   }
+  _handleOnPress = (event) => {
+    this.setState((prevState) => {
+      return {
+        isImage: !prevState.isImage
+      }
+    });
+  }
+
 
   render() {
-    console.log("Navigation params",this.props.navigation.state.params.user);
     return (
       <View style={styles.container2}>
-      <Image style={styles.connectionImage} source={{uri: this.props.navigation.state.params.user.profile_picture}}/>
-       <Text>
+      <TouchableOpacity onPress={this._handleOnPress}>
+      {
+        this.state.isImage ? <QrCode/> : <ProfileImage style={styles.connectionImage} Image={this.props.navigation.state.params.user.profile_picture}/>
 
+      }
+      </TouchableOpacity>
+       <Text>
           { this.props.navigation.state.params.user.first_name }
        </Text>
      </View>
