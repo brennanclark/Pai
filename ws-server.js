@@ -27,8 +27,8 @@ wss.on('connection', (ws) => {
     const longitude = dataFromUser.long;
 
     const sourceUser = {
-      lat: latitude,
-      long: longitude
+      latitude: latitude,
+      longitude: longitude
     }
 
 
@@ -53,16 +53,10 @@ wss.on('connection', (ws) => {
         axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
         .then((res) => {
           let otherUser = {
-            lat: Number(res.data[0].lat),
-            long: Number(res.data[0].long),
+            latitude: Number(res.data[0].lat),
+            longitude: Number(res.data[0].long),
           }
-          console.log("sourceUser LAT", sourceUser.lat, typeof sourceUser.lat)
-          console.log("sourceUser Loooooooong", sourceUser.long, typeof sourceUser.long)
-          console.log("otherUser LAT", otherUser.lat, typeof otherUser.lat)
-          console.log("otherUser Loooooooong", otherUser.long, typeof otherUser.long)
-
-
-          console.log("THIS IS THE DISTANCE", haversine(sourceUser, otherUser))
+          console.log("THIS IS THE DISTANCE", haversine(sourceUser, otherUser, {unit:'meter'}))
         })
       })
     })
