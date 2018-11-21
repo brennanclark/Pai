@@ -48,7 +48,6 @@ export default class ProfileScreen extends React.Component {
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
-    // this.sendLocationToDatabase = this.sendLocationToDatabase.bind(this);
   }
 
   componentDidMount() {
@@ -74,7 +73,6 @@ export default class ProfileScreen extends React.Component {
       console.log("connected to server")
     }
     this.getProfileInformation();
-    // this.sendLocationToDatabase();
   }
 
   _getLocationAsync = async () => {

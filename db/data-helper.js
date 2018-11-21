@@ -83,6 +83,12 @@ module.exports = function(knex) {
         ON CONFLICT (user_id) DO UPDATE
         SET lat = ${lat}, long = ${long}`
       )
+    },
+
+    findLocationByUserId(id){
+      return knex('locations')
+      .select('*')
+      .where('user_id', id);
     }
   }
 }

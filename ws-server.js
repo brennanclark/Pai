@@ -26,6 +26,13 @@ wss.on('connection', (ws) => {
     const latitude = dataFromUser.lat;
     const longitude = dataFromUser.long;
 
+    const sourceUser = {
+      lat: latitude,
+      long: longitude
+    }
+
+
+
     axios({
       method: 'post',
       url: `${ipv4}/user/${user}/location/`,
@@ -40,9 +47,24 @@ wss.on('connection', (ws) => {
       console.log(err.message);
     })
 
-    axios.get(`${ipv4}/${user}/connections`)
+    axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
-      res.forEach((item))
+      res.data.forEach((connectedUser) => {
+        axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
+        .then((res) => {
+          let otherUser = {
+            lat: Number(res.data[0].lat),
+            long: Number(res.data[0].long),
+          }
+          console.log("sourceUser LAT", sourceUser.lat, typeof sourceUser.lat)
+          console.log("sourceUser Loooooooong", sourceUser.long, typeof sourceUser.long)
+          console.log("otherUser LAT", otherUser.lat, typeof otherUser.lat)
+          console.log("otherUser Loooooooong", otherUser.long, typeof otherUser.long)
+
+
+          console.log("THIS IS THE DISTANCE", haversine(sourceUser, otherUser))
+        })
+      })
     })
 
     

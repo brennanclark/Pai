@@ -64,6 +64,13 @@ app.post('/user/:id/location/', (req,res) => {
   })  
 })
 
+app.get('/user/:id/location/', (req,res) => {
+  dataHelpers.findLocationByUserId(Number(req.params.id))
+  .then((data)=> {
+    res.json(data);
+  })
+})
+
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log("PAI is running on port: " + PORT);
