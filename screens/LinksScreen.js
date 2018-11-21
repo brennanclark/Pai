@@ -104,7 +104,6 @@ export default class LinksScreen extends React.Component {
   render() {
 
     const { users } = this.state;
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
         { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}

@@ -36,6 +36,7 @@ export default class ProfileScreen extends React.Component {
       currentUserId: 1,
       profileImage : " ",
       nuggets: [],
+      qr_code: "some random string",
     }
     this.getProfileInformation = this.getProfileInformation.bind(this);
 
@@ -60,14 +61,21 @@ export default class ProfileScreen extends React.Component {
     })
   }
 
-  render() {
+  _onPress = (event) => {
+    console.log("Image")
+    this.setState({
+      profileImage: "https://www.google.ca/url?sa=i&source=images&cd=&ved=2ahUKEwiYieijx-TeAhVDHTQIHYs2AWgQjRx6BAgBEAU&url=https%3A%2F%2Fwww.pexels.com%2Fphoto%2Fportrait-of-a-dog-257540%2F&psig=AOvVaw0a1v3fEjEL0LKQbqyRv8ur&ust=1542857786174693"
+    });
+  }
 
+  render() {
     return (
 
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
-          <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+          <TouchableOpacity onPress={this._onPress}>
+            <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+          </TouchableOpacity>
           <Text style={styles.profileName}>{this.state.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>

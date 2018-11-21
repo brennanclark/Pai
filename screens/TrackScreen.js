@@ -9,9 +9,10 @@ export default class TrackScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.fake_props = {
+    this.state = {
       user: {
         name: 'nonsense',
+        distance: 50,
         // more here... except it all comes from props anyway
       },
     };
@@ -20,7 +21,7 @@ export default class TrackScreen extends React.Component {
   render() {
     console.log("Navigation params",this.props.navigation.state.params.user);
     return (
-      <View style={styles.container}>
+      <View style={styles.container2}>
       <Image style={styles.connectionImage} source={{uri: this.props.navigation.state.params.user.profile_picture}}/>
        <Text>
 
@@ -32,10 +33,15 @@ export default class TrackScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container1: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#c8e1f2',
+    backgroundColor: 'white',
+  },
+  container2: {
+    flex: 1,
+    paddingTop: 15,
+    backgroundColor: '#f4c542',
   },
   connectionImage: {
     margin: 9,
