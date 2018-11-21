@@ -30,8 +30,6 @@ export default class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
       <Text style={styles.animatedLogo}> mamihlapinatapai </Text>
-
-
         <TouchableOpacity onPress={()=> this.props.navigation.navigate('Profile')}>
           <Image
             source={{uri: 'https://mbtskoudsalg.com/images/login-with-facebook-button-png-1.png'}}
