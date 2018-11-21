@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 28006,
+  "devToolsPort": 19005,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://z5-ru4.anonymous.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.z5-ru4.anonymous.pai.exp.direct",
-  "ngrokPid": 28023
+  "ngrokPid": 28122
 }
