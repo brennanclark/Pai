@@ -78,20 +78,22 @@ module.exports = function(knex) {
 
     sendLocationToDatabase(userId, lat, long, lastCheckIn){
       return knex('locations')
-      .select('user_id', userID)
-      .whereNotExists(function() {
-        this.insert([  
-          {user_id: userId},
-          {lat: lat},
-          {long: long},
-          {last_check_in: lastCheckIn},
-        ])
-      })
-      .update({
-        'lat' : lat,
-        'long' : long,
-        'last_check_in': lastCheckIn
-      })
+      .insert([
+        {user_id: userId},
+        {lat: lat},
+        {long: long},
+        {last_check_in: lastCheckIn},
+      ])
+      // .whereNotExists(function() {
+      //   this.from('locations')
+      //   .select('user_id')
+      //   .where('user_id',userId)
+      // })
+      // .update({
+      //   'lat' : lat,
+      //   'long' : long,
+      //   'last_check_in': lastCheckIn
+      // })
     }
 
   }

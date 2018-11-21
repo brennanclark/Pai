@@ -1,7 +1,7 @@
 const express = require('express');
 const SocketServer = require('ws').Server
 const uuid = require('uuid-js');
-const axios = require('react-native-axios');
+const axios = require('axios');
 const {ipv4} = require ('./config.json');
 const haversine = require('haversine');
 
@@ -26,14 +26,20 @@ wss.on('connection', (ws) => {
     const latitude = dataFromUser.lat;
     const longitude = dataFromUser.long;
 
-    function sendLocationToDatabase() {
-      axios.post(`${ipv4}/user/${user}/location/`)
-      .then((response)=>{
-        console.log(response);
-      })
-    }
 
-    sendLocationToDatabase()
+    axios({
+      method: 'post',
+      url: `${ipv4}/user/${user}/location/`,
+      data: {
+        user: user,
+        longitude: longitude,
+        latitude: latitude
+      }
+    }).then((response) => {
+      console.log(response);
+    }).catch((err) => {
+      console.log(err.message);
+    })
 
     // if(user1) {
     //   var user1 = {
@@ -64,11 +70,6 @@ wss.on('connection', (ws) => {
     //   id: user,
     //   distance: distance,
     // }
-
-
-    console.log("USER", user)
-    console.log("latitude", latitude)
-    console.log("longitutde", longitude)
 
     // save to db
 
