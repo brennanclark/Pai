@@ -1,18 +1,8 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  View,
-  Button,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, FlatList, TouchableOpacity, View, Button } from 'react-native';
 import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json'
+import { ipv4 } from '../config.json'
 
 const Nugget = ({
   question,
@@ -36,20 +26,49 @@ export default class ProfileScreen extends React.Component {
       currentUserId: 1,
       profileImage : " ",
       nuggets: [],
+      lat : 0,
+      long: 0,
     }
+    this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
   }
 
   componentDidMount() {
+
+    this.watchId = navigator.geolocation.watchPosition((position)=> {
+      let lat = position.coords.latitude;
+      let long = position.coords.longitude;
+
+      this.setState({
+        lat: lat,
+        long: long,
+      })
+      
+    }, (error) => this.setState({error: error.message}),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    )
+
+    this.socket.onopen = () => {
+      setInterval(()=>{
+        this.sendLocationToServer();
+      },3000)
+      console.log("connected to server")
+    }
     this.getProfileInformation();
-    this.sendLocationToServer();
   }
+
+
 
   sendLocationToServer() {
-    
+    this.getProfileInformation();
+    var locationData = {
+      currentUserId: this.state.currentUserId,
+      lat: this.state.lat,
+      long: this.state.long,
+    }
+    this.socket.send(JSON.stringify(locationData));
   }
-
 
   getProfileInformation() {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
@@ -61,6 +80,10 @@ export default class ProfileScreen extends React.Component {
         nuggets: data.nuggets,
       })
     })
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchId);
   }
 
   render() {
@@ -129,39 +152,6 @@ export default class ProfileScreen extends React.Component {
       </View>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

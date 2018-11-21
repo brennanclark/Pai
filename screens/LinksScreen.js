@@ -123,16 +123,6 @@ export default class LinksScreen extends React.Component {
             )
           })
         }
-        <Button 
-        onPress={()=> {this.setState({currentUserId:1})}}
-        title="User 1"
-        color="blue"
-        />
-        <Button 
-        onPress={()=> {this.setState({currentUserId:2})}}
-        title="User 1"
-        color="blue"
-        />
 
       </ScrollView>
     );
