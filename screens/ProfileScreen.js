@@ -48,6 +48,7 @@ export default class ProfileScreen extends React.Component {
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
+    // this.sendLocationToDatabase = this.sendLocationToDatabase.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +65,7 @@ export default class ProfileScreen extends React.Component {
     // }, (error) => this.setState({error: error.message}),
     //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     // )
+    
 
     this.socket.onopen = () => {
       setInterval(()=>{
@@ -72,6 +74,7 @@ export default class ProfileScreen extends React.Component {
       console.log("connected to server")
     }
     this.getProfileInformation();
+    // this.sendLocationToDatabase();
   }
 
   _getLocationAsync = async () => {

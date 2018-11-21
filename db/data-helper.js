@@ -11,7 +11,6 @@ function groupBy(arr, grouper){
   return output;
 }
 
-
 module.exports = function(knex) {
 
   return {
@@ -76,6 +75,24 @@ module.exports = function(knex) {
       })
       .then()
     },
+
+    sendLocationToDatabase(userId, lat, long, lastCheckIn){
+      return knex('locations')
+      .select('user_id', userID)
+      .whereNotExists(function() {
+        this.insert([  
+          {user_id: userId},
+          {lat: lat},
+          {long: long},
+          {last_check_in: lastCheckIn},
+        ])
+      })
+      .update({
+        'lat' : lat,
+        'long' : long,
+        'last_check_in': lastCheckIn
+      })
+    }
 
   }
 }

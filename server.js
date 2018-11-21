@@ -50,6 +50,15 @@ app.post('/connections/:connection_id/delete', (req, res) => {
 //----------------------GO TO TARGET PAGE----------------------//
 
 
+//-------------------UPDATE USER LOCATION DATABAE ------------//
+app.post('/user/:id/location/', (req,res) => {
+  console.log("THIS IS FROM REQ BODY:". req.params.id)
+  dataHelpers.sendLocationToDatabase(req.params.id)
+  .then((data) => {
+
+  })
+})
+
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log("PAI is running on port: " + PORT);

@@ -5,6 +5,7 @@ const axios = require('react-native-axios');
 const {ipv4} = require ('./config.json');
 const haversine = require('haversine');
 
+
 const PORT = 3001;
 
 const server = express()
@@ -12,50 +13,70 @@ const server = express()
 
 const wss = new SocketServer({port: PORT});
 
+
+
+
 wss.on('connection', (ws) => {
   console.log(`${uuid.create().toString()} Connection Opened`);
 
   ws.onmessage = (event) => {
+
     const dataFromUser = JSON.parse(event.data);
     const user = Number(dataFromUser.currentUserId);
     const latitude = dataFromUser.lat;
     const longitude = dataFromUser.long;
 
-    if(user) {
-      var user1 = {
-        latitude: latitude,
-        longitude: longitude,
-      }
+    function sendLocationToDatabase() {
+      axios.post(`${ipv4}/user/${user}/location/`)
+      .then((response)=>{
+        console.log(response);
+      })
     }
+
+    sendLocationToDatabase()
+
+    // if(user1) {
+    //   var user1 = {
+    //     latitude: latitude,
+    //     longitude: longitude,
+    //   }
+    // }
     
-    if(user === 2) {
-      var user2 = {
-        latitude: latitude,
-        longitude: longitude
-      }
-    }
+    // user.matches.forEach(matchUser => {
+    //   axios.get(user/2/locations)
+    //   .then(){
+    //     var user1 = {
+    //       latitude: latitude,
+    //       longitude: longitude,
+    //     }
+    //   }
+    //   }
+  
+    // }) 
 
-    if(user1 && user2) {
-      console.log("USER1", user1)
-      console.log("USER2", user2)
-      var distance = haversine(user1,user2,{type:'meter'})
-    }
+    // if(user1 && user2) {
+    //   console.log("USER1", user1)
+    //   console.log("USER2", user2)
+    //   var distance = haversine(user1,user2,{type:'meter'})
+    // }
 
-    var sendDataToUser = {
-      id: user,
-      distance: distance,
-    }
+    // var sendDataToUser = {
+    //   id: user,
+    //   distance: distance,
+    // }
 
 
     console.log("USER", user)
     console.log("latitude", latitude)
     console.log("longitutde", longitude)
 
+    // save to db
 
-    wss.clients.forEach(function each(client) {
-      console.log("ws-server", JSON.stringify(sendDataToUser));
-      client.send(JSON.stringify(sendDataToUser))
-    })
+    // broadcast
+    // wss.clients.forEach(function each(client) {
+    //   console.log("ws-server", JSON.stringify(sendDataToUser));
+    //   client.send(JSON.stringify(sendDataToUser))
+    // })
 
     
     // if(user2 exists in the connections){
