@@ -3,9 +3,16 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
+import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LinksScreen from '../screens/LinksScreen';
 import TrackScreen from '../screens/TrackScreen';
+
+
+
+const LoginStack = createStackNavigator({
+  Login: LoginScreen,
+});
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
@@ -42,22 +49,9 @@ LinksStack.navigationOptions = {
   ),
 };
 
-// const TrackStack = createStackNavigator({
-//
-// });
-//
-// TrackStack.navigationOptions = {
-//   tabBarLabel: 'Target Mode',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={Platform.OS === 'ios' ? 'ios-disc' : 'md-link'}
-//     />
-//   ),
-// };
 
 
 export default createBottomTabNavigator({
   ProfileStack,
-  LinksStack
+  LinksStack,
 });

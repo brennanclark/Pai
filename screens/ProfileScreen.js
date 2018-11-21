@@ -75,6 +75,7 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>10</Text>
           <Text style={styles.title}>Nuggets</Text>
 
+
         <Button
         onPress={()=>{
           this.setState({
@@ -114,6 +115,7 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
+
 
           <FlatList
             data={this.state.nuggets}
