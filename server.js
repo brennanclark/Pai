@@ -20,13 +20,6 @@ app.use(express.static("public"));
 
 //----------------------CONNECTIONS ROUTE----------------------//
 
-app.get('/', (req, res) => {
-  dataHelpers.testing('1')
-  .then((data)=>{
-    res.json(data);
-  })
-});
-
 
 //----------------------GET USER PROFILE With NUGGETS----------------------//
 app.get('/user/:id', (req,res) => {

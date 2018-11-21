@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, FlatList, TouchableOpacity, View, Button } from 'react-native';
-import { WebBrowser } from 'expo';
+import { WebBrowser, Location, Permissions } from 'expo';
 import axios from 'react-native-axios';
 import { ipv4 } from '../config.json'
 
@@ -28,40 +28,77 @@ export default class ProfileScreen extends React.Component {
       nuggets: [],
       lat : 0,
       long: 0,
+      errorMessage: null,
+      currentUser: [
+        {
+          user: 2,
+          distance: 0,
+        },
+        {
+          user: 3,
+          distnace: 0,
+        },
+        {
+          user: 4,
+          distance: 0.
+        }
+      ]
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
+    this._getLocationAsync = this._getLocationAsync.bind(this);
   }
 
   componentDidMount() {
 
-    this.watchId = navigator.geolocation.watchPosition((position)=> {
-      let lat = position.coords.latitude;
-      let long = position.coords.longitude;
+    // this.watchId = navigator.geolocation.watchPosition((position)=> {
+    //   let lat = position.coords.latitude;
+    //   let long = position.coords.longitude;
 
-      this.setState({
-        lat: lat,
-        long: long,
-      })
+    //   this.setState({
+    //     lat: lat,
+    //     long: long,
+    //   })
       
-    }, (error) => this.setState({error: error.message}),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    )
+    // }, (error) => this.setState({error: error.message}),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    // )
 
     this.socket.onopen = () => {
       setInterval(()=>{
-        this.sendLocationToServer();
-      },3000)
+        this._getLocationAsync();
+      },6000)
       console.log("connected to server")
     }
     this.getProfileInformation();
   }
 
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
 
+    let location = await Location.getCurrentPositionAsync({});
+
+    this.setState({ 
+      lat: location.coords.latitude,
+      long: location.coords.longitude,
+     }, this.sendLocationToServer());
+  };
+
+  // receiveLocationFromServer() {
+  //   this.socket.onmessage = (event) => {
+  //     const locationData = JSON.parse(event.data);
+  //     const userId = locationData.id,
+  //   }
+  // }
 
   sendLocationToServer() {
-    this.getProfileInformation();
+  
     var locationData = {
       currentUserId: this.state.currentUserId,
       lat: this.state.lat,
@@ -99,6 +136,8 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>10</Text>
 
           <Text style={styles.title}>Nuggets</Text>
+          <Text style={styles.nugget}>{this.state.lat}</Text>
+          <Text style={styles.nugget}>{this.state.long}</Text>
       
         <Button 
         onPress={()=>{
