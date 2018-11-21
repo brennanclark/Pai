@@ -1,6 +1,11 @@
 import React from 'react';
+<<<<<<< HEAD
 import { createSwitchNavigator } from 'react-navigation';
 import LoginScreen from '../screens/LoginScreen';
+=======
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+
+>>>>>>> feature/longpressdb
 import MainTabNavigator from './MainTabNavigator';
 import TrackScreen from '../screens/TrackScreen';
 
