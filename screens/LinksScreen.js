@@ -87,12 +87,22 @@ export default class LinksScreen extends React.Component {
     super(props)
     this.state = {
       users: [],
-      connections: Connections
+      connections: Connections,
+      currentUserId: this.props.screenProps.currentUserId
     }
-    // this.findUserByIdFromConnections= this.findUserByIdFromConnections.bind(this);
+    this.getConnections = this.getConnections.bind(this);
   }
 
   componentDidMount() {
+    this.setState({currentUserId: this.props.screenProps.currentUserId})
+    axios.get(`${ipv4}/user/${this.state.currentUserId}/connections`)
+    .then((res) => {
+      this.setState({ users: res.data })
+    })
+    .catch(err => console.warn(err))
+  }
+
+  getConnections(){
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
       this.setState({ users: res.data })
@@ -101,7 +111,7 @@ export default class LinksScreen extends React.Component {
   }
 
   render() {
-
+    this.getConnections
     const { users } = this.state;
 
     // Builds out a card for each connection
