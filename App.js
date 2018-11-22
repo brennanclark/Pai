@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon, Permissions, Location } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import axios from 'react-native-axios';
 import {ipv4} from './config.json';
@@ -30,7 +30,11 @@ export default class App extends React.Component {
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
     this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
-    this.findConnection = this.findConnection.bind(this)
+    this.findConnection = this.findConnection.bind(this);
+    this.changeToUserOne = this.changeToUserOne.bind(this);
+    this.changeToUserTwo = this.changeToUserTwo.bind(this);
+    this.changeToUserThree = this.changeToUserThree.bind(this);
+    this.changeToUserFour = this.changeToUserFour.bind(this)
   }
 
   componentDidMount() {
@@ -94,7 +98,6 @@ export default class App extends React.Component {
   }
 
   findConnection() {
-
     axios({
       method: 'post',
       url: `${ipv4}/user/${this.state.currentUser}/connections/new`,
@@ -109,6 +112,29 @@ export default class App extends React.Component {
       console.log(err);
     })
   }
+
+  // Functional buttons for testing:
+  changeToUserOne() {
+    this.setState({
+      currentUserId :1,
+    }, this.getProfileInformation)
+  }
+  changeToUserTwo() {
+    this.setState({
+      currentUserId :2,
+    }, this.getProfileInformation)
+  }
+  changeToUserThree() {
+    this.setState({
+      currentUserId :3,
+    }, this.getProfileInformation)
+  }
+  changeToUserFour() {
+    this.setState({
+      currentUserId :4,
+    }, this.getProfileInformation)
+  }
+
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
@@ -135,7 +161,13 @@ export default class App extends React.Component {
             nuggets: this.state.nuggets,
             lat : this.state.lat,
             long: this.state.long,
-            errorMessage: this.state.errorMessage
+            errorMessage: this.state.errorMessage,
+            changeToUserOne: this.changeToUserOne,
+            changeToUserTwo :this.changeToUserTwo,
+            changeToUserThree : this.changeToUserThree,
+            changeToUserFour: this.changeToUserFour,
+            findConnection: this.findConnection,
+
           }}
           />
         </View>

@@ -43,47 +43,31 @@ export default class ProfileScreen extends React.Component {
           <Text>10</Text>
 
           <Button 
-          onPress= {this.findConnection}
+          onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
 
           <View style={styles.switch}>
             <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:1,
-              }, this.getProfileInformation)
-            }}
+            onPress={this.props.screenProps.changeToUserOne}
             title="User 1"
             color="blue"
             />
 
             <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:2,
-                }, this.getProfileInformation)
-              }}
+            onPress={this.props.screenProps.changeToUserTwo}
               title="User 2"
             color="blue"
             />
 
             <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:3,
-              }, this.getProfileInformation)
-            }}
+            onPress={this.props.screenProps.changeToUserThree}
             title="User 3"
             color="blue"
             />
 
             <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:4,
-              }, this.getProfileInformation)
-            }}
+            onPress={this.props.screenProps.changeToUserFour}
             title="User 4"
             color="blue"
             />
