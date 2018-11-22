@@ -43,7 +43,6 @@ app.get('/user/:id/connections', (req, res) => {
 //----------------------CREATE NEW CONNECTION --------------------//
 
 app.post('/user/:id/connections/new', (req,res) => {
-  
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
     if(response.data.length < 3){  //maximum of 3 connections
@@ -58,7 +57,6 @@ app.post('/user/:id/connections/new', (req,res) => {
               randomUsers.push(user.id)
             }
           })
-          
         })
         return randomUsers;
       })
@@ -67,7 +65,9 @@ app.post('/user/:id/connections/new', (req,res) => {
         let indexPicker = Math.floor(Math.random() * result.length);
         luckyFriend = result[indexPicker];
         console.log("LAKDJLAKSJD: ", luckyFriend);
-        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((theResult) => {
+          console.log("THIS IS THE RESULT", theResult)
+        });
       })      
     } else {
       res.send(); //this code is requried to make sure the app does not freeze
