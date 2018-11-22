@@ -106,11 +106,13 @@ export default class LinksScreen extends React.Component {
 
     // Builds out a card for each connection
     return (
+
       <View style={app.container}>
         <ScrollView>
           { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
         </ScrollView>
       </View>
+
     );
   }
 }
