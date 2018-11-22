@@ -33,7 +33,7 @@ class Card extends React.Component {
   state = {
     open: false,
     nuggets: Users.nuggets,
-    currentUserId: 1
+    currentUserId: this.props.screenProps.currentUserId
   }
 
   _onPress = (event) => {
@@ -96,7 +96,7 @@ export default class LinksScreen extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`${ipv4}/user/1/connections`)
+    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
       this.setState({ users: res.data })
     })

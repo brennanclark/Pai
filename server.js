@@ -11,6 +11,8 @@ const app         = express();
 const knexConfig  = require('./knexfile');
 const knex        = require('knex')(knexConfig[ENV]);
 const dataHelpers = require('./db/data-helper.js')(knex);
+const axios       = require('axios');
+const {ipv4}      = require('./config.json')
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -18,7 +20,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(express.static("public"));
-
 
 //----------------------CONNECTIONS ROUTE----------------------//
 
@@ -38,6 +39,48 @@ app.get('/user/:id/connections', (req, res) => {
     res.json(data);
   })
 });
+
+//----------------------CREATE NEW CONNECTION --------------------//
+
+app.post('/user/:id/connections/new', (req,res) => {
+  axios.get(`${ipv4}/user/${req.body.userId}/connections`)
+  .then((response) => {
+    if(response.data.length < 3){  //maximum of 3 connections
+      dataHelpers.getUsersExcept(Number(req.body.userId))
+      .then((dataResults) => {
+        let randomUsers = [];
+        dataResults.forEach((user) => {
+          response.data.forEach((otherUser) => {
+            if(otherUser.id === user.id){
+              return null;
+            } else {
+              randomUsers.push(user.id)
+            }
+          })
+        })
+        return new Promise((resolve, reject) => {
+          resolve(randomUsers);
+        })
+      })
+      .then((result) => {
+        let luckyFriend = 0;
+        let indexPicker = Math.floor(Math.random() * result.length);
+        luckyFriend = result[indexPicker];
+        console.log("LAKDJLAKSJD: ", luckyFriend);
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+        res.end();
+      })
+      .catch((err) => {
+        console.log("INNER ERROR", err);
+      })      
+    } else {
+      res.end(); //this code is requried to make sure the app does not freeze
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+})
 
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
@@ -69,6 +112,8 @@ app.post('/user/:id/location/', (req,res) => {
   })
 })
 
+
+//------------------GET USER's LOCATION ---------------------//
 app.get('/user/:id/location/', (req,res) => {
   dataHelpers.findLocationByUserId(Number(req.params.id))
   .then((data)=> {

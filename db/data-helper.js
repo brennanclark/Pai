@@ -11,6 +11,10 @@ function groupBy(arr, grouper){
   return output;
 }
 
+var cd = new Date()
+var fullDate = `${cd.getUTCFullYear()}-${cd.getMonth()+1}-${cd.getDate()} ${cd.getHours()-8}:${cd.getMinutes()}:${cd.getSeconds()}`
+
+
 module.exports = function(knex) {
 
   return {
@@ -87,6 +91,14 @@ module.exports = function(knex) {
         });
     },
 
+
+    createNewConnection(sourceId, friendId) {
+      return knex.raw(
+        `INSERT INTO connections(first_user_id, second_user_id, connected_at, is_connected)
+        VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
+        ON CONFLICT (first_user_id) DO NOTHING`
+      )
+
     setFriendsAt(id) {
       return knex('connections')
       .where('id', id)
@@ -118,6 +130,12 @@ module.exports = function(knex) {
       return knex('locations')
       .select('*')
       .where('user_id', id);
+    },
+
+    getUsersExcept(id){
+      return knex('users')
+      .select('id')
+      .whereNot('id',id)
     }
   }
 }

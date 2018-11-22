@@ -9,6 +9,9 @@ exports.seed = function(knex, Promise) {
         {id: 2, first_name: 'Sebastian', qr_code: 'someRandomString', profile_picture: 'https://img2.thejournal.ie/inline/2470754/original/?width=428&version=2470754', created_at: '2018-11-17 10:23:50'},
         {id: 3, first_name: 'Alexandra', qr_code: 'someRandomString', profile_picture: 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg', created_at: '2018-11-17 10:23:45'},
         {id: 4, first_name: 'Cassandra', qr_code: 'someRandomString', profile_picture: 'http://www.anaivanovic.com/sites/default/files/styles/flexslider_full_mobile/public/profile.jpg?itok=50Q_EqHf', created_at: '2018-11-17 10:23:45'},
+        {id: 5, first_name: 'Joey', qr_code: 'someRandomString', profile_picture: 'https://texasbarblog.lexblogplatformtwo.com/files/2011/12/housto-bankruptcy-attorney-adam-schachter1.jpg', created_at: '2018-11-17 10:23:45'},
+        {id: 6, first_name: 'Matthew', qr_code: 'someRandomString', profile_picture: 'https://blog.texasbar.com/files/2015/09/Mark-Chavez-1.jpg', created_at: '2018-11-17 10:23:45'},
+        {id: 7, first_name: 'Lizard?', qr_code: 'someRandomString', profile_picture: 'https://4.bp.blogspot.com/-5sqvzmbfSos/V2IhNEbXyOI/AAAAAAAAC9Q/NC1jE9IUB_k_-diJOaFui94FOdtVkkc5wCLcB/s640/mark-zuckerberg.jpg', created_at: '2018-11-17 10:23:45'},
       ]);
     });
 };
