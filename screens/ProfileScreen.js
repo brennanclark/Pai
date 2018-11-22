@@ -104,7 +104,6 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-
     var locationData = {
       currentUserId: this.state.currentUserId,
       lat: this.state.lat,

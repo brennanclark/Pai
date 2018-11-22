@@ -11,6 +11,7 @@ const app         = express();
 const knexConfig  = require('./knexfile');
 const knex        = require('knex')(knexConfig[ENV]);
 const dataHelpers = require('./db/data-helper.js')(knex);
+const axios       = require('axios');
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -18,7 +19,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(express.static("public"));
-
 
 //----------------------CONNECTIONS ROUTE----------------------//
 
@@ -38,6 +38,22 @@ app.get('/user/:id/connections', (req, res) => {
     res.json(data);
   })
 });
+
+//----------------------CREATE NEW CONNECTION --------------------//
+
+app.post('/user/:id/connections/new', (req,res) => {
+  axios.get(`/${ipv4}/user/${req.params.id}/connections`)
+  .then((response) => {
+
+    if(response.data.count <= 3){
+      //dataHelpers.getUsersExcept(req.params.id).then((res) => {console.log(res.data.id)} = with this data, I can also get count of the users in here.)
+      //using the id numbers, generate a radom number picker and set that variable to a friendId and insert it into the createNewConnection.
+      // dataHelpers.createNewConnection(req.params.id, )
+      
+      // 
+    }
+  })
+})
 
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
@@ -63,6 +79,8 @@ app.post('/user/:id/location/', (req,res) => {
   })  
 })
 
+
+//------------------GET USER's LOCATION ---------------------//
 app.get('/user/:id/location/', (req,res) => {
   dataHelpers.findLocationByUserId(Number(req.params.id))
   .then((data)=> {

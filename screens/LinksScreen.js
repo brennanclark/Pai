@@ -111,6 +111,10 @@ export default class LinksScreen extends React.Component {
         <ScrollView>
           { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
         </ScrollView>
+        <Button 
+          title="FIND MATCH"
+          color="purple"
+        />
       </View>
 
     );
