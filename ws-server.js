@@ -31,8 +31,6 @@ wss.on('connection', (ws) => {
       longitude: longitude
     }
 
-
-
     axios({
       method: 'post',
       url: `${ipv4}/user/${user}/location/`,
@@ -56,7 +54,15 @@ wss.on('connection', (ws) => {
             latitude: Number(res.data[0].lat),
             longitude: Number(res.data[0].long),
           }
-          console.log("THIS IS THE DISTANCE", haversine(sourceUser, otherUser, {unit:'meter'}))
+
+          var dataToUser = {
+            type: "distanceBetweenTwo",
+            user: connectedUser.id,
+            distance: haversine(sourceUser, otherUser, {unit:'meter'})
+          }
+          console.log("LKJASLD", dataToUser);
+          ws.send(JSON.stringify(dataToUser));
+          
         })
       })
     })
