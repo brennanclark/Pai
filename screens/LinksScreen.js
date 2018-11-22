@@ -4,13 +4,17 @@ import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHi
 const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
+import Moment from 'react-moment';
+
+
 
 
 function CardClosed(props) {
+  console.log(props.person.created_at);
   return (
     <View style={styles.content}>
       <Text style={styles.name}> {props.person.first_name} </Text>
-      <Text style={styles.expiry}> 5 Days Remaining </Text>
+      <Moment element={Text}> {props.person.created_at}</Moment>
     </View>
   )
 }
@@ -33,7 +37,7 @@ function CardOpen(props) {
          )
        }
         </View>
-        <Text style={styles.expiry}> 5 Days Remaining </Text>
+        <Text style={styles.expiry}> {props.person.created_at} </Text>
       </View>
     )
 }
