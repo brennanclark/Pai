@@ -27,15 +27,14 @@ module.exports = function(knex) {
       }
 
       function getConnectedAtTime(matchId) {
-        return knex.select('connected_at')
+        return knex.select('connected_at', 'id')
           .from('connections')
           .where('second_user_id', matchId)
           .union(function(){
-            this.select('connected_at')
+            this.select('connected_at', 'id')
             .from('connections')
             .where('first_user_id', matchId)
           });
-
       }
 
       const myConnectedUsers = knex('users')
@@ -54,10 +53,10 @@ module.exports = function(knex) {
           let promises = users.map(user => {
             return getConnectedAtTime(user.id)
               .then(connectedAt => {
-                console.log(connectedAt, 'CONNECTED AT')
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
+                  connection_id: connectedAt[0].id,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
                 }
               })
@@ -87,6 +86,16 @@ module.exports = function(knex) {
             }
         });
     },
+
+    // setFriendsAt(id1, id2) {
+    //   function getConnection() {
+    //     this.select('*')
+    //     .from('connections')
+    //     .whereIn('first_user_id', [id1, id2])
+    //     .andWhereIn('second_user_id', [id1, id2])
+
+    //   })
+    // }
 
     deleteConnectionById(id) {
       return knex('connections')
