@@ -54,7 +54,6 @@ module.exports = function(knex) {
           let promises = users.map(user => {
             return getConnectedAtTime(user.id)
               .then(connectedAt => {
-                console.log(connectedAt, 'CONNECTED AT')
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
