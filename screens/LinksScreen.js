@@ -6,15 +6,13 @@ const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 import Moment from 'react-moment';
-
-
+import moment from 'moment';
 
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
 
     return (
-
         <View style={styles.nuggets}>
           {
            nuggets.map((nugget, i) => (
@@ -44,19 +42,19 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    // console.log("Longpress", this.props.person);
-    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
   render() {
     const { user = {} } = this.props
     const { first_name, profile_picture } = user;
+    let connectedAt = user.connected_at;
+    let expiryAt = (moment(connectedAt).add(8,'days').format('YYYYMMDD'));
+    let daysRemaining = moment(expiryAt).fromNow();
 
     return (
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
-
 
         <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null]}>
 
@@ -64,15 +62,11 @@ class Card extends React.Component {
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {user.first_name} </Text>
         </View>
-
             {
             this.state.open ? <CardOpen  person={ user } /> : null
             }
-
-          <Text style={styles.expiry}> 5 Days Remaining </Text>
-
+            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
-
       </TouchableOpacity>
 
     )

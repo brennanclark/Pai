@@ -27,7 +27,7 @@ function QrCode(props) {
 export default class TrackScreen extends React.Component {
   static navigationOptions = {
     // Here we can change the title at the top of the page
-    header: null,
+    title: 'track',
   };
 
   constructor(props) {
