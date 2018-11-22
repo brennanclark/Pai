@@ -62,12 +62,12 @@ wss.on('connection', (ws) => {
           }
           console.log("LKJASLD", dataToUser);
           ws.send(JSON.stringify(dataToUser));
-          
+
         })
       })
     })
 
-    
+
 
   }
 
@@ -78,4 +78,4 @@ wss.on('connection', (ws) => {
 
 })
 
-// server.listen(PORT, '0.0.0.0', 'localhost',  () => console.log(`Listening on ${ PORT }`));  
+// server.listen(PORT, '0.0.0.0', 'localhost',  () => console.log(`Listening on ${ PORT }`));

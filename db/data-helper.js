@@ -22,24 +22,31 @@ module.exports = function(knex) {
       function runConnectedUsers(){
         this.distinct('first_user_id AS user_id, connected_at')
           .from('connections')
-          .where('second_user_id', userId)
+          .where({
+            'second_user_id': userId,
+            'is_connected': true,
+            'friends': false
+          })
           .union(function(){
             this.distinct('second_user_id AS user_id, connected_at')
             .from('connections')
-            .where('first_user_id', userId)
+            .where({
+              'first_user_id': userId,
+              'is_connected': true,
+              'friends': false
+            })
           });
       }
 
       function getConnectedAtTime(matchId) {
-        return knex.select('connected_at')
+        return knex.select('connected_at', 'id')
           .from('connections')
           .where('second_user_id', matchId)
           .union(function(){
-            this.select('connected_at')
+            this.select('connected_at', 'id')
             .from('connections')
             .where('first_user_id', matchId)
           });
-
       }
 
       const myConnectedUsers = knex('users')
@@ -61,6 +68,7 @@ module.exports = function(knex) {
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
+                  connection_id: connectedAt[0].id,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
                 }
               })
@@ -91,12 +99,22 @@ module.exports = function(knex) {
         });
     },
 
+
     createNewConnection(sourceId, friendId) {
       return knex.raw(
         `INSERT INTO connections(first_user_id, second_user_id, connected_at, is_connected)
         VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
         ON CONFLICT (first_user_id) DO NOTHING`
       )
+    },
+
+    setFriendsAt(id) {
+      return knex('connections')
+      .where('id', id)
+      .update({
+        'friends': true
+      })
+      .then()
     },
 
     deleteConnectionById(id) {

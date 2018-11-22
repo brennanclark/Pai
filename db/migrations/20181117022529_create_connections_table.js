@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
     table.unique('first_user_id');
     table.integer('second_user_id').unsigned().notNull();
     table.dateTime('connected_at').notNull();
-    table.dateTime('friends_at');
+    table.boolean('friends').notNull();
     table.boolean('is_connected').notNull();
 
     table.foreign('first_user_id').references('id').inTable('users');
