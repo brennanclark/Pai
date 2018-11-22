@@ -46,16 +46,31 @@ app.post('/user/:id/connections/new', (req,res) => {
   
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
-    if(response.data.length <= 3){  //maximum of 3 connections
+    if(response.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
-      .then((res) => {
-        console.log("INNER DATA", res.length);
-      }) 
-      // = with this data, I can also get count of the users in here.)
-      //using the id numbers, generate a radom number picker and set that variable to a friendId and insert it into the createNewConnection.
-      // dataHelpers.createNewConnection(req.params.id, )
-      
-      // 
+      .then((dataResults) => {
+        let randomUsers = [];
+        dataResults.forEach((user) => {
+          response.data.forEach((otherUser) => {
+            if(otherUser.id === user.id){
+              return null;
+            } else {
+              randomUsers.push(user.id)
+            }
+          })
+          
+        })
+        return randomUsers;
+      })
+      .then((result) => {
+        let luckyFriend = 0;
+        let indexPicker = Math.floor(Math.random() * result.length);
+        luckyFriend = result[indexPicker];
+        console.log("LAKDJLAKSJD: ", luckyFriend);
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+      })      
+    } else {
+      res.send(); //this code is requried to make sure the app does not freeze
     }
   })
 })

@@ -93,12 +93,12 @@ module.exports = function(knex) {
 
     createNewConnection(sourceId, friendId) {
       return knex('connections')
-      .insert(
-        {first_user_id: sourceId,
-        second_user_id, friendId,
+      .insert({
+        first_user_id: sourceId,
+        second_user_id: friendId,
         connected_at: fullDate,
-        is_connected: false}
-      )
+        is_connected: false
+      })
     },
 
     deleteConnectionById(id) {
