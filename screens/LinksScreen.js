@@ -7,22 +7,12 @@ var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 
 
-function CardClosed(props) {
-  return (
-    <View style={styles.content}>
-      <Text style={styles.name}> {props.person.first_name} </Text>
-      <Text style={styles.expiry}> 5 Days Remaining </Text>
-    </View>
-  )
-}
-
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
   // let listItem = nuggets.map((nugget) =>
 
     return (
-      <View style={styles.content}>
-        <Text style={styles.name}> {props.person.first_name} </Text>
+
         <View style={styles.nuggets}>
           {
            nuggets.map((nugget, i) => (
@@ -30,12 +20,10 @@ function CardOpen(props) {
               <Text>Q:{nugget.question}</Text>
               <Text>A:{nugget.answer}</Text>
              </View>
-           )
-         )
-       }
+            )
+            )
+          }
         </View>
-        <Text style={styles.expiry}> 5 Days Remaining </Text>
-      </View>
     )
 }
 
@@ -61,18 +49,31 @@ class Card extends React.Component {
 
   render() {
     const { user = {} } = this.props
-    // console.log("Render", user);
     const { first_name, profile_picture } = user;
 
     return (
-       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
-        <View style={this.state.open ? styles.connectionProfileOpen : styles.connectionProfileClosed}>
+
+      <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
+
+
+        <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null]}>
+
+        <View style={{flexDirection: 'row'}}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          {
-            this.state.open ? <CardOpen  person={ user } /> : <CardClosed  person={ user } {...this.props} />
-          }
-         </View>
-        </TouchableOpacity>
+          <Text style={styles.nameOpen}> {user.first_name} </Text>
+        </View>
+
+
+            {
+            this.state.open ? <CardOpen  person={ user } /> : null
+            }
+
+          <Text style={styles.expiry}> 5 Days Remaining </Text>
+
+        </View>
+
+      </TouchableOpacity>
+
     )
   }
 }
@@ -106,9 +107,10 @@ export default class LinksScreen extends React.Component {
 
     const { users } = this.state;
 
+    // Builds out a card for each connection
     return (
       <View style={app.container}>
-        <ScrollView contentContainerStyle={styles.page} >
+        <ScrollView>
           { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
         </ScrollView>
       </View>
@@ -118,57 +120,45 @@ export default class LinksScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-  page: {
-    flexGrow: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  connectionProfileClosed: {
+  cardClosed: {
     height: 100,
-    width: 340,
+    width: 330,
     margin: 7,
     backgroundColor: 'lightsteelblue',
     borderRadius: 10,
-    flexDirection: 'row',
     shadowOffset: {
-      width: 2,
-      height: 2,
+    width: 2,
+    height: 2,
     },
     shadowColor: 'grey',
     shadowOpacity: 0.5,
     shadowRadius: 0.5,
   },
-  connectionProfileOpen: {
+  cardOpen: {
     height: 'auto',
-    width: 340,
-    margin: 7,
-    backgroundColor: 'lightsteelblue',
-    borderRadius: 10,
-    flexDirection: 'row',
   },
   connectionImage: {
-    margin: 9,
+    margin: 10,
     height: 80,
     width: 80,
-    borderRadius: 5,
+    borderRadius: 10,
   },
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  name: {
-    flex: 5,
+  nameOpen: {
     lineHeight: 90,
     fontSize: 27,
   },
-  nuggets: {
-    margin: 10,
-  },
   expiry: {
-    flex: 1,
-    alignSelf: 'flex-end',
+    marginTop: -20,
+
     fontSize: 12,
     fontStyle: 'italic',
-  }
+    textAlign: 'right',
+  },
+  nuggets: {
+    flexDirection: 'column',
+    textAlign: 'left',
+    width: 'auto',
+    margin: 10,
+  },
 
 });

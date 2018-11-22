@@ -74,7 +74,7 @@ export default class ProfileScreen extends React.Component {
           <Text>Friends</Text>
           <Text>10</Text>
 
-
+          <View style={styles.switch}>
             <Button
             onPress={()=>{
               this.setState({
@@ -85,17 +85,17 @@ export default class ProfileScreen extends React.Component {
             color="blue"
             />
 
-           <Button
+            <Button
             onPress={()=>{
               this.setState({
                 currentUserId:2,
-              }, this.getProfileInformation)
-            }}
-            title="User 2"
+                }, this.getProfileInformation)
+              }}
+              title="User 2"
             color="blue"
             />
 
-          <Button
+            <Button
             onPress={()=>{
               this.setState({
                 currentUserId:3,
@@ -105,7 +105,7 @@ export default class ProfileScreen extends React.Component {
             color="blue"
             />
 
-                  <Button
+            <Button
             onPress={()=>{
               this.setState({
                 currentUserId:4,
@@ -114,9 +114,9 @@ export default class ProfileScreen extends React.Component {
             title="User 4"
             color="blue"
             />
+        </View>
 
-
-        <Text style={styles.title}>About me</Text>
+        <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
             data={this.state.nuggets}
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     width: 175,
     height: 175,
     alignSelf: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
   },
 
   profileName: {
@@ -180,18 +180,22 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 
+    friendCounter: {
+    textAlign: 'left',
+  },
+
   title: {
     fontSize:30,
     textAlign: 'center',
   },
 
+  switch: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
 
   nugget: {
     padding: 5,
-  },
-
-  friendCounter: {
-    textAlign: 'left',
   },
 
   item: {
