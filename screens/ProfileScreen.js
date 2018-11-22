@@ -1,8 +1,20 @@
 import React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, FlatList, TouchableOpacity, View, Button } from 'react-native';
-import { WebBrowser, Location, Permissions } from 'expo';
+import app from '../styles/container.js';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  View,
+  Button,
+} from 'react-native';
+import { WebBrowser } from 'expo';
 import axios from 'react-native-axios';
-import { ipv4 } from '../config.json'
+import {ipv4} from '../config.json';
+
 
 const Nugget = ({
   question,
@@ -75,7 +87,7 @@ export default class ProfileScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({});
 
-    this.setState({ 
+    this.setState({
       lat: location.coords.latitude,
       long: location.coords.longitude,
      }, this.sendLocationToServer());
@@ -92,7 +104,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   sendLocationToServer() {
-  
+
     var locationData = {
       currentUserId: this.state.currentUserId,
       lat: this.state.lat,
@@ -121,61 +133,65 @@ export default class ProfileScreen extends React.Component {
 
     return (
 
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <View style={app.container}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
 
           <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
           <Text style={styles.profileName}>{this.state.user}</Text>
-          <Text style={styles.friendCounter}>Friends</Text>
-          <Text style={styles.friendCounter}>10</Text>
 
-          <Text style={styles.title}>Nuggets</Text>
-          <Text style={styles.nugget}>{this.state.lat}</Text>
-          <Text style={styles.nugget}>{this.state.long}</Text>
+          <Text>Friends</Text>
+          <Text>10</Text>
 
-        <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:1,
-          }, this.getProfileInformation)
-        }}
-        title="User 1"
-        color="blue"
-        />
+          <View style={styles.switch}>
+            <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:1,
+              }, this.getProfileInformation)
+            }}
+            title="User 1"
+            color="blue"
+            />
 
-       <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:2,
-          }, this.getProfileInformation)
-        }}
-        title="User 2"
-        color="blue"
-        />
+            <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:2,
+                }, this.getProfileInformation)
+              }}
+              title="User 2"
+            color="blue"
+            />
 
-      <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:3,
-          }, this.getProfileInformation)
-        }}
-        title="User 3"
-        color="blue"
-        />
+            <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:3,
+              }, this.getProfileInformation)
+            }}
+            title="User 3"
+            color="blue"
+            />
 
-              <Button
-        onPress={()=>{
-          this.setState({
-            currentUserId:4,
-          }, this.getProfileInformation)
-        }}
-        title="User 4"
-        color="blue"
-        />
+            <Button
+            onPress={()=>{
+              this.setState({
+                currentUserId:4,
+              }, this.getProfileInformation)
+            }}
+            title="User 4"
+            color="blue"
+            />
+        </View>
+
+        <Text style={styles.title}>Nuggets</Text>
+
+
           <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
+            style={styles.info}
           />
 
         </ScrollView>
@@ -186,48 +202,36 @@ export default class ProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+
+  profileImage: {
+    width: 175,
+    height: 175,
+    alignSelf: 'center',
+    borderRadius: 10,
   },
 
   profileName: {
     fontSize: 50,
     textAlign: 'center',
+    margin: 5,
   },
 
-  profileImage: {
-    width: 200,
-    height: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 5,
-    marginLeft: 90,
-    borderRadius: 50,
+  friendCounter: {
+    textAlign: 'left',
   },
 
   title: {
     fontSize:30,
     textAlign: 'center',
-    margin: 10,
   },
 
-  nuggetContainer: {
-    padding: 20,
-  },
-
-  nuggetPicture: {
-    width:50,
-    height:50,
-    borderRadius: 5,
+  switch: {
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
 
   nugget: {
     padding: 5,
-  },
-
-  friendCounter: {
-    textAlign: 'left',
   },
 
   item: {
@@ -235,6 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+
 
 })
   // already created content
