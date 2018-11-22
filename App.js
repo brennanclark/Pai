@@ -1,7 +1,9 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator'
+import AppNavigator from './navigation/AppNavigator';
+import axios from 'react-native-axios';
+import {ipv4} from './config.json';
 // var customData = require('./customData.json');
 
 export default class App extends React.Component {
@@ -10,6 +12,107 @@ export default class App extends React.Component {
     isLoadingComplete: false,
     testing: 'hello!'
   };
+
+  constructor(props) {
+    super(props);
+    //List view is depracated look into doing something different here
+    this.state = {
+      user: null,
+      currentUserId: 1,
+      profileImage : " ",
+      nuggets: [],
+      lat : 0,
+      long: 0,
+      errorMessage: null,
+    }
+    this.socket = new WebSocket("ws://192.168.88.119:3001");
+    this.getProfileInformation = this.getProfileInformation.bind(this);
+    this.sendLocationToServer = this.sendLocationToServer.bind(this);
+    this._getLocationAsync = this._getLocationAsync.bind(this);
+    this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
+    this.findConnection = this.findConnection.bind(this)
+  }
+
+  componentDidMount() {
+
+    this.socket.onopen = () => {
+      setInterval(()=>{
+        this._getLocationAsync();
+      },6000)
+      console.log("connected to server")
+    }
+    this.getProfileInformation();
+    this.receiveLocationFromServer();
+  }
+
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+
+    this.setState({
+      lat: location.coords.latitude,
+      long: location.coords.longitude,
+     }, this.sendLocationToServer());
+  };
+
+  receiveLocationFromServer() {
+    this.socket.onmessage = (event) => {
+      const locationData = JSON.parse(event.data);
+      const userId = locationData.user;
+      const distance = locationData.distance
+      console.log("userId: ", userId);
+      console.log("distance: ", distance);
+    }
+  }
+
+  sendLocationToServer() {
+    var locationData = {
+      currentUserId: this.state.currentUserId,
+      lat: this.state.lat,
+      long: this.state.long,
+    }
+    this.socket.send(JSON.stringify(locationData));
+  }
+
+  getProfileInformation() {
+    axios.get(`${ipv4}/user/${this.state.currentUserId}`)
+    .then((response)=> {
+      const data = response.data
+      this.setState({
+        user: data.first_name,
+        profileImage: data.profile_picture,
+        nuggets: data.nuggets,
+      })
+    })
+  }
+
+  findConnection() {
+
+    axios({
+      method: 'post',
+      url: `${ipv4}/user/${this.state.currentUser}/connections/new`,
+      data: {
+        userId: this.state.currentUserId,
+      }
+    })
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchId);
+  }
 
   render() {
 
@@ -25,7 +128,16 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator distance={this.state.distance}/>
+          <AppNavigator
+          screenProps = {{
+            currentUserId: this.state.currentUserId,
+            profileImage : this.state.profileImage,
+            nuggets: this.state.nuggets,
+            lat : this.state.lat,
+            long: this.state.long,
+            errorMessage: this.state.errorMessage
+          }}
+          />
         </View>
       );
     }
