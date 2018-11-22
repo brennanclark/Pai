@@ -1,8 +1,6 @@
 node_modules/
 .DS_Store
 .expo/
-config.json
-
 .expo/packager-info.json
 .expo/settings.json
-
+config.json
