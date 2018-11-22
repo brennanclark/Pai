@@ -48,23 +48,10 @@ export default class ProfileScreen extends React.Component {
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
+    this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
   }
 
   componentDidMount() {
-
-    // this.watchId = navigator.geolocation.watchPosition((position)=> {
-    //   let lat = position.coords.latitude;
-    //   let long = position.coords.longitude;
-
-    //   this.setState({
-    //     lat: lat,
-    //     long: long,
-    //   })
-      
-    // }, (error) => this.setState({error: error.message}),
-    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    // )
-    
 
     this.socket.onopen = () => {
       setInterval(()=>{
@@ -73,6 +60,7 @@ export default class ProfileScreen extends React.Component {
       console.log("connected to server")
     }
     this.getProfileInformation();
+    this.receiveLocationFromServer();
   }
 
   _getLocationAsync = async () => {
@@ -91,12 +79,16 @@ export default class ProfileScreen extends React.Component {
      }, this.sendLocationToServer());
   };
 
-  // receiveLocationFromServer() {
-  //   this.socket.onmessage = (event) => {
-  //     const locationData = JSON.parse(event.data);
-  //     const userId = locationData.id,
-  //   }
-  // }
+  receiveLocationFromServer() {
+    this.socket.onmessage = (event) => {
+      const locationData = JSON.parse(event.data);
+      const userId = locationData.user;
+      const distance = locationData.distance
+      console.log(locationData)
+      console.log("userId: ", userId);
+      console.log("distance: ", distance);
+    }
+  }
 
   sendLocationToServer() {
   
