@@ -11,9 +11,10 @@ import {
   View,
   Button,
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import { WebBrowser, Permissions, Location } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json';
+import {ipv4} from '../config.json'
+import QRCode from 'react-native-qrcode';
 
 
 const Nugget = ({
@@ -25,6 +26,26 @@ const Nugget = ({
     <Text style={styles.nugget}>{ answer }</Text>
   </View>
 )
+
+function ProfileImage(props) {
+  return (
+    <View>
+      <Image source={{uri: props.Image}} style={styles.profileImage}/>
+    </View>
+  )
+}
+
+function QrCode(props) {
+  return (
+    <View style={styles.profileImage}>
+    <QRCode
+        value="somestring"
+        size={200}
+        bgColor='purple'
+        fgColor='white'/>
+    </View>
+  )
+}
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -54,7 +75,8 @@ export default class ProfileScreen extends React.Component {
           user: 4,
           distance: 0.
         }
-      ]
+      ],
+      qr_code: "some random string",
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -121,81 +143,87 @@ export default class ProfileScreen extends React.Component {
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
+        qrcode: data.qr_code,
+        isImage: true,
       })
     })
   }
 
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
+  }
+  _handleOnPress = (event) => {
+    this.setState((prevState) => {
+      return {
+        isImage: !prevState.isImage
+      }
+    });
   }
 
   render() {
 
     return (
-
-      <View style={app.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-
-          <Image source={{uri: this.state.profileImage}} style ={styles.profileImage}/>
+      <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <TouchableOpacity onPress={this._handleOnPress}>
+          {
+            this.state.isImage ? <ProfileImage Image={ this.state.profileImage }/> : <QrCode/>
+          }
+          </TouchableOpacity>
           <Text style={styles.profileName}>{this.state.user}</Text>
+          <Text style={styles.friendCounter}>Friends</Text>
+          <Text style={styles.friendCounter}>10</Text>
 
-          <Text>Friends</Text>
-          <Text>10</Text>
+          <Text style={styles.title}>Nuggets</Text>
 
-          <View style={styles.switch}>
-            <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:1,
-              }, this.getProfileInformation)
-            }}
-            title="User 1"
-            color="blue"
-            />
-
-            <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:2,
-                }, this.getProfileInformation)
-              }}
-              title="User 2"
-            color="blue"
-            />
-
-            <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:3,
-              }, this.getProfileInformation)
-            }}
-            title="User 3"
-            color="blue"
-            />
-
-            <Button
-            onPress={()=>{
-              this.setState({
-                currentUserId:4,
-              }, this.getProfileInformation)
-            }}
-            title="User 4"
-            color="blue"
-            />
-        </View>
-
-        <Text style={styles.title}>Nuggets</Text>
-
-
-          <FlatList
-            data={this.state.nuggets}
-            renderItem={({item}) => <Nugget { ...item }/>}
-            keyExtractor={(item, index) => index.toString()}
-            style={styles.info}
+        <Button
+          onPress={()=>{
+            this.setState({
+              currentUserId:1,
+            }, this.getProfileInformation)
+          }}
+          title="User 1"
+          color="blue"
           />
 
-        </ScrollView>
+        <Button
+          onPress={()=>{
+            this.setState({
+              currentUserId:2,
+            }, this.getProfileInformation)
+          }}
+          title="User 2"
+          color="blue"
+          />
 
+        <Button
+        onPress={()=>{
+          this.setState({
+            currentUserId:3,
+            }, this.getProfileInformation)
+          }}
+          title="User 3"
+          color="blue"
+          />
+
+        <Button
+        onPress={()=>{
+          this.setState({
+            currentUserId:4,
+            }, this.getProfileInformation)
+          }}
+          title="User 4"
+          color="blue"
+          />
+
+        <FlatList
+          data={this.state.nuggets}
+          renderItem={({item}) => <Nugget { ...item }/>}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
+        </ScrollView>
       </View>
     );
   }

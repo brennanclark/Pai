@@ -5,6 +5,9 @@ import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHi
 const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
+import Moment from 'react-moment';
+
+
 
 
 function CardOpen(props) {
@@ -42,7 +45,7 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     // console.log("Longpress", this.props.person);
-    console.log("Navagation", this.props.navigation);
+    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
@@ -103,8 +106,6 @@ export default class LinksScreen extends React.Component {
   render() {
 
     const { users } = this.state;
-
-    // Builds out a card for each connection
     return (
 
       <View style={app.container}>
