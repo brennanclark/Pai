@@ -93,7 +93,7 @@ export default class LinksScreen extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`${ipv4}/user/1/connections`)
+    axios.get(`${ipv4}/user/2/connections`)
     .then((res) => {
       this.setState({ users: res.data })
     })

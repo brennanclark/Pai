@@ -204,7 +204,6 @@ export default class ProfileScreen extends React.Component {
             color="blue"
             />
         </View>
-
         <Text style={styles.title}>Nuggets</Text>
 
 
