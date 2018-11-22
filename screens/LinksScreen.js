@@ -9,7 +9,6 @@ var Connections = require('../Connection.json');
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-  // let listItem = nuggets.map((nugget) =>
 
     return (
 
@@ -58,11 +57,10 @@ class Card extends React.Component {
 
         <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null]}>
 
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.nameOpen}> {user.first_name} </Text>
+          <Text style={styles.name}> {user.first_name} </Text>
         </View>
-
 
             {
             this.state.open ? <CardOpen  person={ user } /> : null
@@ -97,7 +95,6 @@ export default class LinksScreen extends React.Component {
   componentDidMount() {
     axios.get(`${ipv4}/user/1/connections`)
     .then((res) => {
-      // console.log(res);
       this.setState({ users: res.data })
     })
     .catch(err => console.warn(err))
@@ -120,6 +117,10 @@ export default class LinksScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
+  header: {
+    flexDirection:'row',
+  },
+
   cardClosed: {
     height: 100,
     width: 330,
@@ -133,6 +134,8 @@ const styles = StyleSheet.create({
     shadowColor: 'grey',
     shadowOpacity: 0.5,
     shadowRadius: 0.5,
+    opacity: 0.95,
+
   },
   cardOpen: {
     height: 'auto',
@@ -143,16 +146,16 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 10,
   },
-  nameOpen: {
+  name: {
     lineHeight: 90,
     fontSize: 27,
   },
   expiry: {
     marginTop: -20,
-
     fontSize: 12,
     fontStyle: 'italic',
     textAlign: 'right',
+    margin: 10,
   },
   nuggets: {
     flexDirection: 'column',

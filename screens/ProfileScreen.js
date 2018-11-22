@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 
-    friendCounter: {
+  friendCounter: {
     textAlign: 'left',
   },
 
