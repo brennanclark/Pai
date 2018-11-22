@@ -125,7 +125,8 @@ export default class ProfileScreen extends React.Component {
   }
 
   findConnection() {
-
+    console.log("=+++++++++++++++++++++")
+    console.log("when function is called")
     axios({
       method: 'post',
       url: `${ipv4}/user/${this.state.currentUser}/connections/new`,
@@ -134,7 +135,9 @@ export default class ProfileScreen extends React.Component {
       }
     })
     .then((res)=>{
-      console.log(res)
+      console.log(res);
+      console.log("===================")
+      console.log("inthe res of axios ")
     })
     .catch((err) => {
       console.log(err);

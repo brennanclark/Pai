@@ -58,20 +58,27 @@ app.post('/user/:id/connections/new', (req,res) => {
             }
           })
         })
-        return randomUsers;
+        return new Promise((resolve, reject) => {
+          resolve(randomUsers);
+        })
       })
       .then((result) => {
         let luckyFriend = 0;
         let indexPicker = Math.floor(Math.random() * result.length);
         luckyFriend = result[indexPicker];
         console.log("LAKDJLAKSJD: ", luckyFriend);
-        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((theResult) => {
-          console.log("THIS IS THE RESULT", theResult)
-        });
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+        res.end();
+      })
+      .catch((err) => {
+        console.log("INNER ERROR", err);
       })      
     } else {
-      res.send(); //this code is requried to make sure the app does not freeze
+      res.end(); //this code is requried to make sure the app does not freeze
     }
+  })
+  .catch((err) => {
+    console.log(err);
   })
 })
 
