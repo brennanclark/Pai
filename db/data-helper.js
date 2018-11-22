@@ -92,13 +92,11 @@ module.exports = function(knex) {
     },
 
     createNewConnection(sourceId, friendId) {
-      return knex('connections')
-      .insert({
-        first_user_id: sourceId,
-        second_user_id: friendId,
-        connected_at: fullDate,
-        is_connected: false
-      })
+      return knex.raw(
+        `INSERT INTO connections(first_user_id, second_user_id, connected_at, is_connected)
+        VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
+        ON CONFLICT (first_user_id) DO NOTHING`
+      )
     },
 
     deleteConnectionById(id) {
