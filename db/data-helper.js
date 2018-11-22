@@ -22,11 +22,19 @@ module.exports = function(knex) {
       function runConnectedUsers(){
         this.distinct('first_user_id AS user_id, connected_at')
           .from('connections')
-          .where('second_user_id', userId)
+          .where({
+            'second_user_id': userId,
+            'is_connected': true,
+            'friends': false
+          })
           .union(function(){
             this.distinct('second_user_id AS user_id, connected_at')
             .from('connections')
-            .where('first_user_id', userId)
+            .where({
+              'first_user_id': userId,
+              'is_connected': true,
+              'friends': false
+            })
           });
       }
 
@@ -98,12 +106,13 @@ module.exports = function(knex) {
         VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
         ON CONFLICT (first_user_id) DO NOTHING`
       )
+    },
 
     setFriendsAt(id) {
       return knex('connections')
       .where('id', id)
       .update({
-        'friends_at': new Date()
+        'friends': true
       })
       .then()
     },
