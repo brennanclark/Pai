@@ -1,18 +1,8 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  View,
-  Button,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+import { Image, Platform, ScrollView, StyleSheet, Text, FlatList, TouchableOpacity, View, Button } from 'react-native';
+import { WebBrowser, Location, Permissions } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json'
+import { ipv4 } from '../config.json'
 
 const Nugget = ({
   question,
@@ -36,16 +26,79 @@ export default class ProfileScreen extends React.Component {
       currentUserId: 1,
       profileImage : " ",
       nuggets: [],
+      lat : 0,
+      long: 0,
+      errorMessage: null,
+      currentUser: [
+        {
+          user: 2,
+          distance: 0,
+        },
+        {
+          user: 3,
+          distnace: 0,
+        },
+        {
+          user: 4,
+          distance: 0.
+        }
+      ]
     }
+    this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
+    this.sendLocationToServer = this.sendLocationToServer.bind(this);
+    this._getLocationAsync = this._getLocationAsync.bind(this);
+    this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
 
   }
 
   componentDidMount() {
+
+    this.socket.onopen = () => {
+      setInterval(()=>{
+        this._getLocationAsync();
+      },6000)
+      console.log("connected to server")
+    }
     this.getProfileInformation();
+    this.receiveLocationFromServer();
+  }
+
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+
+    this.setState({ 
+      lat: location.coords.latitude,
+      long: location.coords.longitude,
+     }, this.sendLocationToServer());
+  };
+
+  receiveLocationFromServer() {
+    this.socket.onmessage = (event) => {
+      const locationData = JSON.parse(event.data);
+      const userId = locationData.user;
+      const distance = locationData.distance
+      console.log("userId: ", userId);
+      console.log("distance: ", distance);
+    }
   }
 
   sendLocationToServer() {
+  
+    var locationData = {
+      currentUserId: this.state.currentUserId,
+      lat: this.state.lat,
+      long: this.state.long,
+    }
+    this.socket.send(JSON.stringify(locationData));
   }
 
   getProfileInformation() {
@@ -58,6 +111,10 @@ export default class ProfileScreen extends React.Component {
         nuggets: data.nuggets,
       })
     })
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchId);
   }
 
   render() {
@@ -73,6 +130,8 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>10</Text>
 
           <Text style={styles.title}>Nuggets</Text>
+          <Text style={styles.nugget}>{this.state.lat}</Text>
+          <Text style={styles.nugget}>{this.state.long}</Text>
 
         <Button
         onPress={()=>{
@@ -113,7 +172,6 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
-
           <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
@@ -125,39 +183,6 @@ export default class ProfileScreen extends React.Component {
       </View>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

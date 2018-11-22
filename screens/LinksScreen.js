@@ -107,7 +107,9 @@ export default class LinksScreen extends React.Component {
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
+
         { users.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
+
       </ScrollView>
     );
   }

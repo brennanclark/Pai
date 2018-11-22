@@ -97,5 +97,19 @@ module.exports = function(knex) {
       .then()
     },
 
+    sendLocationToDatabase(userId, lat, long){
+      return knex.raw(
+        `INSERT INTO locations(user_id, lat, long)
+        VALUES (${userId}, ${lat}, ${long})
+        ON CONFLICT (user_id) DO UPDATE
+        SET lat = ${lat}, long = ${long}`
+      )
+    },
+
+    findLocationByUserId(id){
+      return knex('locations')
+      .select('*')
+      .where('user_id', id);
+    }
   }
 }
