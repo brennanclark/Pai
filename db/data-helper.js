@@ -87,15 +87,14 @@ module.exports = function(knex) {
         });
     },
 
-    // setFriendsAt(id1, id2) {
-    //   function getConnection() {
-    //     this.select('*')
-    //     .from('connections')
-    //     .whereIn('first_user_id', [id1, id2])
-    //     .andWhereIn('second_user_id', [id1, id2])
-
-    //   })
-    // }
+    setFriendsAt(id) {
+      return knex('connections')
+      .where('id', id)
+      .update({
+        'friends_at': new Date()
+      })
+      .then()
+    },
 
     deleteConnectionById(id) {
       return knex('connections')
