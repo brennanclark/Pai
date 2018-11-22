@@ -93,17 +93,23 @@ app.post('/connections/:connection_id/delete', (req, res) => {
 
 //----------------------GO TO TARGET PAGE----------------------//
 
+app.post('/connections/:connection_id/friends', (req, res) => {
+  dataHelpers.setFriendsAt(req.params.connection_id)
+    .then((data) => {
+      res.json(data);
+    })
+});
 
 //-------------------UPDATE USER LOCATION DATABAE ------------//
 app.post('/user/:id/location/', (req,res) => {
   const longitude = Number(req.body.longitude);
   const latitude = Number(req.body.latitude);
   const userId = Number(req.body.user)
-  
+
   dataHelpers.sendLocationToDatabase(userId, latitude, longitude)
   .then((data) => {
     console.log("Location was added");
-  })  
+  })
 })
 
 

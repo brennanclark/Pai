@@ -11,8 +11,11 @@ import {
   View,
   Button,
 } from 'react-native';
-import { WebBrowser, Permissions, Location} from 'expo';
 
+import { WebBrowser, Permissions, Location } from 'expo';
+import axios from 'react-native-axios';
+import {ipv4} from '../config.json'
+import QRCode from 'react-native-qrcode';
 
 const Nugget = ({
   question,
@@ -24,17 +27,66 @@ const Nugget = ({
   </View>
 )
 
+function ProfileImage(props) {
+  return (
+    <View>
+      <Image source={{uri: props.Image}} style={styles.profileImage}/>
+    </View>
+  )
+}
+
+function QrCode(props) {
+  return (
+    <View style={styles.profileImage}>
+    <QRCode
+        value="somestring"
+        size={200}
+        bgColor='purple'
+        fgColor='white'/>
+    </View>
+  )
+}
+
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-  
+
   render() {
 
     return (
+      <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <TouchableOpacity onPress={this._handleOnPress}>
+          {
+            this.state.isImage ? <ProfileImage Image={ this.state.profileImage }/> : <QrCode/>
+          }
+          </TouchableOpacity>
+          <Text style={styles.profileName}>{this.state.user}</Text>
+          <Text style={styles.friendCounter}>Friends</Text>
+          <Text style={styles.friendCounter}>10</Text>
 
-      <View style={app.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <Text style={styles.title}>Nuggets</Text>
+
+        <Button
+          onPress={()=>{
+            this.setState({
+              currentUserId:1,
+            }, this.getProfileInformation)
+          }}
+          title="User 1"
+          color="blue"
+          />
+
+        <Button
+          onPress={()=>{
+            this.setState({
+              currentUserId:2,
+            }, this.getProfileInformation)
+          }}
+          title="User 2"
+          color="blue"
+          />
 
           <Image source={{uri: this.props.screenProps.profileImage}} style ={styles.profileImage}/>
           <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
@@ -74,16 +126,19 @@ export default class ProfileScreen extends React.Component {
         </View>
         <Text style={styles.title}>Nuggets</Text>
 
-
           <FlatList
             data={this.props.screenProps.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
             style={styles.info}
-          />
+
+        <FlatList
+          data={this.state.nuggets}
+          renderItem={({item}) => <Nugget { ...item }/>}
+          keyExtractor={(item, index) => index.toString()}
+        />
 
         </ScrollView>
-
       </View>
     );
   }
