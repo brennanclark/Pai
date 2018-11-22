@@ -1,1 +1,9 @@
-{}
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://fh-u8m.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.fh-u8m.anonymous.pai.exp.direct",
+  "ngrokPid": 31904,
+  "devToolsPort": 19002,
+  "packagerPort": 19005,
+  "packagerPid": 31872
+}
