@@ -49,6 +49,7 @@ export default class ProfileScreen extends React.Component {
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
     this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
+
   }
 
   componentDidMount() {
@@ -62,6 +63,7 @@ export default class ProfileScreen extends React.Component {
     this.getProfileInformation();
     this.receiveLocationFromServer();
   }
+
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -130,8 +132,8 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.title}>Nuggets</Text>
           <Text style={styles.nugget}>{this.state.lat}</Text>
           <Text style={styles.nugget}>{this.state.long}</Text>
-      
-        <Button 
+
+        <Button
         onPress={()=>{
           this.setState({
             currentUserId:1,
@@ -140,8 +142,8 @@ export default class ProfileScreen extends React.Component {
         title="User 1"
         color="blue"
         />
-       
-       <Button 
+
+       <Button
         onPress={()=>{
           this.setState({
             currentUserId:2,
@@ -150,8 +152,8 @@ export default class ProfileScreen extends React.Component {
         title="User 2"
         color="blue"
         />
-      
-      <Button 
+
+      <Button
         onPress={()=>{
           this.setState({
             currentUserId:3,
@@ -160,8 +162,8 @@ export default class ProfileScreen extends React.Component {
         title="User 3"
         color="blue"
         />
-              
-              <Button 
+
+              <Button
         onPress={()=>{
           this.setState({
             currentUserId:4,
@@ -170,13 +172,11 @@ export default class ProfileScreen extends React.Component {
         title="User 4"
         color="blue"
         />
-          <FlatList 
+          <FlatList
             data={this.state.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
           />
-
-
 
         </ScrollView>
 

@@ -3,3 +3,6 @@ node_modules/
 .expo/
 config.json
 
+.expo/packager-info.json
+.expo/settings.json
+

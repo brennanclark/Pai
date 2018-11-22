@@ -14,17 +14,30 @@ function groupBy(arr, grouper){
 module.exports = function(knex) {
 
   return {
-    getConnectUsersWithNuggets(userId) {
+    getConnectUsersWithNuggets(userId, cb) {
       function runConnectedUsers(){
-        this.distinct('first_user_id AS user_id')
+        this.distinct('first_user_id AS user_id, connected_at')
           .from('connections')
           .where('second_user_id', userId)
           .union(function(){
-            this.distinct('second_user_id AS user_id')
+            this.distinct('second_user_id AS user_id, connected_at')
             .from('connections')
             .where('first_user_id', userId)
           });
       }
+
+      function getConnectedAtTime(matchId) {
+        return knex.select('connected_at')
+          .from('connections')
+          .where('second_user_id', matchId)
+          .union(function(){
+            this.select('connected_at')
+            .from('connections')
+            .where('first_user_id', matchId)
+          });
+
+      }
+
       const myConnectedUsers = knex('users')
         .select('*')
         .whereIn('id', runConnectedUsers);
@@ -38,12 +51,20 @@ module.exports = function(knex) {
       return usersAndNuggets
         .then(([users, nuggets]) => {
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
-          return users.map(user => {
-            return {
-              ...user,
-              nuggets: nuggetsGroupedByUserId[user.id] || []
-            }
+          let promises = users.map(user => {
+            return getConnectedAtTime(user.id)
+              .then(connectedAt => {
+                console.log(connectedAt, 'CONNECTED AT')
+                return {
+                  ...user,
+                  connected_at: connectedAt[0].connected_at,
+                  nuggets: nuggetsGroupedByUserId[user.id] || []
+                }
+              })
           });
+          Promise.all(promises).then(function(results) {
+            cb(results);
+          })
         });
     },
 
