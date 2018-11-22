@@ -12,6 +12,7 @@ const knexConfig  = require('./knexfile');
 const knex        = require('knex')(knexConfig[ENV]);
 const dataHelpers = require('./db/data-helper.js')(knex);
 const axios       = require('axios');
+const {ipv4}      = require('./config.json')
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -42,11 +43,15 @@ app.get('/user/:id/connections', (req, res) => {
 //----------------------CREATE NEW CONNECTION --------------------//
 
 app.post('/user/:id/connections/new', (req,res) => {
-  axios.get(`/${ipv4}/user/${req.params.id}/connections`)
+  
+  axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
-
-    if(response.data.count <= 3){
-      //dataHelpers.getUsersExcept(req.params.id).then((res) => {console.log(res.data.id)} = with this data, I can also get count of the users in here.)
+    if(response.data.length <= 3){  //maximum of 3 connections
+      dataHelpers.getUsersExcept(Number(req.body.userId))
+      .then((res) => {
+        console.log("INNER DATA", res.length);
+      }) 
+      // = with this data, I can also get count of the users in here.)
       //using the id numbers, generate a radom number picker and set that variable to a friendId and insert it into the createNewConnection.
       // dataHelpers.createNewConnection(req.params.id, )
       

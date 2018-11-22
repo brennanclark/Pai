@@ -41,27 +41,27 @@ export default class ProfileScreen extends React.Component {
       lat : 0,
       long: 0,
       errorMessage: null,
-      currentUser: [
-        {
-          user: 2,
-          distance: 0,
-        },
-        {
-          user: 3,
-          distnace: 0,
-        },
-        {
-          user: 4,
-          distance: 0.
-        }
-      ]
+      // currentUser: [
+      //   {
+      //     user: 2,
+      //     distance: 0,
+      //   },
+      //   {
+      //     user: 3,
+      //     distnace: 0,
+      //   },
+      //   {
+      //     user: 4,
+      //     distance: 0.
+      //   }
+      // ]
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
     this.sendLocationToServer = this.sendLocationToServer.bind(this);
     this._getLocationAsync = this._getLocationAsync.bind(this);
     this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
-
+    this.findConnection = this.findConnection.bind(this)
   }
 
   componentDidMount() {
@@ -124,6 +124,23 @@ export default class ProfileScreen extends React.Component {
     })
   }
 
+  findConnection() {
+
+    axios({
+      method: 'post',
+      url: `${ipv4}/user/${this.state.currentUser}/connections/new`,
+      data: {
+        userId: this.state.currentUserId,
+      }
+    })
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
@@ -140,6 +157,11 @@ export default class ProfileScreen extends React.Component {
 
           <Text>Friends</Text>
           <Text>10</Text>
+
+          <Button 
+          onPress= {this.findConnection}
+          title = "find match"
+          color = "purple"/>
 
           <View style={styles.switch}>
             <Button
