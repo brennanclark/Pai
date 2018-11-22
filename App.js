@@ -167,7 +167,6 @@ export default class App extends React.Component {
             changeToUserThree : this.changeToUserThree,
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
-
           }}
           />
         </View>
