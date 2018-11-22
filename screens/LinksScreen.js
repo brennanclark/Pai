@@ -6,8 +6,7 @@ const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 import Moment from 'react-moment';
-
-
+import moment from 'moment';
 
 
 function CardOpen(props) {
@@ -52,6 +51,9 @@ class Card extends React.Component {
   render() {
     const { user = {} } = this.props
     const { first_name, profile_picture } = user;
+    let connected_at = user.connected_at;
+    // const expiryDate = moment(user.connected_at}').format("l")
+;
 
     return (
 
@@ -68,9 +70,7 @@ class Card extends React.Component {
             {
             this.state.open ? <CardOpen  person={ user } /> : null
             }
-
-          <Text style={styles.expiry}> 5 Days Remaining </Text>
-
+            <Text style={styles.expiry}> {user.connected_at} </Text>
         </View>
 
       </TouchableOpacity>
