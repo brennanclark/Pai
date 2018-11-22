@@ -84,7 +84,6 @@ export default class ProfileScreen extends React.Component {
       const locationData = JSON.parse(event.data);
       const userId = locationData.user;
       const distance = locationData.distance
-      console.log(locationData)
       console.log("userId: ", userId);
       console.log("distance: ", distance);
     }
