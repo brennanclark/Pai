@@ -49,7 +49,7 @@ class Card extends React.Component {
     const { user = {} } = this.props
     const { first_name, profile_picture } = user;
     let connectedAt = user.connected_at;
-    let expiryAt = (moment(connectedAt).add(8,'days').format('YYYYMMDD'));
+    let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
 
     return (
