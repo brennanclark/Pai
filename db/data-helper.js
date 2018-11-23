@@ -128,10 +128,10 @@ module.exports = function(knex) {
 
     sendLocationToDatabase(userId, lat, long){
       return knex.raw(
-        `INSERT INTO locations(user_id, lat, long)
-        VALUES (${userId}, ${lat}, ${long})
+        `INSERT INTO locations(user_id, lat, long, last_check_in)
+        VALUES (${userId}, ${lat}, ${long}, current_timestamp AT TIME ZONE 'PST')
         ON CONFLICT (user_id) DO UPDATE
-        SET lat = ${lat}, long = ${long}`
+        SET lat = ${lat}, long = ${long}, last_check_in = current_timestamp AT TIME ZONE 'PST'`
       )
     },
 
