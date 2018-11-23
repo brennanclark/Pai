@@ -24,6 +24,7 @@ export default class App extends React.Component {
       lat : 0,
       long: 0,
       errorMessage: null,
+      distance: 0
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -73,6 +74,7 @@ export default class App extends React.Component {
       const distance = locationData.distance
       console.log("userId: ", userId);
       console.log("distance: ", distance);
+      this.setState({distance : distance})
     }
   }
 
@@ -169,6 +171,7 @@ export default class App extends React.Component {
             changeToUserThree : this.changeToUserThree,
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
+            distance: this.state.distance,
           }}
           />
         </View>

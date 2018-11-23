@@ -67,11 +67,13 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>10</Text>
 
           <Text style={styles.title}>Nuggets</Text>
+          <Text style={styles.friendCounter}>Distance: {this.props.screenProps.distance}</Text>
           
           <Button 
           onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
+        
 
 
         <Text style={styles.title}>Nuggets</Text>
