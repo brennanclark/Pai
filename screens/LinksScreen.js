@@ -3,18 +3,18 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+<<<<<<< HEAD
+=======
 var userConnections = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
-
-
-
+import moment from 'moment';
+>>>>>>> dd726e767b9c44d9855d36d771993badadb7f987
 
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
 
     return (
-
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
           <View key={i}>
@@ -24,11 +24,9 @@ function CardOpen(props) {
             )) }
 
           <TouchableOpacity>
-
             <Button
             onPress={() => {props.deleteConnection(props.person.connection_id)} }
             title= 'Delete 🤗'
-
             />
           </TouchableOpacity>
 
@@ -36,12 +34,10 @@ function CardOpen(props) {
     )
 }
 
+
 class Card extends React.Component {
   state = {
     open: false,
-    nuggets: userConnections.nuggets,
-    currentUserId: 1
-    // currentUserId: this.props.screenProps.currentUserId
   }
 
   _onPress = (event) => {
@@ -52,35 +48,31 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    // console.log("Longpress", this.props.person);
-    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
   render() {
     const { user = {} } = this.props;
     const { first_name, profile_picture } = user;
+    let connectedAt = user.connected_at;
+    let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
+    let daysRemaining = moment(expiryAt).fromNow();
 
     return (
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
 
-
         <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null]}>
 
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.name}> {user.first_name} </Text>
+          <Text style={styles.name}> {first_name} </Text>
         </View>
-
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
-
-          <Text style={styles.expiry}> 5 Days Remaining </Text>
-
+            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
-
       </TouchableOpacity>
 
 
@@ -100,7 +92,6 @@ export default class LinksScreen extends React.Component {
     super(props)
     this.state = {
       userConnections: [],
-      connections: Connections,
       currentUserId: this.props.screenProps.currentUserId,
       // deleted: false,
     }
@@ -112,11 +103,9 @@ export default class LinksScreen extends React.Component {
 
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
-      this.setState({ users: res.data ,currentUserId: this.props.screenProps.currentUserId});
+      this.setState({ userConnections: res.data ,currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
-
-    console.log(this.props.screenProps.currentUserId);
   }
 
   renderPage() {
@@ -133,7 +122,7 @@ export default class LinksScreen extends React.Component {
 
   deleteConnection(conn_id) {
     console.log("HI");
-    axios.post(`${ipv4}/connections/1/${conn_id}/delete`)
+    axios.post(`${ipv4}/connections/${conn_id}/delete`)
       .then((res) => {
         console.log('=======', res);
         this.setState({userConnections: res.data});
