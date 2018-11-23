@@ -5,7 +5,6 @@ import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHi
 const {ipv4} = require('../config.json');
 var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
-import Moment from 'react-moment';
 import moment from 'moment';
 
 
@@ -39,7 +38,7 @@ class Card extends React.Component {
       return {
         open: !prevState.open
       }
-    }); 
+    });
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.user });

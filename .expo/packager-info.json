@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19006,
-  "packagerPid": 37078,
+  "packagerPort": 19001,
+  "packagerPid": 1152,
   "expoServerNgrokUrl": "https://7v-trm.anonymous.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.7v-trm.anonymous.pai.exp.direct",
-  "ngrokPid": 37115
+  "ngrokPid": 1178
 }
