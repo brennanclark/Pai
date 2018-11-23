@@ -1,0 +1,18 @@
+{
+  "expoServerPort": null,
+  "expoServerNgrokUrl": "https://hq-u8n.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.hq-u8n.anonymous.pai.exp.direct",
+  "ngrokPid": 14156,
+  "devToolsPort": 19002,
+<<<<<<< HEAD
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
+=======
+  "packagerPort": null,
+  "packagerPid": null
+>>>>>>> 505640775281127a35fa075769f5294635654301
+}
