@@ -3,6 +3,12 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+<<<<<<< HEAD
+=======
+var userConnections = require('../HardCodedData.json');
+var Connections = require('../Connection.json');
+import moment from 'moment';
+>>>>>>> dd726e767b9c44d9855d36d771993badadb7f987
 
 
 function CardOpen(props) {
@@ -48,6 +54,9 @@ class Card extends React.Component {
   render() {
     const { user = {} } = this.props;
     const { first_name, profile_picture } = user;
+    let connectedAt = user.connected_at;
+    let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
+    let daysRemaining = moment(expiryAt).fromNow();
 
     return (
 
@@ -59,15 +68,11 @@ class Card extends React.Component {
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
         </View>
-
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
-
-          <Text style={styles.expiry}> 5 Days Remaining </Text>
-
+            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
-
       </TouchableOpacity>
 
 

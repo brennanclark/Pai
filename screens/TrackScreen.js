@@ -1,7 +1,64 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
 import QRCode from 'react-native-qrcode';
+import { Icon } from 'react-native-elements';
+import { BarCodeScanner, Permissions } from 'expo';
 
+
+ class Barcode extends React.Component {
+  state = {
+    hasCameraPermission: null,
+    type: BarCodeScanner.Constants.Type.back,
+  };
+
+  async componentDidMount() {
+    let { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState ({ hasCameraPermission: (status === 'granted')});
+  }
+
+  handleBarCodeScanned = ({ type, data }) => {
+    alert("Bar code scanned");
+  }
+
+  render() {
+    const { hasCameraPermission } = this.state;
+
+    if (hasCameraPermission === null) {
+      return <Text> Requesting permission to use Camera </Text>;
+    }
+    if (hasCameraPermission === false) {
+      return <Text> No access to camera</Text>;
+    }
+    return (
+      <View style={{  width: 300, height: 300}}>
+        <BarCodeScanner
+          onBarCodeScanned={data => alert("You are friends now")}
+          barCodeTypes={[
+            BarCodeScanner.Constants.BarCodeType.qr,
+            BarCodeScanner.Constants.BarCodeType.pdf417,
+          ]}
+          type={this.state.type}
+          style={{ ...StyleSheet.absoluteFillObject }}
+        />
+        <TouchableOpacity
+          style={{
+            flex: 0.5,
+            alignSelf: 'flex-end',
+            alignItems: 'center',
+          }}
+          onPress={() => this.setState({ type:
+            this.state.type === BarCodeScanner.Constants.Type.back
+              ? BarCodeScanner.Constants.Type.front
+              : BarCodeScanner.Constants.Type.back,
+          })}
+        >
+          <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+}
 
 function ProfileImage(props) {
   return (
@@ -11,23 +68,54 @@ function ProfileImage(props) {
   )
 }
 
-function QrCode(props) {
-  return (
+
+class QrCode extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      isBarCode: true,
+    }
+  }
+
+  _onPress = (event) => {
+    console.log("Scan pressed");
+    this.setState((prevState) => {
+      return {
+        isBarCode: !prevState.isBarCode
+      }
+    });
+  }
+
+  render() {
+    if(this.state.isBarCode) {
+    return (
     <View>
       <QRCode
           value="somestring"
           size={200}
           bgColor='purple'
           fgColor='white'/>
-    </View>
-  )
+          <TouchableOpacity style={styles.captureBtn} onPress={this.takePicture}>
+            <Button
+            onPress={this._onPress}
+            title='Scan'
+            />
+          </TouchableOpacity>
+          </View>
+      )
+    }
+    return (
+      <View>
+        <Barcode/>
+      </View>
+    )
+  }
 }
-
 
 export default class TrackScreen extends React.Component {
   static navigationOptions = {
     // Here we can change the title at the top of the page
-    header: null,
+    title: 'track',
   };
 
   constructor(props) {
@@ -48,7 +136,6 @@ export default class TrackScreen extends React.Component {
       }
     });
   }
-
 
   render() {
     return (
@@ -80,4 +167,10 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 10,
   },
+  iconCamera: {
+
+  },
+  captureBtn: {
+    backgroundColor: 'grey'
+  }
 });
