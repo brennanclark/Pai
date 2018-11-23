@@ -3,12 +3,8 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
 const {ipv4} = require('../config.json');
-var Users = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 import Moment from 'react-moment';
-
-
-
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
@@ -32,8 +28,6 @@ function CardOpen(props) {
 class Card extends React.Component {
   state = {
     open: false,
-    nuggets: Users.nuggets,
-    currentUserId: this.props.screenProps.currentUserId
   }
 
   _onPress = (event) => {
@@ -44,8 +38,6 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    // console.log("Longpress", this.props.person);
-    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
@@ -62,7 +54,7 @@ class Card extends React.Component {
 
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.name}> {user.first_name} </Text>
+          <Text style={styles.name}> {first_name} </Text>
         </View>
 
             {
@@ -90,7 +82,6 @@ export default class LinksScreen extends React.Component {
     super(props)
     this.state = {
       users: [],
-      connections: Connections,
       currentUserId: this.props.screenProps.currentUserId
     }
     this.getConnections = this.getConnections.bind(this);
@@ -120,7 +111,6 @@ export default class LinksScreen extends React.Component {
   }
 
   render() {
-    this.getConnections
     const { users } = this.state;
     return (
 
