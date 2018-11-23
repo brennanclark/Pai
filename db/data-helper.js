@@ -11,10 +11,6 @@ function groupBy(arr, grouper){
   return output;
 }
 
-var cd = new Date()
-var fullDate = `${cd.getUTCFullYear()}-${cd.getMonth()+1}-${cd.getDate()} ${cd.getHours()-8}:${cd.getMinutes()}:${cd.getSeconds()}`
-
-
 module.exports = function(knex) {
 
   return {
@@ -102,7 +98,7 @@ module.exports = function(knex) {
     createNewConnection(sourceId, friendId) {
       return knex.raw(
         `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
-        VALUES (${sourceId}, ${friendId}, current_timestamp,${false} , ${true})
+        VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
         ON CONFLICT (first_user_id) DO NOTHING`
       )
     },
