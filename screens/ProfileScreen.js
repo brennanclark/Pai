@@ -59,71 +59,23 @@ export default class ProfileScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.state.isImage ? <ProfileImage Image={ this.state.profileImage }/> : <QrCode/>
+            this.props.screenProps.profileImage ? <ProfileImage Image={ this.props.screenProps.profileImage  }/> : <QrCode/>
           }
           </TouchableOpacity>
-          <Text style={styles.profileName}>{this.state.user}</Text>
+          <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
           <Text style={styles.friendCounter}>Friends</Text>
           <Text style={styles.friendCounter}>10</Text>
 
           <Text style={styles.title}>Nuggets</Text>
-
-        <Button
-          onPress={()=>{
-            this.setState({
-              currentUserId:1,
-            }, this.getProfileInformation)
-          }}
-          title="User 1"
-          color="blue"
-          />
-
-        <Button
-          onPress={()=>{
-            this.setState({
-              currentUserId:2,
-            }, this.getProfileInformation)
-          }}
-          title="User 2"
-          color="blue"
-          />
-
-          <Image source={{uri: this.props.screenProps.profileImage}} style ={styles.profileImage}/>
-          <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
-
-          <Text>Friends</Text>
-          <Text>10</Text>
-
+          <Text style={styles.friendCounter}>Distance: {this.props.screenProps.distance}</Text>
+          
           <Button 
           onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
+        
 
-          <View style={styles.switch}>
-            <Button
-            onPress={this.props.screenProps.changeToUserOne}
-            title="User 1"
-            color="blue"
-            />
 
-            <Button
-            onPress={this.props.screenProps.changeToUserTwo}
-              title="User 2"
-            color="blue"
-            />
-
-            <Button
-            onPress={this.props.screenProps.changeToUserThree}
-            title="User 3"
-            color="blue"
-            />
-
-            <Button
-            onPress={this.props.screenProps.changeToUserFour}
-            title="User 4"
-            color="blue"
-            />
-        </View>
         <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
@@ -131,11 +83,6 @@ export default class ProfileScreen extends React.Component {
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
             style={styles.info}
-
-        <FlatList
-          data={this.state.nuggets}
-          renderItem={({item}) => <Nugget { ...item }/>}
-          keyExtractor={(item, index) => index.toString()}
         />
 
         </ScrollView>
@@ -166,11 +113,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize:30,
     textAlign: 'center',
-  },
-
-  switch: {
-    flexDirection: 'row',
-    alignSelf: 'center',
   },
 
   nugget: {

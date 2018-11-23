@@ -90,12 +90,28 @@ export default class LinksScreen extends React.Component {
     super(props)
     this.state = {
       users: [],
-      connections: Connections
+      connections: Connections,
+      currentUserId: this.props.screenProps.currentUserId
     }
-    // this.findUserByIdFromConnections= this.findUserByIdFromConnections.bind(this);
+    this.getConnections = this.getConnections.bind(this);
   }
 
   componentDidMount() {
+    
+    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
+    .then((res) => {
+      this.setState({ users: res.data ,currentUserId: this.props.screenProps.currentUserId});
+    })
+    .catch(err => console.warn(err))
+
+    console.log(this.props.screenProps.currentUserId);
+  }
+
+  renderPage() {
+    this.setState({currentUserId: this.props.screenProps.currentUserId},
+      )
+  }
+  getConnections(){
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
       this.setState({ users: res.data })
@@ -104,7 +120,7 @@ export default class LinksScreen extends React.Component {
   }
 
   render() {
-
+    this.getConnections
     const { users } = this.state;
     return (
 
@@ -123,6 +139,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection:'row',
   },
+
+  switch: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+
 
   cardClosed: {
     height: 100,
