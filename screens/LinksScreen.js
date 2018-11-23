@@ -3,7 +3,6 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-var userConnections = require('../HardCodedData.json');
 var Connections = require('../Connection.json');
 import moment from 'moment';
 
