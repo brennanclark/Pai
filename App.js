@@ -4,7 +4,6 @@ import { AppLoading, Asset, Font, Icon, Permissions, Location } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import axios from 'react-native-axios';
 import {ipv4} from './config.json';
-// var customData = require('./customData.json');
 
 export default class App extends React.Component {
 

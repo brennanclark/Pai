@@ -34,6 +34,23 @@ module.exports = function(knex) {
           });
       }
 
+      function getTheirFriends(matchId) {
+        return (knex.select('first_user_id AS user_id')
+          .from('connections')
+          .where({
+            'second_user_id': matchId,
+            'friends': true
+          })
+          .union(function(){
+            this.select('second_user_id AS user_id')
+            .from('connections')
+            .where({
+              'first_user_id': matchId,
+              'friends': true
+            })
+          }).then(x => x))
+      }
+
       function getConnectedAtTime(matchId) {
         return knex.select('connected_at', 'id')
           .from('connections')
@@ -54,17 +71,20 @@ module.exports = function(knex) {
         .innerJoin('questions', 'nuggets.question_id', 'questions.id')
         .whereIn('nuggets.user_id', runConnectedUsers);
 
-      const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]);
+      const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
           let promises = users.map(user => {
-            return getConnectedAtTime(user.id)
-              .then(connectedAt => {
+            const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
+            const currentConnsPromise = getConnectedAtTime(user.id);
+            return Promise.all([friendCountPromise, currentConnsPromise])
+              .then(([foafcount, connectedAt]) => {
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
                   connection_id: connectedAt[0].id,
+                  number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
                 }
               })
@@ -85,12 +105,28 @@ module.exports = function(knex) {
         .innerJoin('questions', 'nuggets.question_id', 'questions.id')
         .where('nuggets.user_id', userId);
 
-      const profileAndNuggets = Promise.all([myProfile, myNuggets]);
-      return profileAndNuggets
-        .then(([user, nuggets]) => {
+      const myFriends = knex('connections')
+      .select('*')
+      .where({
+        'second_user_id': userId,
+        'friends': true
+      })
+      .union(function(){
+        this.select('*')
+        .from('connections')
+        .where({
+          'first_user_id': userId,
+          'friends': true
+        })
+      });
+
+      const profileAndNuggetsAndFriends = Promise.all([myProfile, myNuggets, myFriends]);
+      return profileAndNuggetsAndFriends
+        .then(([user, nuggets, friends]) => {
             return {
               ...user,
-              nuggets: nuggets
+              nuggets: nuggets,
+              friends: friends.length
             }
         });
     },
@@ -135,6 +171,23 @@ module.exports = function(knex) {
         ON CONFLICT (user_id) DO UPDATE
         SET lat = ${lat}, long = ${long}, last_check_in = current_timestamp AT TIME ZONE 'PST'`
       )
+    },
+
+    findAllFriends(userId){
+      return knex.select('*')
+      .from('connections')
+      .where({
+        'second_user_id': userId,
+        'friends': true
+      })
+      .union(function(){
+        this.select('*')
+        .from('connections')
+        .where({
+          'first_user_id': userId,
+          'friends': true
+        })
+      })
     },
 
     findLocationByUserId(id){

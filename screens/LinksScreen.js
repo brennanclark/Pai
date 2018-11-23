@@ -3,6 +3,7 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+import moment from 'moment';
 
 
 function CardOpen(props) {
@@ -115,8 +116,7 @@ export default class LinksScreen extends React.Component {
   }
 
   deleteConnection(conn_id) {
-    console.log("HI");
-    axios.post(`${ipv4}/connections/${conn_id}/delete`)
+    axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
       .then((res) => {
         console.log('=======', res);
         this.setState({userConnections: res.data});
