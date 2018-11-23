@@ -8,6 +8,8 @@ var Connections = require('../Connection.json');
 
 
 
+
+
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
 
@@ -39,6 +41,7 @@ class Card extends React.Component {
     open: false,
     nuggets: userConnections.nuggets,
     currentUserId: 1
+    // currentUserId: this.props.screenProps.currentUserId
   }
 
   _onPress = (event) => {
@@ -50,7 +53,7 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     // console.log("Longpress", this.props.person);
-    console.log("Navagation", this.props.navigation);
+    // console.log("Navagation", this.props.navigation);
     this.props.navigation.navigate('Track', { user: this.props.user });
   }
 
@@ -104,7 +107,7 @@ export default class LinksScreen extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`${ipv4}/user/1/connections`)
+    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
       this.setState({ userConnections: res.data })
     })
@@ -122,6 +125,7 @@ export default class LinksScreen extends React.Component {
   }
 
   render() {
+
 
     const { userConnections } = this.state;
 
