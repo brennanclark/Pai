@@ -96,11 +96,18 @@ module.exports = function(knex) {
     },
 
     createNewConnection(sourceId, friendId) {
-      return knex.raw(
-        `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
-        VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
-        ON CONFLICT (first_user_id) DO NOTHING`
-      )
+      // return knex.raw(
+      //   `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
+      //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
+      //   ON CONFLICT (first_user_id) DO NOTHING`
+      // )
+      return knex('connections')
+      .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
+      .whereNot((builder) => {
+        builder.where('first_user_id', sourceId).and('second_user_id', friendId)
+      }).andWhereNot((builder) =>{
+        builder.where('second_user_id', sourceId).and('first_user_id', friendId)
+      })
     },
 
     setFriendsAt(id) {
