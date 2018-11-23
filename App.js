@@ -23,7 +23,8 @@ export default class App extends React.Component {
       lat : 0,
       long: 0,
       errorMessage: null,
-      distance: 0
+      distance: 0,
+      usersConnected : []
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -65,14 +66,43 @@ export default class App extends React.Component {
       long: location.coords.longitude,
      }, this.sendLocationToServer());
   };
-
   receiveLocationFromServer() {
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
       const userId = locationData.user;
-      const distance = locationData.distance
-      console.log("userId: ", userId);
-      console.log("distance: ", distance);
+      const distanceFromSource = locationData.distance
+
+      if(!this.state.usersConnected[0]){
+        this.setState({
+          usersConnected: {
+            firstFriend: {
+              user: userId,
+              distance: distanceFromSource,
+            }
+          }
+        })
+      } else if (!this.state.currnetUser[1]) {
+        this.setState({          
+          usersConnected: {
+          secondFriend: {
+            user: userId,
+            distance: distanceFromSource,
+          }
+        }})
+      }
+
+      // const { userConnections } = this.state;
+      const { distance, user } = this.state.usersConnected.firstFriend
+
+      console.log("LSJDFLKSJFLKJDSF", this.state.usersConnected);
+      console.log("THIS IS THE FIRST FRIEND", distance)
+      console.log("THIS IS THE USERID", user);
+   
+
+      // console.log("THIS IS THE LOCATION DATA FROM THE RSERVER", locationData)
+      // console.log("THIS IS THE USERS", this.state.currentUser);
+      // console.log("userId: ", userId);
+      // console.log("distance: ", distance);
       this.setState({distance : distance})
     }
   }
