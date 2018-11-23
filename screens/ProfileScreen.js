@@ -73,31 +73,7 @@ export default class ProfileScreen extends React.Component {
           title = "find match"
           color = "purple"/>
 
-          <View style={styles.switch}>
-            <Button
-            onPress={this.props.screenProps.changeToUserOne}
-            title="User 1"
-            color="blue"
-            />
 
-            <Button
-            onPress={this.props.screenProps.changeToUserTwo}
-              title="User 2"
-            color="blue"
-            />
-
-            <Button
-            onPress={this.props.screenProps.changeToUserThree}
-            title="User 3"
-            color="blue"
-            />
-
-            <Button
-            onPress={this.props.screenProps.changeToUserFour}
-            title="User 4"
-            color="blue"
-            />
-        </View>
         <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
@@ -135,11 +111,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize:30,
     textAlign: 'center',
-  },
-
-  switch: {
-    flexDirection: 'row',
-    alignSelf: 'center',
   },
 
   nugget: {

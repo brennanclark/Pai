@@ -45,7 +45,7 @@ app.get('/user/:id/connections', (req, res) => {
 app.post('/user/:id/connections/new', (req,res) => {
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
-    if(response.data.length < 3){  //maximum of 3 connections
+    // if(response.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
       .then((dataResults) => {
 
@@ -76,9 +76,9 @@ app.post('/user/:id/connections/new', (req,res) => {
       .catch((err) => {
         console.log("INNER ERROR", err);
       })      
-    } else {
-      res.end(); //this code is requried to make sure the app does not freeze
-    }
+    // } else {
+    //   res.end(); //this code is requried to make sure the app does not freeze
+    // }
   })
   .catch((err) => {
     console.log(err);

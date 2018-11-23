@@ -117,7 +117,7 @@ export default class App extends React.Component {
   changeToUserOne() {
     this.setState({
       currentUserId :1,
-    }, this.getProfileInformation)
+    }, this.props.navigation)
   }
   changeToUserTwo() {
     this.setState({
@@ -155,7 +155,9 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator
+          
           screenProps = {{
+            user: this.state.user,
             currentUserId: this.state.currentUserId,
             profileImage : this.state.profileImage,
             nuggets: this.state.nuggets,
