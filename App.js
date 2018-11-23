@@ -71,43 +71,49 @@ export default class App extends React.Component {
       const locationData = JSON.parse(event.data);
       const userId = locationData.user;
       const distanceFromSource = locationData.distance
+      const type = locationData.type
 
-      console.log("==============LOCATION DATA ==================")
-      // console.log(locationData)
+      let testing = []
 
-      if(!this.state.connectedPotentialFriends[0]){
-        this.setState({
-          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            [userId]: {
-              user: userId,
-              distance: distanceFromSource,
-            }
-          })
-        })
-      } else if (!this.state.connectedPotentialFriends[1]) {
-        this.setState({          
-          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            [userId]: {
-              user: userId,
-              distance: distanceFromSource,
-            }
-          })
-        })
-      } else if (!this.state.connectedPotentialFriends[2]) {
-        this.setState({
-          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            [userId]: {
-              user: userId,
-              distance: distanceFromSource,
-            }
-          })
-        })
-      }
-      console.log(this.state.connectedPotentialFriends)
+
+      console.log(typeof locationData); // returns as OBJECT
+      console.log(testing);
+
+      // if(!this.state.connectedPotentialFriends[0]){
+      //   this.setState({
+      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
+      //       [userId]: {
+      //         user: userId,
+      //         distance: distanceFromSource,
+      //       }
+      //     })
+      //   })
+      // } else if (!this.state.connectedPotentialFriends[1]) {
+      //   this.setState({          
+      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
+      //       [userId]: {
+      //         user: userId,
+      //         distance: distanceFromSource,
+      //       }
+      //     })
+      //   })
+      // } else if (!this.state.connectedPotentialFriends[2]) {
+      //   this.setState({
+      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
+      //       [userId]: {
+      //         user: userId,
+      //         distance: distanceFromSource,
+      //       }
+      //     })
+      //   })
+      // }
+
+      // console.log(this.state.connectedPotentialFriends)
 
       this.setState({distance : distanceFromSource})
     }
   }
+  
 
   sendLocationToServer() {
     var locationData = {
@@ -203,7 +209,7 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
-
+            potentialFriendsDistances: this.state.connectedPotentialFriends
           }}
           />
         </View>

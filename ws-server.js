@@ -48,19 +48,20 @@ wss.on('connection', (ws) => {
     axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
       res.data.forEach((connectedUser) => {
+
         axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
         .then((res) => {
+          
           let otherUser = {
             latitude: Number(res.data[0].lat),
             longitude: Number(res.data[0].long),
           }
 
           var dataToUser = {
-            type: "distanceBetweenTwo",
+            type: `distanceBetweenUser${connectedUser.id}`,
             user: connectedUser.id,
             distance: haversine(sourceUser, otherUser, {unit:'meter'})
           }
-          console.log("LKJASLD", dataToUser);
           ws.send(JSON.stringify(dataToUser));
 
         })
