@@ -59,7 +59,7 @@ export default class ProfileScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.props.screenProps.profileImage ? <ProfileImage Image={ this.props.screenProps.profileImage }/> : <QrCode/>
+            this.props.screenProps.profileImage ? <ProfileImage Image={ this.props.screenProps.profileImage  }/> : <QrCode/>
           }
           </TouchableOpacity>
           <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
@@ -68,37 +68,15 @@ export default class ProfileScreen extends React.Component {
 
           <Text style={styles.title}>Nuggets</Text>
 
+          <Text style={styles.friendCounter}>Distance: {this.props.screenProps.distance}</Text>
 
           <Button
           onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
 
-          <View style={styles.switch}>
-            <Button
-            onPress={this.props.screenProps.changeToUserOne}
-            title="User 1"
-            color="blue"
-            />
 
-            <Button
-            onPress={this.props.screenProps.changeToUserTwo}
-              title="User 2"
-            color="blue"
-            />
 
-            <Button
-            onPress={this.props.screenProps.changeToUserThree}
-            title="User 3"
-            color="blue"
-            />
-
-            <Button
-            onPress={this.props.screenProps.changeToUserFour}
-            title="User 4"
-            color="blue"
-            />
-        </View>
         <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
@@ -107,7 +85,6 @@ export default class ProfileScreen extends React.Component {
             keyExtractor={(item, index) => index.toString()}
             style={styles.info}
           />
-
         </ScrollView>
       </View>
     );
@@ -136,11 +113,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize:30,
     textAlign: 'center',
-  },
-
-  switch: {
-    flexDirection: 'row',
-    alignSelf: 'center',
   },
 
   nugget: {

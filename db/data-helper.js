@@ -11,10 +11,6 @@ function groupBy(arr, grouper){
   return output;
 }
 
-var cd = new Date()
-var fullDate = `${cd.getUTCFullYear()}-${cd.getMonth()+1}-${cd.getDate()} ${cd.getHours()-8}:${cd.getMinutes()}:${cd.getSeconds()}`
-
-
 module.exports = function(knex) {
 
   return {
@@ -99,13 +95,19 @@ module.exports = function(knex) {
         });
     },
 
-
     createNewConnection(sourceId, friendId) {
-      return knex.raw(
-        `INSERT INTO connections(first_user_id, second_user_id, connected_at, is_connected)
-        VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
-        ON CONFLICT (first_user_id) DO NOTHING`
-      )
+      // return knex.raw(
+      //   `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
+      //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
+      //   ON CONFLICT (first_user_id) DO NOTHING`
+      // )
+      return knex('connections')
+      .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
+      .whereNot((builder) => {
+        builder.where('first_user_id', sourceId).and('second_user_id', friendId)
+      }).andWhereNot((builder) =>{
+        builder.where('second_user_id', sourceId).and('first_user_id', friendId)
+      })
     },
 
     setFriendsAt(id) {
@@ -128,10 +130,10 @@ module.exports = function(knex) {
 
     sendLocationToDatabase(userId, lat, long){
       return knex.raw(
-        `INSERT INTO locations(user_id, lat, long)
-        VALUES (${userId}, ${lat}, ${long})
+        `INSERT INTO locations(user_id, lat, long, last_check_in)
+        VALUES (${userId}, ${lat}, ${long}, current_timestamp AT TIME ZONE 'PST')
         ON CONFLICT (user_id) DO UPDATE
-        SET lat = ${lat}, long = ${long}`
+        SET lat = ${lat}, long = ${long}, last_check_in = current_timestamp AT TIME ZONE 'PST'`
       )
     },
 
