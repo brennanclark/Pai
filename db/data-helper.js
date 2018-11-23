@@ -135,6 +135,23 @@ module.exports = function(knex) {
       )
     },
 
+    findAllFriends(userId){
+      return knex.select('*')
+      .from('connections')
+      .where({
+        'second_user_id': userId,
+        'friends': true
+      })
+      .union(function(){
+        this.select('*')
+        .from('connections')
+        .where({
+          'first_user_id': userId,
+          'friends': true
+        })
+      })
+    },
+
     findLocationByUserId(id){
       return knex('locations')
       .select('*')
