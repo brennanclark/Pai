@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
 import QRCode from 'react-native-qrcode';
-import { Icon } from 'react-native-elements';
 import { BarCodeScanner, Permissions } from 'expo';
 
 
