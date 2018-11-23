@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity, Button } from 'react-native';
 
 
 
@@ -20,8 +20,6 @@ export default class LoginScreen extends React.Component {
   //   console.log(this.props.navigation)
   //   this.props.navigation.navigate('Profile');
   // }
-
-
   render() {
 
     return (
@@ -33,6 +31,31 @@ export default class LoginScreen extends React.Component {
             style={styles.fblogin}
           />
         </TouchableOpacity>
+        <View style={styles.switch}>
+            <Button
+            onPress={this.props.screenProps.changeToUserOne}
+            title="User 1"
+            color="blue"
+            />
+
+            <Button
+            onPress={this.props.screenProps.changeToUserTwo}
+              title="User 2"
+            color="blue"
+            />
+
+            <Button
+            onPress={this.props.screenProps.changeToUserThree}
+            title="User 3"
+            color="blue"
+            />
+
+            <Button
+            onPress={this.props.screenProps.changeToUserFour}
+            title="User 4"
+            color="blue"
+            />
+        </View>
       </View>
     )
   }
@@ -52,4 +75,9 @@ const styles = StyleSheet.create({
     height: 150,
     width: 300,
   },
+  switch: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+
 });
