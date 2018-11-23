@@ -75,7 +75,7 @@ app.post('/user/:id/connections/new', (req,res) => {
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
-      })      
+      })
     // } else {
     //   res.end(); //this code is requried to make sure the app does not freeze
     // }
@@ -87,14 +87,27 @@ app.post('/user/:id/connections/new', (req,res) => {
 
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
-app.post('/connections/:connection_id/delete', (req, res) => {
-  dataHelpers.deleteConnectionById(req.params.connection_id)
+app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
+  dataHelpers.deleteConnectionById(Number((req.params.connection_id)))
     .then((data) => {
-      console.log('THIS IS FROM THE SERVER.JS', data)
+      dataHelpers.getConnectUsersWithNuggets(Number(req.params.user_id), (data)=> {
+        res.json(data);
+      })
     })
 });
 
-//----------------------GO TO TARGET PAGE----------------------//
+//----------------------GET NUMBER OF FRIENDS----------------------//
+
+app.get('/user/:id/friends', (req, res) => {
+  dataHelpers.findAllFriends(Number(req.params.id))
+  .then((data) => {
+    res.json(data.length)
+  })
+
+});
+
+
+//----------------------ADD A FRIEND----------------------//
 
 app.post('/connections/:connection_id/friends', (req, res) => {
   dataHelpers.setFriendsAt(req.params.connection_id)
@@ -103,7 +116,7 @@ app.post('/connections/:connection_id/friends', (req, res) => {
     })
 });
 
-//-------------------UPDATE USER LOCATION DATABAE ------------//
+//-------------------UPDATE USER LOCATION DATABASE ------------//
 app.post('/user/:id/location/', (req,res) => {
   const longitude = Number(req.body.longitude);
   const latitude = Number(req.body.latitude);
