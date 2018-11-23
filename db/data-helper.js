@@ -137,6 +137,9 @@ module.exports = function(knex) {
       //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
       //   ON CONFLICT (first_user_id) DO NOTHING`
       // )
+
+      //TODO: YOU HAVE TO FIX THIS PETER
+      
       return knex('connections')
       .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
       .whereNot((builder) => {
