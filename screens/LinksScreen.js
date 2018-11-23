@@ -39,7 +39,7 @@ class Card extends React.Component {
       return {
         open: !prevState.open
       }
-    });
+    }); 
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.user });
