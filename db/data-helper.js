@@ -99,11 +99,10 @@ module.exports = function(knex) {
         });
     },
 
-
     createNewConnection(sourceId, friendId) {
       return knex.raw(
-        `INSERT INTO connections(first_user_id, second_user_id, connected_at, is_connected)
-        VALUES (${sourceId}, ${friendId}, current_timestamp, ${false})
+        `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
+        VALUES (${sourceId}, ${friendId}, current_timestamp,${false} , ${true})
         ON CONFLICT (first_user_id) DO NOTHING`
       )
     },
