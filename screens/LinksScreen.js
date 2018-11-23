@@ -3,12 +3,6 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-<<<<<<< HEAD
-=======
-var userConnections = require('../HardCodedData.json');
-var Connections = require('../Connection.json');
-import moment from 'moment';
->>>>>>> dd726e767b9c44d9855d36d771993badadb7f987
 
 
 function CardOpen(props) {
