@@ -22,17 +22,9 @@ function CardOpen(props) {
             )) }
 
           <TouchableOpacity>
-            <Button
-            onPress={() => {
 
-              console.log("HI");
-              axios.post(`${ipv4}/connections/1/${props.person.connection_id}/delete`)
-                .then((res) => {
-                  this.setState({ key: 'farto'});
-                })
-                .catch((err) => console.warn(err))
-                }
-              }
+            <Button
+            onPress={() => {props.deleteConnection(props.person.connection_id)} }
             title= 'Delete 🤗'
 
             />
@@ -79,7 +71,7 @@ class Card extends React.Component {
         </View>
 
             {
-            this.state.open ? <CardOpen person={ user } /> : null
+            this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
 
           <Text style={styles.expiry}> 5 Days Remaining </Text>
@@ -106,10 +98,9 @@ export default class LinksScreen extends React.Component {
     this.state = {
       userConnections: [],
       connections: Connections,
-      key: 'fart',
       // deleted: false,
     }
-
+    this.deleteConnection = this.deleteConnection.bind(this);
   }
 
   componentDidMount() {
@@ -120,10 +111,19 @@ export default class LinksScreen extends React.Component {
     .catch(err => console.warn(err))
   }
 
+  deleteConnection(conn_id) {
+    console.log("HI");
+    axios.post(`${ipv4}/connections/1/${conn_id}/delete`)
+      .then((res) => {
+        console.log('=======', res);
+        this.setState({userConnections: res.data});
+      })
+      .catch((err) => console.warn(err))
+  }
+
   render() {
 
     const { userConnections } = this.state;
-    console.log('================', userConnections);
 
     // Builds out a card for each connection
     return (
@@ -134,7 +134,9 @@ export default class LinksScreen extends React.Component {
           style={{width: '100%', height: '100%'}}
           >
             <ScrollView>
-              { userConnections.map((user, index) => <Card user={ user } key={index} {...this.props}/>)}
+              { userConnections.map(
+                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
+              )}
             </ScrollView>
           </ImageBackground>
         </View>
