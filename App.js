@@ -24,7 +24,7 @@ export default class App extends React.Component {
       long: 0,
       errorMessage: null,
       distance: 0,
-      usersConnected : []
+      connectedPotentialFriends : []
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -72,38 +72,46 @@ export default class App extends React.Component {
       const userId = locationData.user;
       const distanceFromSource = locationData.distance
 
-      if(!this.state.usersConnected[0]){
+      if(!this.state.connectedPotentialFriends[0]){
         this.setState({
-          usersConnected: {
+          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
             firstFriend: {
               user: userId,
               distance: distanceFromSource,
             }
-          }
+          })
         })
-      } else if (!this.state.currnetUser[1]) {
+      } else if (!this.state.connectedPotentialFriends[1]) {
         this.setState({          
-          usersConnected: {
-          secondFriend: {
-            user: userId,
-            distance: distanceFromSource,
-          }
-        }})
+          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
+            secondFriend: {
+              user: userId,
+              distance: distanceFromSource,
+            }
+          })
+        })
+      } else if (!this.state.connectedPotentialFriends[2]) {
+        this.setState({
+          connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
+            thirdFriend: {
+              user: userId,
+              distance: distanceFromSource,
+            }
+          })
+        })
       }
 
       // const { userConnections } = this.state;
-      const { distance, user } = this.state.usersConnected.firstFriend
+      // const { distance, user } = this.state.connectedPotentialFriends.firstFriend
 
-      console.log("LSJDFLKSJFLKJDSF", this.state.usersConnected);
-      console.log("THIS IS THE FIRST FRIEND", distance)
-      console.log("THIS IS THE USERID", user);
-   
+      console.log("FIRST USER", this.state.connectedPotentialFriends)
+      // console.log("SECOND USER", this.state.connectedPotentialFriends[1]);
 
       // console.log("THIS IS THE LOCATION DATA FROM THE RSERVER", locationData)
       // console.log("THIS IS THE USERS", this.state.currentUser);
       // console.log("userId: ", userId);
       // console.log("distance: ", distance);
-      this.setState({distance : distance})
+      this.setState({distance : distanceFromSource})
     }
   }
 
@@ -137,7 +145,7 @@ export default class App extends React.Component {
       }
     })
     .then((res)=>{
-      console.log(res)
+      console.log("FIND CONNECTION  was pressed");
     })
     .catch((err) => {
       console.log(err);
