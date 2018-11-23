@@ -67,13 +67,14 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.friendCounter}>10</Text>
 
           <Text style={styles.title}>Nuggets</Text>
+
           <Text style={styles.friendCounter}>Distance: {this.props.screenProps.distance}</Text>
-          
-          <Button 
+
+          <Button
           onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
-        
+
 
 
         <Text style={styles.title}>Nuggets</Text>
@@ -83,8 +84,7 @@ export default class ProfileScreen extends React.Component {
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
             style={styles.info}
-        />
-
+          />
         </ScrollView>
       </View>
     );

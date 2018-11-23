@@ -3,7 +3,6 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button } from 'react-native';
 const {ipv4} = require('../config.json');
-var Connections = require('../Connection.json');
 import Moment from 'react-moment';
 
 function CardOpen(props) {
@@ -84,7 +83,6 @@ export default class LinksScreen extends React.Component {
       users: [],
       currentUserId: this.props.screenProps.currentUserId
     }
-    this.getConnections = this.getConnections.bind(this);
   }
 
   componentDidMount() {
@@ -96,18 +94,6 @@ export default class LinksScreen extends React.Component {
     .catch(err => console.warn(err))
 
     console.log(this.props.screenProps.currentUserId);
-  }
-
-  renderPage() {
-    this.setState({currentUserId: this.props.screenProps.currentUserId},
-      )
-  }
-  getConnections(){
-    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
-    .then((res) => {
-      this.setState({ users: res.data })
-    })
-    .catch(err => console.warn(err))
   }
 
   render() {
