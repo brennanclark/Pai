@@ -72,10 +72,13 @@ export default class App extends React.Component {
       const userId = locationData.user;
       const distanceFromSource = locationData.distance
 
+      console.log("==============LOCATION DATA ==================")
+      // console.log(locationData)
+
       if(!this.state.connectedPotentialFriends[0]){
         this.setState({
           connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            firstFriend: {
+            [userId]: {
               user: userId,
               distance: distanceFromSource,
             }
@@ -84,7 +87,7 @@ export default class App extends React.Component {
       } else if (!this.state.connectedPotentialFriends[1]) {
         this.setState({          
           connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            secondFriend: {
+            [userId]: {
               user: userId,
               distance: distanceFromSource,
             }
@@ -93,24 +96,15 @@ export default class App extends React.Component {
       } else if (!this.state.connectedPotentialFriends[2]) {
         this.setState({
           connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-            thirdFriend: {
+            [userId]: {
               user: userId,
               distance: distanceFromSource,
             }
           })
         })
       }
+      console.log(this.state.connectedPotentialFriends)
 
-      // const { userConnections } = this.state;
-      // const { distance, user } = this.state.connectedPotentialFriends.firstFriend
-
-      console.log("FIRST USER", this.state.connectedPotentialFriends)
-      // console.log("SECOND USER", this.state.connectedPotentialFriends[1]);
-
-      // console.log("THIS IS THE LOCATION DATA FROM THE RSERVER", locationData)
-      // console.log("THIS IS THE USERS", this.state.currentUser);
-      // console.log("userId: ", userId);
-      // console.log("distance: ", distance);
       this.setState({distance : distanceFromSource})
     }
   }
@@ -209,6 +203,7 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
+
           }}
           />
         </View>
