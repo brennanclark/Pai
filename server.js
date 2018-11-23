@@ -72,7 +72,7 @@ app.post('/user/:id/connections/new', (req,res) => {
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
-      })      
+      })
     } else {
       res.end(); //this code is requried to make sure the app does not freeze
     }
@@ -84,10 +84,15 @@ app.post('/user/:id/connections/new', (req,res) => {
 
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
-app.post('/connections/:connection_id/delete', (req, res) => {
-  dataHelpers.deleteConnectionById(req.params.connection_id)
+app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
+
+  dataHelpers.deleteConnectionById(Number((req.params.connection_id)))
     .then((data) => {
-      console.log('THIS IS FROM THE SERVER.JS', data)
+
+      dataHelpers.getConnectUsersWithNuggets(Number(req.params.user_id), (data)=> {
+        res.json(data);
+      })
+
     })
 });
 
