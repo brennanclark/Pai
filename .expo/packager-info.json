@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://hq-u8n.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.hq-u8n.anonymous.pai.exp.direct",
-  "ngrokPid": 1844
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
