@@ -39,7 +39,7 @@ function QrCode(props) {
   return (
     <View style={styles.profileImage}>
     <QRCode
-        value="somestring"
+        value= {props.currentId}
         size={200}
         bgColor='purple'
         fgColor='white'/>
@@ -52,6 +52,21 @@ export default class ProfileScreen extends React.Component {
     header: null,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isImage: true,
+    }
+  }
+
+  _handleOnPress = (event) => {
+    this.setState((prevState) => {
+      return {
+        isImage: !prevState.isImage
+      }
+    });
+  }
+
   render() {
 
     return (
@@ -59,12 +74,12 @@ export default class ProfileScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.props.screenProps.profileImage ? <ProfileImage Image={ this.props.screenProps.profileImage  }/> : <QrCode/>
+            this.state.isImage ? <ProfileImage Image={ this.props.screenProps.profileImage  }/> : <QrCode currentId={this.props.screenProps.currentUserId} testProp={this.props.navigation}/>
           }
           </TouchableOpacity>
           <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
-          <Text style={styles.friendCounter}>Friends</Text>
-          <Text style={styles.friendCounter}>10</Text>
+          <Text style={styles.friendCounter}></Text>
+          <Text style={styles.friendCounter}>Friends: {this.props.screenProps.friends}</Text>
 
           <Text style={styles.title}>Nuggets</Text>
 
@@ -74,8 +89,6 @@ export default class ProfileScreen extends React.Component {
           onPress= {this.props.screenProps.findConnection}
           title = "find match"
           color = "purple"/>
-
-
 
         <Text style={styles.title}>Nuggets</Text>
 
