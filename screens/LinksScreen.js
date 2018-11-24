@@ -26,7 +26,6 @@ function CardOpen(props) {
             title= 'Delete 🤗'
             />
           </TouchableOpacity>
-
         </View>
     )
 }
@@ -36,7 +35,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
-  
+
 
   _onPress = (event) => {
     this.setState((prevState) => {
@@ -46,7 +45,7 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    this.props.navigation.navigate('Track', { user: this.props.user });
+    this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
   render() {
@@ -73,9 +72,6 @@ class Card extends React.Component {
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
       </TouchableOpacity>
-
-
-
     )
   }
 }
@@ -130,19 +126,18 @@ export default class LinksScreen extends React.Component {
 
     // Builds out a card for each connection
     return (
-
-        <View style={app.container}>
-          <ImageBackground
-          source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
-          style={{width: '100%', height: '100%'}}
-          >
-            <ScrollView>
-              { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
-              )}
-            </ScrollView>
-          </ImageBackground>
-        </View>
+      <View style={app.container}>
+        <ImageBackground
+        source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
+        style={{width: '100%', height: '100%'}}
+        >
+          <ScrollView>
+            { userConnections.map(
+              (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
+            )}
+          </ScrollView>
+        </ImageBackground>
+      </View>
 
     );
   }

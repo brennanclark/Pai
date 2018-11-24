@@ -74,7 +74,7 @@ module.exports = function(knex) {
       const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
-          // console.log("USERS============", users) // 
+          // console.log("USERS============", users) //
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
           let promises = users.map(user => {
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
@@ -85,7 +85,7 @@ module.exports = function(knex) {
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
-                  //TODO: FIX THIS as it is not pulling the RIGHT query 
+                  //TODO: FIX THIS as it is not pulling the RIGHT query
                   connection_id: connectedAt[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
@@ -142,7 +142,7 @@ module.exports = function(knex) {
       // )
 
       //TODO: YOU HAVE TO FIX THIS PETER
-      
+
       return knex('connections')
       .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
       .whereNot((builder) => {

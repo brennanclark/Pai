@@ -1,9 +1,9 @@
 {
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://4c-zf3.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.4c-zf3.anonymous.pai.exp.direct",
-  "ngrokPid": 15497,
   "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 15469
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 11968,
+  "expoServerNgrokUrl": "https://n7-p7k.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.n7-p7k.anonymous.pai.exp.direct",
+  "ngrokPid": 11992
 }
