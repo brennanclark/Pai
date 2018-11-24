@@ -80,9 +80,11 @@ module.exports = function(knex) {
             const currentConnsPromise = getConnectedAtTime(user.id);
             return Promise.all([friendCountPromise, currentConnsPromise])
               .then(([foafcount, connectedAt]) => {
+                console.log('============', connectedAt)
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
+                  //TODO: FIX THIS as it is not pulling the RIGHT query 
                   connection_id: connectedAt[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []

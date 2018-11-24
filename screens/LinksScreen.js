@@ -8,6 +8,8 @@ import moment from 'moment';
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
+  let testing = props.person
+  // console.log(testing);
 
     return (
         <View style={styles.nuggets}>
@@ -91,26 +93,12 @@ export default class LinksScreen extends React.Component {
       // deleted: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
-    this.getConnections = this.getConnections.bind(this);
   }
 
   componentDidMount() {
-
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
-      this.setState({ userConnections: res.data ,currentUserId: this.props.screenProps.currentUserId})
-    })
-    .catch(err => console.warn(err))
-  }
-
-  renderPage() {
-    this.setState({currentUserId: this.props.screenProps.currentUserId},
-      )
-  }
-  getConnections(){
-    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
-    .then((res) => {
-      this.setState({ userConnections: res.data })
+      this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
   }
@@ -119,14 +107,14 @@ export default class LinksScreen extends React.Component {
     axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
       .then((res) => {
         console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
-        console.log('=======', res);
         this.setState({userConnections: res.data});
       })
-      .catch((err) => console.warn(err))
+      .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
   render() {
-
+    // console.log("USER ID", this.state.currentUserId);
+    console.log(this.state.userConnections);
     const { userConnections } = this.state;
 
     // Builds out a card for each connection

@@ -37,7 +37,7 @@ app.get('/user/:id', (req,res) => {
 app.get('/user/:id/connections', (req, res) => {
   dataHelpers.getConnectUsersWithNuggets(Number(req.params.id), (data)=> {
     res.json(data);
-  })
+  }) 
 });
 
 //----------------------CREATE NEW CONNECTION --------------------//
