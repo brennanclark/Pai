@@ -9,6 +9,8 @@ import moment from 'moment';
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
 
+  
+
     return (
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
@@ -35,7 +37,6 @@ class Card extends React.Component {
     open: false,
   }
   
-
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -48,15 +49,24 @@ class Card extends React.Component {
   }
 
   render() {
-    console.log('================',this.props.screenProps.connectedFriendsDistances)
-
-
+    const { connectedFriendsDistances} = this.props.screenProps
 
     const { user = {} } = this.props;
-    const { first_name, profile_picture } = user;
+    const { first_name, profile_picture} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
+    let distance = 0;
+
+    // console.log("SLKDJFLKSDF", connectedFriendsDistances)
+  
+    connectedFriendsDistances.forEach((friend, index) => {
+    
+      if(user.id = Object.keys(friend)[0]) {
+        distance = Object.values(friend)[0].distance
+      }
+      
+    })
 
     return (
 
@@ -67,6 +77,7 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          <Text >{distance}</Text>
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -116,18 +127,16 @@ export default class LinksScreen extends React.Component {
       }
     })
       .then((res) => {
-        console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         this.setState({userConnections: res.data});
       })
       .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
   render() {
-    // console.log("USER ID", this.state.currentUserId);
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
 
-    console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
+    // console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
 
     // Builds out a card for each connection
     return (
