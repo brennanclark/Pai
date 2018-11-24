@@ -45,11 +45,10 @@ app.get('/user/:id/connections', (req, res) => {
 app.post('/user/:id/connections/new', (req,res) => {
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
-    // if(response.data.length < 3){  //maximum of 3 connections
+    if(response.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
       .then((dataResults) => {
 
-        //2,3,4
         let randomUsers = [];
         dataResults.forEach((user) => {
           response.data.forEach((otherUser) => {
@@ -70,15 +69,20 @@ app.post('/user/:id/connections/new', (req,res) => {
         let luckyFriend = 0;
         let indexPicker = Math.floor(Math.random() * result.length);
         luckyFriend = result[indexPicker];
-        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((data) => {
+          dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
+            console.log("ARE YOU IN HERE?");
+            res.json(data);
+          })
+        });
         res.end();
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
       })
-    // } else {
-    //   res.end(); //this code is requried to make sure the app does not freeze
-    // }
+    } else {
+      res.end(); //this code is requried to make sure the app does not freeze
+    }
   })
   .catch((err) => {
     console.log(err);

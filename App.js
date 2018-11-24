@@ -24,7 +24,7 @@ export default class App extends React.Component {
       long: 0,
       errorMessage: null,
       distance: 0,
-      connectedPotentialFriends : []
+      connectedPotentialFriends : {}
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -47,7 +47,7 @@ export default class App extends React.Component {
       console.log("connected to server")
     }
     this.getProfileInformation();
-    this.receiveLocationFromServer();
+    this.receiveLocationFromServer()
   }
 
 
@@ -66,24 +66,23 @@ export default class App extends React.Component {
       long: location.coords.longitude,
      }, this.sendLocationToServer());
   };
+
   receiveLocationFromServer() {
+
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const userId = locationData.user;
+      const userId = locationData.userId;
       const distanceFromSource = locationData.distance
       const type = locationData.type
 
-      let testing = []
-
-
-      console.log(typeof locationData); // returns as OBJECT
-      console.log(testing);
+      this.setState({ connectedPotentialFriends : this.state.connectedPotentialFriends[userId] = {userId: userId, distance: distanceFromSource} })
+      
 
       // if(!this.state.connectedPotentialFriends[0]){
       //   this.setState({
       //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
       //       [userId]: {
-      //         user: userId,
+      //         userId: userId,
       //         distance: distanceFromSource,
       //       }
       //     })
@@ -92,7 +91,7 @@ export default class App extends React.Component {
       //   this.setState({          
       //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
       //       [userId]: {
-      //         user: userId,
+      //         userId: userId,
       //         distance: distanceFromSource,
       //       }
       //     })
@@ -101,14 +100,14 @@ export default class App extends React.Component {
       //   this.setState({
       //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
       //       [userId]: {
-      //         user: userId,
+      //         userId: userId,
       //         distance: distanceFromSource,
       //       }
       //     })
       //   })
       // }
 
-      // console.log(this.state.connectedPotentialFriends)
+      console.log(this.state.connectedPotentialFriends)
 
       this.setState({distance : distanceFromSource})
     }
