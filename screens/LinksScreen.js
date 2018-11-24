@@ -9,7 +9,6 @@ import moment from 'moment';
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
   let testing = props.person
-  // console.log(testing);
 
     return (
         <View style={styles.nuggets}>
@@ -36,7 +35,6 @@ class Card extends React.Component {
     open: false,
   }
 
-
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -51,7 +49,8 @@ class Card extends React.Component {
   render() {
     // console.log('================',this.props.screenProps.connectedFriendsDistances)
     const { user = {} } = this.props;
-    const { first_name, profile_picture } = user;
+    console.log("User", user);
+    const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -65,6 +64,7 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          <Text style={styles.friends}>friends : {number_of_friends}</Text>
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
