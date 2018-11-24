@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity, Button, Animated} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { BarCodeScanner, Permissions } from 'expo';
 
@@ -119,7 +119,9 @@ export default class TrackScreen extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
+      x: new Animated.Value(0),
       user: {
         name: 'nonsense',
         distance: 50,
@@ -128,6 +130,7 @@ export default class TrackScreen extends React.Component {
       },
     };
   }
+
   _handleOnPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -136,9 +139,25 @@ export default class TrackScreen extends React.Component {
     });
   }
 
+  componentDidMount() {
+    Animated.timing(this.animatedValue, {
+      toValue: 150,
+      duration: 10000
+    }).start();
+  }
+
   render() {
+    const interpolateColor = this.state.x.interpolate({
+      inputRange: [0, 150],
+      outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 0)']
+    })
+
+    const animatedStyle = {
+      backgroundColor: interpolateColor,
+    }
+
     return (
-      <View style={styles.page}>
+      <View style={[styles.page, animatedStyle]}>
       <TouchableOpacity onPress={this._handleOnPress}>
       {
         this.state.isImage ? <QrCode/> : <ProfileImage style={styles.trackImage} Image={this.props.navigation.state.params.user.profile_picture}/>
@@ -162,8 +181,8 @@ const styles = StyleSheet.create({
   },
   trackImage: {
     margin: 9,
-    height: 80,
-    width: 80,
+    height: 130,
+    width: 130,
     borderRadius: 10,
   },
   iconCamera: {
