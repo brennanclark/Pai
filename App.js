@@ -71,16 +71,11 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const userId = locationData.userId;
       const distanceFromSource = locationData.distance
 
       this.setState({
         distance : distanceFromSource,
         connectedPotentialFriends : locationData
-      })
-
-      this.state.connectedPotentialFriends.map((item) =>{
-        console.log("THIS IS THE ITEM", item)
       })
     }
   }
