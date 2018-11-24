@@ -92,9 +92,9 @@ app.post('/user/:id/connections/new', (req,res) => {
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
 app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
-  dataHelpers.deleteConnectionById(Number((req.params.connection_id)))
+  dataHelpers.deleteConnectionById(Number((req.body.userId)))
     .then((data) => {
-      dataHelpers.getConnectUsersWithNuggets(Number(req.params.user_id), (data)=> {
+      dataHelpers.getConnectUsersWithNuggets(Number(req.body.currentConnectionId), (data)=> {
         res.json(data);
       })
     })

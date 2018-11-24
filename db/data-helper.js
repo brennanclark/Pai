@@ -74,13 +74,14 @@ module.exports = function(knex) {
       const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
+          // console.log("USERS============", users) // 
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
           let promises = users.map(user => {
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
             const currentConnsPromise = getConnectedAtTime(user.id);
             return Promise.all([friendCountPromise, currentConnsPromise])
               .then(([foafcount, connectedAt]) => {
-                console.log('============', connectedAt)
+                // console.log('============', connectedAt)
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,

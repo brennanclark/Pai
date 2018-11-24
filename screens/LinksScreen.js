@@ -36,6 +36,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
+  
 
   _onPress = (event) => {
     this.setState((prevState) => {
@@ -49,6 +50,7 @@ class Card extends React.Component {
   }
 
   render() {
+    // console.log('================',this.props.screenProps.connectedFriendsDistances)
     const { user = {} } = this.props;
     const { first_name, profile_picture } = user;
     let connectedAt = user.connected_at;
@@ -104,7 +106,14 @@ export default class LinksScreen extends React.Component {
   }
 
   deleteConnection(conn_id) {
-    axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
+    axios({
+      method: 'post',
+      url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
+      data: {
+        userId: this.state.currentUserId,
+        currentConnectionId: conn_id,
+      }
+    })
       .then((res) => {
         console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         this.setState({userConnections: res.data});
@@ -114,8 +123,10 @@ export default class LinksScreen extends React.Component {
 
   render() {
     // console.log("USER ID", this.state.currentUserId);
-    console.log(this.state.userConnections);
     const { userConnections } = this.state;
+    const { connectedFriendsDistances} = this.props.screenProps
+
+    console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
 
     // Builds out a card for each connection
     return (

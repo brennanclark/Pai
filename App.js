@@ -182,7 +182,7 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
-            potentialFriendsDistances: this.state.connectedPotentialFriends
+            connectedFriendsDistances: this.state.connectedPotentialFriends
           }}
           />
         </View>
