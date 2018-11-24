@@ -3,12 +3,13 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-var Connections = require('../Connection.json');
 import moment from 'moment';
 
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
+  let testing = props.person
+  // console.log(testing);
 
     return (
         <View style={styles.nuggets}>
@@ -35,6 +36,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
+  
 
   _onPress = (event) => {
     this.setState((prevState) => {
@@ -48,6 +50,7 @@ class Card extends React.Component {
   }
 
   render() {
+    // console.log('================',this.props.screenProps.connectedFriendsDistances)
     const { user = {} } = this.props;
     const { first_name, profile_picture } = user;
     let connectedAt = user.connected_at;
@@ -92,43 +95,38 @@ export default class LinksScreen extends React.Component {
       // deleted: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
-    this.getConnections = this.getConnections.bind(this);
   }
 
   componentDidMount() {
-
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
-      this.setState({ userConnections: res.data ,currentUserId: this.props.screenProps.currentUserId})
-    })
-    .catch(err => console.warn(err))
-  }
-
-  renderPage() {
-    this.setState({currentUserId: this.props.screenProps.currentUserId},
-      )
-  }
-  getConnections(){
-    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
-    .then((res) => {
-      this.setState({ userConnections: res.data })
+      this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
   }
 
   deleteConnection(conn_id) {
-    console.log("HI");
-    axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
+    axios({
+      method: 'post',
+      url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
+      data: {
+        userId: this.state.currentUserId,
+        currentConnectionId: conn_id,
+      }
+    })
       .then((res) => {
-        console.log('=======', res);
+        console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         this.setState({userConnections: res.data});
       })
-      .catch((err) => console.warn(err))
+      .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
   render() {
-
+    // console.log("USER ID", this.state.currentUserId);
     const { userConnections } = this.state;
+    const { connectedFriendsDistances} = this.props.screenProps
+
+    console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
 
     // Builds out a card for each connection
     return (

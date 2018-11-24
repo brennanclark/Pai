@@ -5,7 +5,6 @@ import AppNavigator from './navigation/AppNavigator';
 import axios from 'react-native-axios';
 import {ipv4} from './config.json';
 import KalmanFilter from 'kalmanjs';
-// var customData = require('./customData.json');
 
 export default class App extends React.Component {
 
@@ -20,12 +19,13 @@ export default class App extends React.Component {
     this.state = {
       user: null,
       currentUserId: 1,
-      profileImage : " ",
+      profileImage: " ",
       nuggets: [],
-      lat : 0,
+      lat: 0,
       long: 0,
       errorMessage: null,
-      distance: 0
+      distance: 0,
+      connectedPotentialFriends: {}
     }
 
     this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
@@ -51,7 +51,7 @@ export default class App extends React.Component {
       console.log("connected to server")
     }
     this.getProfileInformation();
-    this.receiveLocationFromServer();
+    this.receiveLocationFromServer()
   }
 
 
@@ -73,13 +73,20 @@ export default class App extends React.Component {
   };
 
   receiveLocationFromServer() {
+
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const userId = locationData.user;
-      const distance = locationData.distance
-      this.setState({distance : distance})
+      const TESTING_userKey = Object.keys(...locationData)[0]
+      const TESTING_distanceFromSource = [...locationData]
+      const distanceFromSource = TESTING_distanceFromSource[0][TESTING_userKey].distance
+
+      this.setState({
+        distance : distanceFromSource,
+        connectedPotentialFriends : locationData
+      })
     }
   }
+  
 
   sendLocationToServer() {
     var locationData = {
@@ -111,7 +118,7 @@ export default class App extends React.Component {
       }
     })
     .then((res)=>{
-      console.log(res)
+      console.log("FIND CONNECTION  was pressed");
     })
     .catch((err) => {
       console.log(err);
@@ -175,6 +182,7 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
+            connectedFriendsDistances: this.state.connectedPotentialFriends
           }}
           />
         </View>

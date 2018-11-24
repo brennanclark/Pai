@@ -32,6 +32,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-axios": "^0.17.1",
     "react-native-elements": "^0.19.1",
+    "react-native-google-places": "^2.5.2",
     "react-native-qrcode": "^0.2.7",
     "react-navigation": "^2.18.2",
     "webpack": "^4.25.1",

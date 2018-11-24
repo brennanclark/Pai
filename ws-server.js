@@ -47,28 +47,28 @@ wss.on('connection', (ws) => {
 
     axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
+      var mergedData = [] 
       res.data.forEach((connectedUser) => {
         axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
         .then((res) => {
+
           let otherUser = {
             latitude: Number(res.data[0].lat),
             longitude: Number(res.data[0].long),
           }
 
           var dataToUser = {
-            type: "distanceBetweenTwo",
-            user: connectedUser.id,
+            [connectedUser.id]: {
+            type: `distanceBetweenUser${connectedUser.id}`,
+            userId: connectedUser.id,
             distance: haversine(sourceUser, otherUser, {unit:'meter'})
+            }
           }
-          console.log("LKJASLD", dataToUser);
-          ws.send(JSON.stringify(dataToUser));
-
+          mergedData.push(dataToUser)      
+          ws.send(JSON.stringify(mergedData))  
         })
       })
     })
-
-
-
   }
 
   ws.on('close', () => {
