@@ -85,6 +85,8 @@ export default class App extends React.Component {
         connectedPotentialFriends : locationData
       })
     }
+
+
   }
   
 

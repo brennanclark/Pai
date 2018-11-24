@@ -15,6 +15,7 @@ module.exports = function(knex) {
 
   return {
     getConnectUsersWithNuggets(userId, cb) {
+      
       function runConnectedUsers(){
         this.distinct('first_user_id AS user_id, connected_at')
           .from('connections')
@@ -85,7 +86,6 @@ module.exports = function(knex) {
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
-                  //TODO: FIX THIS as it is not pulling the RIGHT query 
                   connection_id: connectedAt[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
@@ -162,6 +162,7 @@ module.exports = function(knex) {
     },
 
     deleteConnectionById(id) {
+      console.log("rohit connection test ",id);
       return knex('connections')
       .where('id', id)
       .update({

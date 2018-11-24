@@ -8,8 +8,6 @@ import moment from 'moment';
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-  let testing = props.person
-  // console.log(testing);
 
     return (
         <View style={styles.nuggets}>
@@ -50,7 +48,10 @@ class Card extends React.Component {
   }
 
   render() {
-    // console.log('================',this.props.screenProps.connectedFriendsDistances)
+    console.log('================',this.props.screenProps.connectedFriendsDistances)
+
+
+
     const { user = {} } = this.props;
     const { first_name, profile_picture } = user;
     let connectedAt = user.connected_at;
@@ -138,7 +139,7 @@ export default class LinksScreen extends React.Component {
           >
             <ScrollView>
               { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
+                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index}  {...this.props}/>
               )}
             </ScrollView>
           </ImageBackground>
