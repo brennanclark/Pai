@@ -53,7 +53,7 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-
+    
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>

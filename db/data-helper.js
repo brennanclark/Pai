@@ -74,15 +74,18 @@ module.exports = function(knex) {
       const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
+          // console.log("USERS============", users) // 
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
           let promises = users.map(user => {
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
             const currentConnsPromise = getConnectedAtTime(user.id);
             return Promise.all([friendCountPromise, currentConnsPromise])
               .then(([foafcount, connectedAt]) => {
+                // console.log('============', connectedAt)
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
+                  //TODO: FIX THIS as it is not pulling the RIGHT query 
                   connection_id: connectedAt[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
@@ -125,8 +128,8 @@ module.exports = function(knex) {
         .then(([user, nuggets, friends]) => {
             return {
               ...user,
-              nuggets: nuggets,
-              friends: friends.length
+              number_of_friends: friends.length,
+              nuggets: nuggets
             }
         });
     },
@@ -137,6 +140,9 @@ module.exports = function(knex) {
       //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
       //   ON CONFLICT (first_user_id) DO NOTHING`
       // )
+
+      //TODO: YOU HAVE TO FIX THIS PETER
+      
       return knex('connections')
       .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
       .whereNot((builder) => {
@@ -171,23 +177,6 @@ module.exports = function(knex) {
         ON CONFLICT (user_id) DO UPDATE
         SET lat = ${lat}, long = ${long}, last_check_in = current_timestamp AT TIME ZONE 'PST'`
       )
-    },
-
-    findAllFriends(userId){
-      return knex.select('*')
-      .from('connections')
-      .where({
-        'second_user_id': userId,
-        'friends': true
-      })
-      .union(function(){
-        this.select('*')
-        .from('connections')
-        .where({
-          'first_user_id': userId,
-          'friends': true
-        })
-      })
     },
 
     findLocationByUserId(id){

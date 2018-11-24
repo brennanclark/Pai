@@ -4,7 +4,7 @@ import { AppLoading, Asset, Font, Icon, Permissions, Location } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import axios from 'react-native-axios';
 import {ipv4} from './config.json';
-// var customData = require('./customData.json');
+import KalmanFilter from 'kalmanjs';
 
 export default class App extends React.Component {
 
@@ -19,39 +19,44 @@ export default class App extends React.Component {
     this.state = {
       user: null,
       currentUserId: 1,
-      profileImage : " ",
+      profileImage: " ",
       nuggets: [],
-      lat : 0,
+      lat: 0,
       long: 0,
       errorMessage: null,
-      distance: 0
+      distance: 0,
+      connectedPotentialFriends: {}
     }
+
+    this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
+    this.lng_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
+
     this.socket = new WebSocket("ws://192.168.88.119:3001");
-    this.getProfileInformation = this.getProfileInformation.bind(this);
-    this.sendLocationToServer = this.sendLocationToServer.bind(this);
-    this._getLocationAsync = this._getLocationAsync.bind(this);
+    this.getProfileInformation     = this.getProfileInformation.bind(this);
+    this.sendLocationToServer      = this.sendLocationToServer.bind(this);
+    this._getLocationAsync         = this._getLocationAsync.bind(this);
     this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
-    this.findConnection = this.findConnection.bind(this);
-    this.changeToUserOne = this.changeToUserOne.bind(this);
-    this.changeToUserTwo = this.changeToUserTwo.bind(this);
-    this.changeToUserThree = this.changeToUserThree.bind(this);
-    this.changeToUserFour = this.changeToUserFour.bind(this)
+    this.findConnection            = this.findConnection.bind(this);
+    this.changeToUserOne           = this.changeToUserOne.bind(this);
+    this.changeToUserTwo           = this.changeToUserTwo.bind(this);
+    this.changeToUserThree         = this.changeToUserThree.bind(this);
+    this.changeToUserFour          = this.changeToUserFour.bind(this)
   }
 
   componentDidMount() {
-
     this.socket.onopen = () => {
       setInterval(()=>{
         this._getLocationAsync();
-      },6000)
+      },2500)
       console.log("connected to server")
     }
     this.getProfileInformation();
-    this.receiveLocationFromServer();
+    this.receiveLocationFromServer()
   }
 
 
   _getLocationAsync = async () => {
+
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
@@ -62,21 +67,26 @@ export default class App extends React.Component {
     let location = await Location.getCurrentPositionAsync({});
 
     this.setState({
-      lat: location.coords.latitude,
-      long: location.coords.longitude,
-     }, this.sendLocationToServer());
+      lat: this.lat_kalman.filter(location.coords.latitude),
+      long: this.lng_kalman.filter(location.coords.longitude),
+    }, this.sendLocationToServer());
   };
 
   receiveLocationFromServer() {
+
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const userId = locationData.user;
-      const distance = locationData.distance
-      console.log("userId: ", userId);
-      console.log("distance: ", distance);
-      this.setState({distance : distance})
+      const TESTING_userKey = Object.keys(...locationData)[0]
+      const TESTING_distanceFromSource = [...locationData]
+      const distanceFromSource = TESTING_distanceFromSource[0][TESTING_userKey].distance
+
+      this.setState({
+        distance : distanceFromSource,
+        connectedPotentialFriends : locationData
+      })
     }
   }
+  
 
   sendLocationToServer() {
     var locationData = {
@@ -108,7 +118,7 @@ export default class App extends React.Component {
       }
     })
     .then((res)=>{
-      console.log(res)
+      console.log("FIND CONNECTION  was pressed");
     })
     .catch((err) => {
       console.log(err);
@@ -157,7 +167,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator
-          
+
           screenProps = {{
             user: this.state.user,
             currentUserId: this.state.currentUserId,
@@ -172,6 +182,7 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
+            connectedFriendsDistances: this.state.connectedPotentialFriends
           }}
           />
         </View>
