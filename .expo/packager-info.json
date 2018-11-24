@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://4c-zf3.anonymous.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.4c-zf3.anonymous.pai.exp.direct",
-  "ngrokPid": 12251,
+  "ngrokPid": 15497,
   "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null
+  "packagerPort": 19003,
+  "packagerPid": 15469
 }

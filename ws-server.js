@@ -47,9 +47,8 @@ wss.on('connection', (ws) => {
 
     axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
-      var mergedData = []
+      var mergedData = [] 
       res.data.forEach((connectedUser) => {
-
         axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
         .then((res) => {
 
@@ -65,10 +64,8 @@ wss.on('connection', (ws) => {
             distance: haversine(sourceUser, otherUser, {unit:'meter'})
             }
           }
-
           mergedData.push(dataToUser)      
           ws.send(JSON.stringify(mergedData))  
-
         })
       })
     })
