@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 7398,
-  "expoServerNgrokUrl": "https://4c-zf3.bren.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.4c-zf3.bren.pai.exp.direct",
-  "ngrokPid": 7415
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

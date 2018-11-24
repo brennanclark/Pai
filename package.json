@@ -20,6 +20,7 @@
     "expo": "^31.0.2",
     "express": "^4.16.4",
     "haversine": "^1.1.0",
+    "kalmanjs": "^1.0.0-beta",
     "knex": "^0.15.2",
     "knex-logger": "^0.1.0",
     "moment": "^2.22.2",
