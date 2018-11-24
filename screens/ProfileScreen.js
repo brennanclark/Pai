@@ -55,7 +55,7 @@ export default class ProfileScreen extends React.Component {
   render() {
 
     return (
-      <View style={styles.container}>
+      <View style={app.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <TouchableOpacity onPress={this._handleOnPress}>
           {
@@ -75,9 +75,6 @@ export default class ProfileScreen extends React.Component {
           title = "find match"
           color = "purple"/>
 
-
-
-        <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
             data={this.props.screenProps.nuggets}
@@ -113,10 +110,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize:30,
     textAlign: 'center',
-  },
-
-  nugget: {
-    padding: 5,
   },
 
   item: {

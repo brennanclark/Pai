@@ -44,14 +44,13 @@ LinksStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       onPress={() => {
-        
+
       }}
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-link'}
     />
   ),
 };
-
 
 
 export default createBottomTabNavigator({

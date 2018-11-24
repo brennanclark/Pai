@@ -6,8 +6,6 @@ const {ipv4} = require('../config.json');
 var Connections = require('../Connection.json');
 import moment from 'moment';
 
-    let distance1 = 500;
-    let distance2 = 1300;
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
@@ -153,11 +151,7 @@ export default class LinksScreen extends React.Component {
     // Builds out a card for each connection
     return (
         <View style={app.container}>
-          <ImageBackground
-          source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
-          style={{width: '100%', height: '100%'}}
-          >
-            <ScrollView>
+            <ScrollView  style={styles.container}>
               { userConnections.map(
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
@@ -168,7 +162,6 @@ export default class LinksScreen extends React.Component {
                 />
               )}
             </ScrollView>
-          </ImageBackground>
         </View>
 
     );
@@ -176,41 +169,30 @@ export default class LinksScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    backgroundColor: 'white',
+  },
   header: {
     flexDirection:'row',
   },
-  switch: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-  },
   cardClosed: {
     height: 100,
-    width: 330,
-    margin: 7,
-    backgroundColor: 'lightsteelblue',
-    borderRadius: 10,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-      },
-    shadowColor: 'grey',
-    shadowOpacity: 0.5,
-    shadowRadius: 0.5,
-    opacity: 0.92,
+    width: 'auto',
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 2,
   },
   cardOpen: {
     height: 'auto',
   },
-  near: {
-    borderColor: 'gold',
-    borderWidth: 5,
-    borderStyle: 'solid',
-  },
+  // near: {
+  //   borderColor: 'gold',
+  //   borderWidth: 5,
+  //   borderStyle: 'solid',
+  // },
   connectionImage: {
-    height: 80,
-    width: 80,
-    borderRadius: 10,
+    height: 98,
+    width: 100,
+    alignItems: 'center',
   },
   name: {
     lineHeight: 90,

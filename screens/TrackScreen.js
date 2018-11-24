@@ -114,22 +114,25 @@ class QrCode extends React.Component {
 export default class TrackScreen extends React.Component {
   static navigationOptions = {
     // Here we can change the title at the top of the page
-    title: 'track',
+    title: 'Distance Between',
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
-      x: new Animated.Value(0),
       user: {
         name: 'nonsense',
-        distance: 50,
         isImage: true,
+
         // more here... except it all comes from props anyway
+
       },
     };
+    console.log("===========", props.screenProps.distance);
   }
+
+
+
 
   _handleOnPress = (event) => {
     this.setState((prevState) => {
@@ -139,25 +142,33 @@ export default class TrackScreen extends React.Component {
     });
   }
 
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+  }
+
   componentDidMount() {
-    Animated.timing(this.animatedValue, {
-      toValue: 150,
-      duration: 10000
+    // const distance = this.props.screenProps.distance;
+    const distance = 1000
+
+
+    Animated.timing(this.animatedValue,  {
+      toValue: distance,
+
     }).start();
   }
 
   render() {
-    const interpolateColor = this.state.x.interpolate({
-      inputRange: [0, 150],
-      outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 0)']
+    const interpolateColor = this.animatedValue.interpolate({
+      inputRange: [0, 1000],
+      outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
     })
 
     const animatedStyle = {
-      backgroundColor: interpolateColor,
+      backgroundColor: interpolateColor
     }
 
     return (
-      <View style={[styles.page, animatedStyle]}>
+      <Animated.View style={[styles.page, animatedStyle]}>
       <TouchableOpacity onPress={this._handleOnPress}>
       {
         this.state.isImage ? <QrCode/> : <ProfileImage style={styles.trackImage} Image={this.props.navigation.state.params.user.profile_picture}/>
@@ -167,7 +178,7 @@ export default class TrackScreen extends React.Component {
        <Text>
           { this.props.navigation.state.params.user.first_name }
        </Text>
-     </View>
+     </Animated.View>
     );
   }
 }
