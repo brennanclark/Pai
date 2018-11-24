@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "expoServerPort": 19000,
 <<<<<<< HEAD
   "packagerPort": 19001,
@@ -14,4 +15,13 @@
   "packagerPort": 19003,
   "packagerPid": 15469
 >>>>>>> 8529996de7e6809a31165bc6a64f0943e1a6fe02
+=======
+  "devToolsPort": 19002,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
+>>>>>>> feature/scanneraxios
 }

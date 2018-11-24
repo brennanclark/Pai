@@ -7,6 +7,8 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LinksScreen from '../screens/LinksScreen';
 import TrackScreen from '../screens/TrackScreen';
+import BarCode from '../screens/BarCode';
+
 
 
 
@@ -33,6 +35,11 @@ ProfileStack.navigationOptions = {
   ),
 };
 
+const BarStack = createStackNavigator({
+  Bars: BarCode,
+  Links: LinksScreen
+});
+
 const LinksStack = createStackNavigator({
   Links: LinksScreen,
   Track: TrackScreen,
@@ -44,7 +51,7 @@ LinksStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       onPress={() => {
-        
+
       }}
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-link'}

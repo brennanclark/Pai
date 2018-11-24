@@ -25,7 +25,11 @@ export default class App extends React.Component {
       long: 0,
       errorMessage: null,
       distance: 0,
+<<<<<<< HEAD
       connectedPotentialFriends: {}
+=======
+      number_of_friends: 0
+>>>>>>> feature/scanneraxios
     }
 
     this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
@@ -101,10 +105,13 @@ export default class App extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
+      console.log(response.data)
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
+        number_of_friends: data.friends,
+        // number_of_friends: data.number_of_friends,
       })
     })
   }
@@ -147,7 +154,6 @@ export default class App extends React.Component {
     }, this.getProfileInformation)
   }
 
-
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
@@ -182,7 +188,11 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
+<<<<<<< HEAD
             connectedFriendsDistances: this.state.connectedPotentialFriends
+=======
+            friends: this.state.number_of_friends,
+>>>>>>> feature/scanneraxios
           }}
           />
         </View>
