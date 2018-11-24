@@ -18,13 +18,13 @@ export default class App extends React.Component {
     this.state = {
       user: null,
       currentUserId: 1,
-      profileImage : " ",
+      profileImage: " ",
       nuggets: [],
-      lat : 0,
+      lat: 0,
       long: 0,
       errorMessage: null,
       distance: 0,
-      connectedPotentialFriends : {}
+      connectedPotentialFriends: {}
     }
     this.socket = new WebSocket("ws://192.168.88.119:3001");
     this.getProfileInformation = this.getProfileInformation.bind(this);
@@ -73,43 +73,15 @@ export default class App extends React.Component {
       const locationData = JSON.parse(event.data);
       const userId = locationData.userId;
       const distanceFromSource = locationData.distance
-      const type = locationData.type
 
-      this.setState({ connectedPotentialFriends : this.state.connectedPotentialFriends[userId] = {userId: userId, distance: distanceFromSource} })
-      
+      this.setState({
+        distance : distanceFromSource,
+        connectedPotentialFriends : locationData
+      })
 
-      // if(!this.state.connectedPotentialFriends[0]){
-      //   this.setState({
-      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-      //       [userId]: {
-      //         userId: userId,
-      //         distance: distanceFromSource,
-      //       }
-      //     })
-      //   })
-      // } else if (!this.state.connectedPotentialFriends[1]) {
-      //   this.setState({          
-      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-      //       [userId]: {
-      //         userId: userId,
-      //         distance: distanceFromSource,
-      //       }
-      //     })
-      //   })
-      // } else if (!this.state.connectedPotentialFriends[2]) {
-      //   this.setState({
-      //     connectedPotentialFriends: this.state.connectedPotentialFriends.concat({
-      //       [userId]: {
-      //         userId: userId,
-      //         distance: distanceFromSource,
-      //       }
-      //     })
-      //   })
-      // }
-
-      console.log(this.state.connectedPotentialFriends)
-
-      this.setState({distance : distanceFromSource})
+      this.state.connectedPotentialFriends.map((item) =>{
+        console.log("THIS IS THE ITEM", item)
+      })
     }
   }
   

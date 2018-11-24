@@ -53,7 +53,10 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    console.log("CHECKING THIS", this.props.screenProps.potentialFriendsDistances)
+    console.log("User 1", this.props.screenProps.potentialFriendsDistances[1])
+    console.log("User 2", this.props.screenProps.potentialFriendsDistances[2])
+    console.log("User 3", this.props.screenProps.potentialFriendsDistances[3])
+    console.log("User 4", this.props.screenProps.potentialFriendsDistances[4])
 
     return (
       <View style={styles.container}>

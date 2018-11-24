@@ -47,6 +47,7 @@ wss.on('connection', (ws) => {
 
     axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
+      var mergedData = []
       res.data.forEach((connectedUser) => {
 
         axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
@@ -58,18 +59,19 @@ wss.on('connection', (ws) => {
           }
 
           var dataToUser = {
+            [connectedUser.id]: {
             type: `distanceBetweenUser${connectedUser.id}`,
             userId: connectedUser.id,
             distance: haversine(sourceUser, otherUser, {unit:'meter'})
+            }
           }
-          ws.send(JSON.stringify(dataToUser));
+
+          mergedData.push(dataToUser)      
+          ws.send(JSON.stringify(mergedData))  
 
         })
       })
     })
-
-
-
   }
 
   ws.on('close', () => {
