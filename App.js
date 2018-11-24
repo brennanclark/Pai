@@ -76,7 +76,9 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const distanceFromSource = locationData.distance
+      const TESTING_userKey = Object.keys(...locationData)[0]
+      const TESTING_distanceFromSource = [...locationData]
+      const distanceFromSource = TESTING_distanceFromSource[0][TESTING_userKey].distance
 
       this.setState({
         distance : distanceFromSource,

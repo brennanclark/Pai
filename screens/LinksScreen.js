@@ -118,6 +118,7 @@ export default class LinksScreen extends React.Component {
   deleteConnection(conn_id) {
     axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
       .then((res) => {
+        console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         console.log('=======', res);
         this.setState({userConnections: res.data});
       })
