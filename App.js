@@ -4,6 +4,7 @@ import { AppLoading, Asset, Font, Icon, Permissions, Location } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import axios from 'react-native-axios';
 import {ipv4} from './config.json';
+import KalmanFilter from 'kalmanjs';
 
 export default class App extends React.Component {
 
@@ -26,24 +27,27 @@ export default class App extends React.Component {
       distance: 0,
       connectedPotentialFriends: {}
     }
+
+    this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
+    this.lng_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
+
     this.socket = new WebSocket("ws://192.168.88.119:3001");
-    this.getProfileInformation = this.getProfileInformation.bind(this);
-    this.sendLocationToServer = this.sendLocationToServer.bind(this);
-    this._getLocationAsync = this._getLocationAsync.bind(this);
+    this.getProfileInformation     = this.getProfileInformation.bind(this);
+    this.sendLocationToServer      = this.sendLocationToServer.bind(this);
+    this._getLocationAsync         = this._getLocationAsync.bind(this);
     this.receiveLocationFromServer = this.receiveLocationFromServer.bind(this);
-    this.findConnection = this.findConnection.bind(this);
-    this.changeToUserOne = this.changeToUserOne.bind(this);
-    this.changeToUserTwo = this.changeToUserTwo.bind(this);
-    this.changeToUserThree = this.changeToUserThree.bind(this);
-    this.changeToUserFour = this.changeToUserFour.bind(this)
+    this.findConnection            = this.findConnection.bind(this);
+    this.changeToUserOne           = this.changeToUserOne.bind(this);
+    this.changeToUserTwo           = this.changeToUserTwo.bind(this);
+    this.changeToUserThree         = this.changeToUserThree.bind(this);
+    this.changeToUserFour          = this.changeToUserFour.bind(this)
   }
 
   componentDidMount() {
-
     this.socket.onopen = () => {
       setInterval(()=>{
         this._getLocationAsync();
-      },6000)
+      },2500)
       console.log("connected to server")
     }
     this.getProfileInformation();
@@ -52,6 +56,7 @@ export default class App extends React.Component {
 
 
   _getLocationAsync = async () => {
+
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
@@ -62,9 +67,9 @@ export default class App extends React.Component {
     let location = await Location.getCurrentPositionAsync({});
 
     this.setState({
-      lat: location.coords.latitude,
-      long: location.coords.longitude,
-     }, this.sendLocationToServer());
+      lat: this.lat_kalman.filter(location.coords.latitude),
+      long: this.lng_kalman.filter(location.coords.longitude),
+    }, this.sendLocationToServer());
   };
 
   receiveLocationFromServer() {
@@ -160,7 +165,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator
-          
+
           screenProps = {{
             user: this.state.user,
             currentUserId: this.state.currentUserId,

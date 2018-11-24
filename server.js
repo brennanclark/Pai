@@ -100,17 +100,6 @@ app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
     })
 });
 
-//----------------------GET NUMBER OF FRIENDS----------------------//
-
-app.get('/user/:id/friends', (req, res) => {
-  dataHelpers.findAllFriends(Number(req.params.id))
-  .then((data) => {
-    res.json(data.length)
-  })
-
-});
-
-
 //----------------------ADD A FRIEND----------------------//
 
 app.post('/connections/:connection_id/friends', (req, res) => {

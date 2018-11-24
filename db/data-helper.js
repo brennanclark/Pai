@@ -125,8 +125,8 @@ module.exports = function(knex) {
         .then(([user, nuggets, friends]) => {
             return {
               ...user,
-              nuggets: nuggets,
-              friends: friends.length
+              number_of_friends: friends.length,
+              nuggets: nuggets
             }
         });
     },
@@ -174,23 +174,6 @@ module.exports = function(knex) {
         ON CONFLICT (user_id) DO UPDATE
         SET lat = ${lat}, long = ${long}, last_check_in = current_timestamp AT TIME ZONE 'PST'`
       )
-    },
-
-    findAllFriends(userId){
-      return knex.select('*')
-      .from('connections')
-      .where({
-        'second_user_id': userId,
-        'friends': true
-      })
-      .union(function(){
-        this.select('*')
-        .from('connections')
-        .where({
-          'first_user_id': userId,
-          'friends': true
-        })
-      })
     },
 
     findLocationByUserId(id){
