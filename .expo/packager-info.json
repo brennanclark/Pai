@@ -1,27 +1,9 @@
 {
-<<<<<<< HEAD
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
-<<<<<<< HEAD
   "packagerPort": 19001,
-  "packagerPid": 2668,
-  "expoServerNgrokUrl": "https://n5-n8n.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.n5-n8n.anonymous.pai.exp.direct",
-  "ngrokPid": 2690
-=======
-  "expoServerNgrokUrl": "https://4c-zf3.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.4c-zf3.anonymous.pai.exp.direct",
-  "ngrokPid": 15497,
-  "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 15469
->>>>>>> 8529996de7e6809a31165bc6a64f0943e1a6fe02
-=======
-  "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
->>>>>>> feature/scanneraxios
+  "packagerPid": 11968,
+  "expoServerNgrokUrl": "https://n7-p7k.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.n7-p7k.anonymous.pai.exp.direct",
+  "ngrokPid": 11992
 }

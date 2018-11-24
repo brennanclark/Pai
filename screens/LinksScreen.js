@@ -35,7 +35,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
-  
+
 
   _onPress = (event) => {
     this.setState((prevState) => {
@@ -102,7 +102,6 @@ export default class LinksScreen extends React.Component {
   }
 
   deleteConnection(conn_id) {
-<<<<<<< HEAD
     axios({
       method: 'post',
       url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
@@ -113,10 +112,6 @@ export default class LinksScreen extends React.Component {
     })
       .then((res) => {
         console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
-=======
-    axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
-      .then((res) => {
->>>>>>> feature/scanneraxios
         this.setState({userConnections: res.data});
       })
       .catch((err) => console.warn("THIS IS AN ERROR", err))

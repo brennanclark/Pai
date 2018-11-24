@@ -25,11 +25,9 @@ export default class App extends React.Component {
       long: 0,
       errorMessage: null,
       distance: 0,
-<<<<<<< HEAD
-      connectedPotentialFriends: {}
-=======
-      number_of_friends: 0
->>>>>>> feature/scanneraxios
+      connectedPotentialFriends: {},
+      number_of_friends: 0,
+
     }
 
     this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
@@ -90,7 +88,7 @@ export default class App extends React.Component {
       })
     }
   }
-  
+
 
   sendLocationToServer() {
     var locationData = {
@@ -188,11 +186,8 @@ export default class App extends React.Component {
             changeToUserFour: this.changeToUserFour,
             findConnection: this.findConnection,
             distance: this.state.distance,
-<<<<<<< HEAD
-            connectedFriendsDistances: this.state.connectedPotentialFriends
-=======
+            connectedFriendsDistances: this.state.connectedPotentialFriends,
             friends: this.state.number_of_friends,
->>>>>>> feature/scanneraxios
           }}
           />
         </View>
