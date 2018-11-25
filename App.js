@@ -86,7 +86,7 @@ export default class App extends React.Component {
       })
     }
   }
-  
+
   sendLocationToServer() {
     var locationData = {
       currentUserId: this.state.currentUserId,
@@ -167,7 +167,9 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+
           <AppNavigator
+
 
           screenProps = {{
             user: this.state.user,
