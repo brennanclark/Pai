@@ -47,7 +47,7 @@ export default class App extends React.Component {
     this.socket.onopen = () => {
       setInterval(()=>{
         this._getLocationAsync();
-      },2500)
+      },6000)
       console.log("connected to server")
     }
     this.getProfileInformation();
@@ -77,8 +77,6 @@ export default class App extends React.Component {
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
       const distanceFromSource = locationData[0].distance
-
-      console.log("----------", locationData);
 
       this.setState({
         distance : distanceFromSource,

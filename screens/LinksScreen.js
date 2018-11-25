@@ -7,12 +7,22 @@ import moment from 'moment';
 
 
 function distanceFromSource(arr, userId){
-  let correctDistance = 0;
 
   arr.forEach((item) => {
-    
+    if(item.userId = userId) {
+      console.log("============================")
+      console.log("THIS IS THE ARRAY ID", item.userId)
+      console.log("THIS IS THE USERID", userId)
+      console.log(item.distance)
+      console.log("============================")
+      return <Text>{item.distance}</Text>
+    }
   })
 }
+
+// TESTING CODE START
+
+//TESTING CODE END
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
@@ -55,23 +65,11 @@ class Card extends React.Component {
   }
 
   render() {
-    const { connectedFriendsDistances} = this.props.screenProps
     const { user = {} } = this.props;
     const { first_name, profile_picture} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
-
-    
-  
-    connectedFriendsDistances.forEach((friend, index) => {
-    
-      if(user.id = Object.keys(friend)[0]) {
-        distance = Object.values(friend)[0].distance
-      }
-      
-    })
-
     return (
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
@@ -82,7 +80,11 @@ class Card extends React.Component {
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
           
-          <Text >{distance}</Text>
+          {/* {console.log("THIS IS THE USER ID IN THE THINGYYYYYY", user.id)} */}
+          {/* {console.log("WHAT IS THIS", this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id))} */}
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+          {/* <Text>Distance: {this.props.distance(connectedFriendsDistances, user.id)}</Text> */}
+          
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -112,6 +114,7 @@ export default class LinksScreen extends React.Component {
       // deleted: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
+    this.distanceFromSource = this.distanceFromSource.bind(this);
   }
 
   componentDidMount() {
@@ -137,10 +140,28 @@ export default class LinksScreen extends React.Component {
       .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
+  distanceFromSource(arr, whatever){
+
+    arr.forEach((item) => {
+      if(item.userId == whatever) {
+        console.log("============================")
+        console.log("ARRAY ID: ", item.userId, "userId: ", whatever, "DISTANCE", item.distance)
+        console.log("THIS IS THE USERID", whatever)
+      } 
+      else {
+        console.log("FAILED======================");
+      }
+    })
+  }
+
   render() {
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
+    // console.log(connectedFriendsDistances)
+    // console.log(this.distanceFromSource);
 
+
+    // console.log("THISTHISTHISHTITHS",this.distanceFromSource(connectedFriendsDistances,2));
     // console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
 
     // Builds out a card for each connection
@@ -153,7 +174,7 @@ export default class LinksScreen extends React.Component {
           >
             <ScrollView>
               { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  {...this.props}/>
+                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  distance={ this.distanceFromSource } {...this.props}/>
               )}
             </ScrollView>
           </ImageBackground>
