@@ -3,9 +3,7 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-var Connections = require('../Connection.json');
 import moment from 'moment';
-
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
@@ -25,7 +23,6 @@ function CardOpen(props) {
             title= 'Delete'
             />
           </TouchableOpacity>
-
         </View>
     )
 }
@@ -51,14 +48,14 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    this.props.navigation.navigate('Track', { user: this.props.user });
+    this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
 
 
   render() {
-    const { user = {}, isNear = false } = this.props;
-    const { first_name, profile_picture } = user;
+    const { user = {} } = this.props;
+    const { first_name, profile_picture} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -68,10 +65,12 @@ class Card extends React.Component {
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
 
-        <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null, isNear ? styles.near : null]}>
+        <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
 
             {
@@ -82,9 +81,6 @@ class Card extends React.Component {
 
         </View>
       </TouchableOpacity>
-
-
-
     )
   }
 }
@@ -105,7 +101,7 @@ export default class LinksScreen extends React.Component {
       isNear: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
-    this.getConnections = this.getConnections.bind(this);
+    this.distanceFromSource = this.distanceFromSource.bind(this);
   }
 
   componentDidMount() {
@@ -117,40 +113,43 @@ export default class LinksScreen extends React.Component {
     .catch(err => console.warn(err))
   }
 
-  renderPage() {
-    this.setState({currentUserId: this.props.screenProps.currentUserId},
-      )
-  }
-
-  getConnections(){
-    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
-    .then((res) => {
-      this.setState({ userConnections: res.data })
-    })
-    .catch(err => console.warn(err))
-  }
-
   deleteConnection(conn_id) {
-    console.log("HI");
-    axios.post(`${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`)
+    axios({
+      method: 'post',
+      url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
+      data: {
+        userId: this.state.currentUserId,
+        currentConnectionId: conn_id,
+      }
+    })
       .then((res) => {
         this.setState({userConnections: res.data});
       })
       .catch((err) => console.warn(err))
+  }
 
+  distanceFromSource(arr, userId){
+    let distance = 0;
+    arr.forEach((item) => {
+      if(item.userId == userId) {
+        distance = item.distance;
+      }
+    })
+    return distance
   }
 
   // Need function with websocket data to update state of isNear above.
 
-
-
   render() {
-
     const { userConnections } = this.state;
-
+    const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
         <View style={app.linksContainer}>
+          <ImageBackground
+          source={require('../assets/images/background.png')}
+          style={{width: '100%', height: '100%'}}
+          >
             <ScrollView  style={styles.container}>
               { userConnections.map(
                 (user, index) => <Card
@@ -158,10 +157,12 @@ export default class LinksScreen extends React.Component {
                 deleteConnection={this.deleteConnection}
                 user={ user }
                 key={ user.id }
+                distance={ this.distanceFromSource }
                 {...this.props}
                 />
               )}
             </ScrollView>
+          </ImageBackground>
         </View>
 
     );

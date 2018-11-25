@@ -37,7 +37,7 @@ app.get('/user/:id', (req,res) => {
 app.get('/user/:id/connections', (req, res) => {
   dataHelpers.getConnectUsersWithNuggets(Number(req.params.id), (data)=> {
     res.json(data);
-  })
+  }) 
 });
 
 //----------------------CREATE NEW CONNECTION --------------------//
@@ -45,11 +45,10 @@ app.get('/user/:id/connections', (req, res) => {
 app.post('/user/:id/connections/new', (req,res) => {
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((response) => {
-    // if(response.data.length < 3){  //maximum of 3 connections
+    if(response.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
       .then((dataResults) => {
 
-        //2,3,4
         let randomUsers = [];
         dataResults.forEach((user) => {
           response.data.forEach((otherUser) => {
@@ -70,15 +69,20 @@ app.post('/user/:id/connections/new', (req,res) => {
         let luckyFriend = 0;
         let indexPicker = Math.floor(Math.random() * result.length);
         luckyFriend = result[indexPicker];
-        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then();
+        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((data) => {
+          dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
+            console.log("ARE YOU IN HERE?");
+            res.json(data);
+          })
+        });
         res.end();
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
       })
-    // } else {
-    //   res.end(); //this code is requried to make sure the app does not freeze
-    // }
+    } else {
+      res.end(); //this code is requried to make sure the app does not freeze
+    }
   })
   .catch((err) => {
     console.log(err);
@@ -88,24 +92,13 @@ app.post('/user/:id/connections/new', (req,res) => {
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
 app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
-  dataHelpers.deleteConnectionById(Number((req.params.connection_id)))
+  dataHelpers.deleteConnectionById(Number((req.body.currentConnectionId))) 
     .then((data) => {
-      dataHelpers.getConnectUsersWithNuggets(Number(req.params.user_id), (data)=> {
+      dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
         res.json(data);
       })
     })
 });
-
-//----------------------GET NUMBER OF FRIENDS----------------------//
-
-app.get('/user/:id/friends', (req, res) => {
-  dataHelpers.findAllFriends(Number(req.params.id))
-  .then((data) => {
-    res.json(data.length)
-  })
-
-});
-
 
 //----------------------ADD A FRIEND----------------------//
 

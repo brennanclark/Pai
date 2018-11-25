@@ -40,7 +40,7 @@ function QrCode(props) {
   return (
     <View style={styles.profileImage}>
     <QRCode
-        value="somestring"
+        value= {props.currentId}
         size={200}
         bgColor='purple'
         fgColor='white'/>
@@ -53,9 +53,25 @@ export default class ProfileScreen extends React.Component {
     header: null,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isImage: true,
+    }
+  }
+
+  _handleOnPress = (event) => {
+    this.setState((prevState) => {
+      return {
+        isImage: !prevState.isImage
+      }
+    });
+  }
+
   render() {
 
     return (
+
       <View style={app.profileContainer}>
         <ScrollView>
 

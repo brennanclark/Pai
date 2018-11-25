@@ -15,6 +15,9 @@ const wss = new SocketServer({port: PORT});
 
 
 
+function test(connectedUser){
+  return axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
+}
 
 wss.on('connection', (ws) => {
   console.log(`${uuid.create().toString()} Connection Opened`);
@@ -47,34 +50,36 @@ wss.on('connection', (ws) => {
 
     axios.get(`${ipv4}/user/${user}/connections`)
     .then((res) => {
+      var allCalls = [];
+      var mergedData = [] 
       res.data.forEach((connectedUser) => {
-        axios.get(`${ipv4}/user/${connectedUser.id}/location/`)
-        .then((res) => {
-          let otherUser = {
-            latitude: Number(res.data[0].lat),
-            longitude: Number(res.data[0].long),
+        allCalls.push(axios.get(`${ipv4}/user/${connectedUser.id}/location/`));
+      })
+
+      Promise.all([...allCalls]).then(function(values) {
+
+        values.forEach(function(t){
+
+            let otherUser = {
+            latitude: Number(t.data[0].lat),
+            longitude: Number(t.data[0].long),
           }
 
           var dataToUser = {
-            type: "distanceBetweenTwo",
-            user: connectedUser.id,
+            userId: t.data[0].user_id,
             distance: haversine(sourceUser, otherUser, {unit:'meter'})
           }
-          console.log("LKJASLD", dataToUser);
-          ws.send(JSON.stringify(dataToUser));
-
+          mergedData.push(dataToUser);
         })
-      })
-    })
-
-
-
+        console.log(mergedData)
+        ws.send(JSON.stringify(mergedData));
+      });
+    });
   }
 
   ws.on('close', () => {
     console.log('Client disconnected');
   })
-
 
 })
 
