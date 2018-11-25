@@ -7,6 +7,7 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
+// const{ width} = Dimensions.get('window');
 
 
 
@@ -60,8 +61,8 @@ export default class Barcode extends React.Component {
             BarCodeScanner.Constants.BarCodeType.pdf417,
           ]}
           type={this.state.type}
-          style={{ ...StyleSheet.absoluteFillObject }}
-        />
+          style={{ ...StyleSheet.absoluteFill}}
+          />
         <TouchableOpacity
           style={{
             flex: 0.5,

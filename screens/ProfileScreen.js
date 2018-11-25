@@ -1,5 +1,6 @@
 import React from 'react';
 import app from '../styles/container.js';
+import { Badge, Icon } from 'react-native-elements';
 import {
   Image,
   Platform,
@@ -10,12 +11,15 @@ import {
   TouchableOpacity,
   View,
   Button,
+  ImageBackground,
 } from 'react-native';
-
 import { WebBrowser, Permissions, Location } from 'expo';
 import axios from 'react-native-axios';
 import {ipv4} from '../config.json'
 import QRCode from 'react-native-qrcode';
+import { Container, Content, Footer} from 'native-base';
+
+
 
 const Nugget = ({
   question,
@@ -68,29 +72,40 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
-    
+
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <TouchableOpacity onPress={this._handleOnPress}>
-          {
-            this.state.isImage ? <ProfileImage Image={ this.props.screenProps.profileImage  }/> : <QrCode currentId={this.props.screenProps.currentUserId} testProp={this.props.navigation}/>
-          }
-          </TouchableOpacity>
-          <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
-          <Text style={styles.friendCounter}></Text>
-          <Text style={styles.friendCounter}>Friends: {this.props.screenProps.friends}</Text>
+
+      <View style={app.profileContainer}>
+        <ScrollView>
+
+          <ProfileImage Image={ this.props.screenProps.profileImage  }/>
+
+          <View style={{flexDirection: 'row', justifyConent: 'space-between'}}>
+            <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
+
+              <View style={styles.friendCounter}>
+
+                <Badge
+                textStyle={{ color: 'orange' }}
+                >
+
+                <Icon
+                type='simple-line-icon'
+                name='badge'
+                size= {25}
+                color= 'gold'
+                />
+
+                  <Text style={{color: 'gold'}}>3 Friends</Text>
+
+                </Badge>
+
+              </View>
+          </View>
+
+          <View style={styles.hline}/>
 
           <Text style={styles.title}>Nuggets</Text>
-
-          <Text style={styles.friendCounter}>Distance: {this.props.screenProps.distance}</Text>
-
-          <Button
-          onPress= {this.props.screenProps.findConnection}
-          title = "find match"
-          color = "purple"/>
-
-        <Text style={styles.title}>Nuggets</Text>
 
           <FlatList
             data={this.props.screenProps.nuggets}
@@ -106,30 +121,37 @@ export default class ProfileScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
+
   profileImage: {
-    width: 175,
-    height: 175,
+    width: 347,
+    height: 347,
     alignSelf: 'center',
-    borderRadius: 10,
+    marginBottom: 10,
   },
 
   profileName: {
     fontSize: 50,
-    textAlign: 'center',
-    margin: 5,
+    alignSelf: 'center',
+    flex: 4,
+  },
+  friendCounter: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
   },
 
-  friendCounter: {
-    textAlign: 'left',
+  hline: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginTop: 15,
+    marginBottom: 5,
   },
 
   title: {
-    fontSize:30,
+    marginTop: 10,
     textAlign: 'center',
-  },
-
-  nugget: {
-    padding: 5,
+    fontSize:30,
   },
 
   item: {

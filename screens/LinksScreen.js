@@ -4,6 +4,7 @@ import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
 import moment from 'moment';
+// import { RSA_PKCS1_OAEP_PADDING } from 'constants';
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
@@ -116,12 +117,16 @@ export default class LinksScreen extends React.Component {
 
   distanceFromSource(arr, userId){
     let distance = 0;
-    arr.forEach((item) => {
-      if(item.userId == userId) {
-        distance = item.distance;
-      } 
-    })
-    return distance
+    if(arr[0]) {
+      arr.forEach((item) => {
+        if(item.userId == userId) {
+          distance = item.distance;
+        } 
+      })
+      return distance
+    } else {
+      alert('Wait for the data to load!');
+    }
   }
 
   render() {
