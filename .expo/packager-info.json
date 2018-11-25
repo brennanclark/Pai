@@ -1,9 +1,9 @@
 {
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://sg-m5m.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.sg-m5m.anonymous.pai.exp.direct",
-  "ngrokPid": 14382,
+  "expoServerPort": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 14356
+  "packagerPort": null,
+  "packagerPid": null
 }
