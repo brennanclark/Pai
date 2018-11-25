@@ -4,6 +4,8 @@ import QRCode from 'react-native-qrcode';
 import { Icon } from 'react-native-elements';
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
+import { Container, Content, Badge} from 'native-base';
+
 
 
 

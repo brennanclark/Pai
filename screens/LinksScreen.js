@@ -3,6 +3,7 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
 
 
@@ -49,7 +50,6 @@ class Card extends React.Component {
   render() {
     // console.log('================',this.props.screenProps.connectedFriendsDistances)
     const { user = {} } = this.props;
-    console.log("User", user);
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
@@ -64,7 +64,12 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-          <Text style={styles.friends}>friends : {number_of_friends}</Text>
+          <Text style={styles.friends}>friends:</Text>
+          <Badge component={TouchableNative}
+                 value={number_of_friends}
+                 textStyle={{color: 'orange'}}
+                 containerStyle={{backgroundColor: 'grey'}}
+                 />
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -111,7 +116,7 @@ export default class LinksScreen extends React.Component {
       }
     })
       .then((res) => {
-        console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
+        // console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         this.setState({userConnections: res.data});
       })
       .catch((err) => console.warn("THIS IS AN ERROR", err))

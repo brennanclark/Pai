@@ -16,6 +16,10 @@ import { WebBrowser, Permissions, Location } from 'expo';
 import axios from 'react-native-axios';
 import {ipv4} from '../config.json'
 import QRCode from 'react-native-qrcode';
+import { Badge } from 'react-native-elements';
+import { Container, Content, Footer} from 'native-base';
+
+
 
 const Nugget = ({
   question,
@@ -68,7 +72,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
-    
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -80,6 +84,11 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
           <Text style={styles.friendCounter}></Text>
           <Text style={styles.friendCounter}>Friends: {this.props.screenProps.friends}</Text>
+          <Badge
+            value={this.props.screenProps.friends}
+            textStyle={{ color: 'orange' }}
+            containerStyle={{backgroundColor: 'green'}, {width: '8%'}}
+          />
 
           <Text style={styles.title}>Nuggets</Text>
 
