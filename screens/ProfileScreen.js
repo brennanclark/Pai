@@ -87,7 +87,7 @@ export default class ProfileScreen extends React.Component {
           <Badge
             value={this.props.screenProps.friends}
             textStyle={{ color: 'orange' }}
-            containerStyle={{backgroundColor: 'green'}, {width: '8%'}}
+            containerStyle={{backgroundColor: 'green'}, {width: '10%'}}
           />
 
           <Text style={styles.title}>Nuggets</Text>

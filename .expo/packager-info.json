@@ -1,17 +1,9 @@
 {
   "expoServerPort": 19000,
-<<<<<<< HEAD
-  "packagerPort": 19001,
-  "packagerPid": 13734,
-  "expoServerNgrokUrl": "https://n7-p7k.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.n7-p7k.anonymous.pai.exp.direct",
-  "ngrokPid": 13758
-=======
-  "expoServerNgrokUrl": "https://n7-p7k.anonymous.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.n7-p7k.anonymous.pai.exp.direct",
-  "ngrokPid": 22002,
+  "expoServerNgrokUrl": "https://sg-m5m.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.sg-m5m.anonymous.pai.exp.direct",
+  "ngrokPid": 14382,
   "devToolsPort": 19002,
-  "packagerPort": 19004,
-  "packagerPid": 21968
->>>>>>> bb96b62e8dd0241e6775a8e448e5c512a0efaae6
+  "packagerPort": 19003,
+  "packagerPid": 14356
 }

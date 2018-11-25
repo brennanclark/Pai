@@ -40,7 +40,7 @@ class QrCode extends React.Component {
     <View>
       <View style={styles.qr}>
         <QRCode
-          value= '1'
+          value=
           size={200}
           bgColor='black'
           fgColor='white'
@@ -105,7 +105,14 @@ export default class TrackScreen extends React.Component {
        </Text>
       <TouchableOpacity onPress={this._handleOnPress}>
       {
-        this.state.isImage ? <QrCode navigation={this.props.navigation}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
+        this.state.isImage ?
+        <QrCode
+        navigation={this.props.navigation}/>
+        : 
+        <ProfileImage
+        style={styles.trackImage}
+        Image={connection.profile_picture}
+        />
       }
       </TouchableOpacity>
 
