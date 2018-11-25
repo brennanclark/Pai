@@ -5,25 +5,6 @@ import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHi
 const {ipv4} = require('../config.json');
 import moment from 'moment';
 
-
-function distanceFromSource(arr, userId){
-
-  arr.forEach((item) => {
-    if(item.userId = userId) {
-      console.log("============================")
-      console.log("THIS IS THE ARRAY ID", item.userId)
-      console.log("THIS IS THE USERID", userId)
-      console.log(item.distance)
-      console.log("============================")
-      return <Text>{item.distance}</Text>
-    }
-  })
-}
-
-// TESTING CODE START
-
-//TESTING CODE END
-
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
 
@@ -79,12 +60,8 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-          
-          {/* {console.log("THIS IS THE USER ID IN THE THINGYYYYYY", user.id)} */}
-          {/* {console.log("WHAT IS THIS", this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id))} */}
+        
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
-          {/* <Text>Distance: {this.props.distance(connectedFriendsDistances, user.id)}</Text> */}
-          
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -140,18 +117,20 @@ export default class LinksScreen extends React.Component {
       .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
-  distanceFromSource(arr, whatever){
-
+  distanceFromSource(arr, userId){
+    let distance = 0;
     arr.forEach((item) => {
-      if(item.userId == whatever) {
+      if(item.userId == userId) {
         console.log("============================")
-        console.log("ARRAY ID: ", item.userId, "userId: ", whatever, "DISTANCE", item.distance)
-        console.log("THIS IS THE USERID", whatever)
+        console.log("ARRAY ID: ", item.userId, "userId: ", userId, "DISTANCE", item.distance)
+        console.log("THIS IS THE USERID", userId)
+        distance = item.distance;
       } 
       else {
         console.log("FAILED======================");
       }
     })
+    return distance
   }
 
   render() {

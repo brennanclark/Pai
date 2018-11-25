@@ -2,8 +2,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://4c-zf3.anonymous.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.4c-zf3.anonymous.pai.exp.direct",
-  "ngrokPid": 19070,
+  "ngrokPid": 21575,
   "devToolsPort": 19002,
   "packagerPort": 19003,
-  "packagerPid": 19043
+  "packagerPid": 21549
 }
