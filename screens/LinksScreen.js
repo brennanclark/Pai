@@ -51,6 +51,8 @@ class Card extends React.Component {
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
+
+    let distance = this.
     return (
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
@@ -69,8 +71,6 @@ class Card extends React.Component {
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
       </TouchableOpacity>
-
-
 
     )
   }
@@ -121,14 +121,8 @@ export default class LinksScreen extends React.Component {
     let distance = 0;
     arr.forEach((item) => {
       if(item.userId == userId) {
-        console.log("============================")
-        console.log("ARRAY ID: ", item.userId, "userId: ", userId, "DISTANCE", item.distance)
-        console.log("THIS IS THE USERID", userId)
         distance = item.distance;
       } 
-      else {
-        console.log("FAILED======================");
-      }
     })
     return distance
   }
@@ -136,13 +130,6 @@ export default class LinksScreen extends React.Component {
   render() {
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
-    // console.log(connectedFriendsDistances)
-    // console.log(this.distanceFromSource);
-
-
-    // console.log("THISTHISTHISHTITHS",this.distanceFromSource(connectedFriendsDistances,2));
-    // console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
-
     // Builds out a card for each connection
     return (
 
