@@ -6,10 +6,16 @@ const {ipv4} = require('../config.json');
 import moment from 'moment';
 
 
+function distanceFromSource(arr, userId){
+  let correctDistance = 0;
+
+  arr.forEach((item) => {
+    
+  })
+}
+
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-
-  
 
     return (
         <View style={styles.nuggets}>
@@ -50,15 +56,13 @@ class Card extends React.Component {
 
   render() {
     const { connectedFriendsDistances} = this.props.screenProps
-
     const { user = {} } = this.props;
     const { first_name, profile_picture} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
-    let distance = 0;
 
-    // console.log("SLKDJFLKSDF", connectedFriendsDistances)
+    
   
     connectedFriendsDistances.forEach((friend, index) => {
     
@@ -77,6 +81,7 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          
           <Text >{distance}</Text>
         </View>
             {
@@ -148,7 +153,7 @@ export default class LinksScreen extends React.Component {
           >
             <ScrollView>
               { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index}  {...this.props}/>
+                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  {...this.props}/>
               )}
             </ScrollView>
           </ImageBackground>
