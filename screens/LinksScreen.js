@@ -3,37 +3,52 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, TouchableNative } from 'react-native-elements';
+import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
 
 
 function DistanceColor(props) {
 
   let distance = props.distance
-  let color = ""
   let closestDistance = 50;
   let middleDistance = 100;
 
   function isClose(distance) {
     if(distance <= closestDistance) {
-      return <Text style={styles.testing}>{distance}</Text>
+      return <Icon 
+              name='location-on'
+              color="red"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
+      
     }
   }
 
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
-      return <Text style={styles.testing1}>{distance}</Text>
+      return <Icon 
+              name='location-on'
+              color="blue"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
     }
   }
 
   function endingClass(distance) {
     if(distance > middleDistance) {
-      return <Text style={styles.testing2}>{distance}</Text>
+      return <Icon 
+              name='location-on'
+              color="green"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
     }
   }
  
   return ( 
-    <View>
+    <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
       {middleClose(distance)}
       {endingClass(distance)}
@@ -212,17 +227,9 @@ export default class LinksScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  // container: {
-  //   backgroundColor: 'white',
-  // },
-
-  box: {
-    width: 100,
-    height: 100,
-    zIndex: 0,
+  container: {
+    backgroundColor: 'white',
   },
-
-
 
   header: {
     flexDirection:'row',
@@ -266,21 +273,32 @@ const styles = StyleSheet.create({
 
   //testing code starts here
 
-  testing: {
+  closest: {
     backgroundColor: 'red',
     width: 50,
     height: 50,
+    borderRadius: 10,
+    marginTop: 5,
   },
 
-  testing1: {
+  inBetween: {
     backgroundColor: 'blue',
     width: 50,
     height: 50,
+    borderRadius: 5,
+    marginTop: 5,
   },
 
-  testing2: {
+  further: {
     backgroundColor: 'grey',
     width: 50,
     height: 50,
+    borderRadius: 5,
+    marginTop: 5,
   }, 
+
+  locationIcon: {
+    margin: 20
+    
+  }
 });
