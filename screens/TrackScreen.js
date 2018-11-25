@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity, Button, Animated} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { Ionicons } from '@expo/vector-icons';
+
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
@@ -77,6 +78,11 @@ class QrCode extends React.Component {
 
 export default class TrackScreen extends React.Component {
 
+  static navigationOptions = {
+    // Here we can change the title at the top of the page
+    title: 'Distance Between',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -84,10 +90,17 @@ export default class TrackScreen extends React.Component {
         name: '',
         distance: 50,
         isImage: true,
+
         // more here... except it all comes from props anyway
+
       },
     };
+    console.log("===========", props.screenProps.distance);
   }
+
+
+
+
   _handleOnPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -96,27 +109,54 @@ export default class TrackScreen extends React.Component {
     });
   }
 
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+  }
+
+  componentDidMount() {
+    // const distance = this.props.screenProps.distance;
+    const distance = 2500
+
+
+    Animated.timing(this.animatedValue,  {
+      toValue: distance,
+      duration: 10000,
+
+    }).start();
+  }
+
   render() {
+
+    const interpolateColor = this.animatedValue.interpolate({
+      inputRange: [0, 5000],
+      outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
+    })
+
+    const animatedStyle = {
+      backgroundColor: interpolateColor
+    }
+
     const connection = this.props.navigation.state.params.user;
-    console.log("connection", connection);
+
     return (
-      <View style={styles.page}>
-      <Text style={{fontWeight: 'bold'}}>
-          { connection.first_name }
-       </Text>
-      <TouchableOpacity onPress={this._handleOnPress}>
-      {
-        this.state.isImage ?
-        <QrCode
-        navigation={this.props.navigation}/>
-        :
-        <ProfileImage
-        style={styles.trackImage}
-        Image={connection.profile_picture}
-        />
-      }
-      </TouchableOpacity>
-     </View>
+
+      <Animated.View style={[styles.page, animatedStyle]}>
+
+
+        <View style={styles.page}>
+          <Text style={{fontWeight: 'bold'}}>
+              { connection.first_name }
+          </Text>
+
+          <TouchableOpacity onPress={this._handleOnPress}>
+          {
+            this.state.isImage ? <QrCode navigation={this.props.navigation}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
+          }
+          </TouchableOpacity>
+
+        </View>
+      </Animated.View>
+
     );
   }
 }
