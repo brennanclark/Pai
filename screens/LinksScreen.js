@@ -1,10 +1,59 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
+
+
+function DistanceColor(props) {
+
+  let distance = props.distance
+  let color = ""
+  let closestDistance = 50;
+  let middleDistance = 100;
+
+  function isClose(distance) {
+    if(distance <= closestDistance) {
+      return <Text style={styles.testing}>{distance}</Text>
+    }
+  }
+
+  function middleClose(distance) {
+    if (distance <= middleDistance && distance > closestDistance) {
+      return <Text style={styles.testing1}>{distance}</Text>
+    }
+  }
+
+  function endingClass(distance) {
+    if(distance > middleDistance) {
+      return <Text style={styles.testing2}>{distance}</Text>
+    }
+  }
+
+
+
+  // if(distance < closestDistance) {
+  //   color = "testing"
+  // } else if (distance < middleDistance && distance > closestDistance) {
+  //   color = "testing1"
+  // }
+  // else {
+  //   color = "testing2"
+  // }
+
+  return ( 
+    <View>
+      {isClose(distance)}
+      {middleClose(distance)}
+      {endingClass(distance)}
+    </View>
+    
+  )
+
+}
+
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
     return (
@@ -44,23 +93,6 @@ class Card extends React.Component {
     this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
-
-
-  changeBackGroundColorDependingOnTheDistance(distance) {
-
-    let hex = 0;
-
-    if(distance < 50) {
-
-
-    } else if (distance < 100 && distance > 50) {
-
-    }
-    else {
-
-    }
-  }
-
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
   }
@@ -73,14 +105,13 @@ class Card extends React.Component {
 
   render() {
 
-    const interpoloateColor = this.animatedValue.interpolate({
+    const interpolateColor = this.animatedValue.interpolate({
       inputRange: [0,150],
       outputRange: ['rgb(0,0,0)', 'rgb(51,250,170)']
     })
     const animatedStyle = {
-      background: interpoloateColor
+      background: interpolateColor
     }
-    console.log("WHAT IS THIS", animatedStyle)
 
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
@@ -96,17 +127,15 @@ class Card extends React.Component {
           <View style={styles.header}>
           
             <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-            <Animated.View style={[styles.box, animatedStyle]}>
             <Text style={styles.name}> {first_name} </Text>
-            </Animated.View>
             <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+            <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
             
           </View>
               {
               this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
               }
-              <Animated.View style={[styles.testing, animatedStyle]}/>
-            
+          
                 <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
               
         </View>
@@ -194,21 +223,17 @@ export default class LinksScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
+  // container: {
+  //   backgroundColor: 'white',
+  // },
 
   box: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 100,
+    height: 100,
+    zIndex: 0,
   },
 
-  testing: {
-    backgroundColor: 'red',
-    width: 50,
-    height: 50,
-  },
+
 
   header: {
     flexDirection:'row',
@@ -249,4 +274,24 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 10,
   },
+
+  //testing code starts here
+
+  testing: {
+    backgroundColor: 'red',
+    width: 50,
+    height: 50,
+  },
+
+  testing1: {
+    backgroundColor: 'blue',
+    width: 50,
+    height: 50,
+  },
+
+  testing2: {
+    backgroundColor: 'grey',
+    width: 50,
+    height: 50,
+  }, 
 });
