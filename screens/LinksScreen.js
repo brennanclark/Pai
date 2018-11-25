@@ -32,7 +32,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
-  
+
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -60,7 +60,7 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-        
+
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
@@ -119,7 +119,7 @@ export default class LinksScreen extends React.Component {
     arr.forEach((item) => {
       if(item.userId == userId) {
         distance = item.distance;
-      } 
+      }
     })
     return distance
   }
@@ -130,18 +130,19 @@ export default class LinksScreen extends React.Component {
     // Builds out a card for each connection
     return (
 
-        <View style={app.container}>
-          <ImageBackground
-          source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
-          style={{width: '100%', height: '100%'}}
-          >
-            <ScrollView>
-              { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  distance={ this.distanceFromSource } {...this.props}/>
-              )}
-            </ScrollView>
-          </ImageBackground>
-        </View>
+
+      <View style={app.container}>
+        <ImageBackground
+        source={require('../assets/images/background.png')}
+        style={{width: '100%', height: '100%'}}
+        >
+          <ScrollView>
+            { userConnections.map(
+              (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  distance={ this.distanceFromSource } {...this.props}/>
+            )}
+          </ScrollView>
+        </ImageBackground>
+      </View>
 
     );
   }

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   Button,
+  ImageBackground,
 } from 'react-native';
 
 import { WebBrowser, Permissions, Location } from 'expo';
@@ -68,9 +69,13 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
-    
+
     return (
       <View style={styles.container}>
+        <ImageBackground
+          source={require('../assets/images/background.png')}
+          style={{width: '100%', height: '100%'}}
+        >
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <TouchableOpacity onPress={this._handleOnPress}>
           {
@@ -99,6 +104,7 @@ export default class ProfileScreen extends React.Component {
             style={styles.info}
           />
         </ScrollView>
+        </ImageBackground>
       </View>
     );
   }
