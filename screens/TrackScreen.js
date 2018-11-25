@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
+import { Container, Content, Badge} from 'native-base';
+
 
 
 

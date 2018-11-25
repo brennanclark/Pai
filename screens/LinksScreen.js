@@ -3,6 +3,7 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
 
 function CardOpen(props) {
@@ -55,7 +56,7 @@ class Card extends React.Component {
 
   render() {
     const { user = {} } = this.props;
-    const { first_name, profile_picture} = user;
+    const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
