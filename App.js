@@ -101,7 +101,6 @@ export default class App extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
-      console.log(response.data)
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,

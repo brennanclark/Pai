@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, Button, Animated} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { Ionicons } from '@expo/vector-icons';
-
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
@@ -97,9 +96,6 @@ export default class TrackScreen extends React.Component {
     };
     console.log("===========", props.screenProps.distance);
   }
-
-
-
 
   _handleOnPress = (event) => {
     this.setState((prevState) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
@@ -24,6 +24,7 @@ function CardOpen(props) {
         </View>
     )
 }
+
 class Card extends React.Component {
   constructor(props){
     super(props)
@@ -42,27 +43,49 @@ class Card extends React.Component {
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
+
+  componentWillMount() {
+    this.animateValue = new Animated.Value(0);
+  }
+
+  changeBackGroundColorDependingOnTheDistance(distance) {
+
+    let hex = 0;
+
+    if(distance < 50) {
+
+
+    } else if (distance < 100 && distance > 50) {
+
+    }
+    else {
+
+    }
+  }
+
   render() {
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
+    let distanceOfEachUser = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
+    console.log("DistanceOfEachUser", distanceOfEachUser);
     return (
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
-        <View style={styles.header}>
-          <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.name}> {first_name} </Text>
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
-        </View>
-            {
-            this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
-            }
-            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+          <View style={styles.header}>
+            <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+            <Text style={styles.name}> {first_name} </Text>
+            <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+          </View>
+              {
+              this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
+              }
+              <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
       </TouchableOpacity>
-    )
+    ) //this is a Lint error, but everything works;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------------//
@@ -126,7 +149,7 @@ export default class LinksScreen extends React.Component {
           source={require('../assets/images/background.png')}
           style={{width: '100%', height: '100%'}}
           >
-            <ScrollView  style={styles.container}>
+            <ScrollView>
               { userConnections.map(
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
