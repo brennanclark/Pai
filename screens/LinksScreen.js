@@ -21,7 +21,6 @@ function DistanceColor(props) {
               containerStyle={styles.locationIcon}
               size= {40}
             />
-      
     }
   }
 
