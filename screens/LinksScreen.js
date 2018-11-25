@@ -7,50 +7,53 @@ import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
 
 
-function DistanceColor(props) {
+class DistanceColor extends React.Component {
 
-  let distance = props.distance
-  let color = ""
-  let closestDistance = 50;
-  let middleDistance = 100;
+  constructor(props) {
+    super(props)
 
-  function isClose(distance) {
-    if(distance <= closestDistance) {
+    this.state = {
+      closestDistance: 100,
+      middleDistance: 250,
+      currentDistance: this.props.distance
+    }
+
+    this.isClose = this.isClose.bind(this)
+    this.middleClose = this.middleClose.bind(this);
+    this.endingClass = this.endingClass.bind(this);
+  }
+
+  isClose() {
+    if(this.state.currentDistance <= this.closestDistance) {
       return <Text style={styles.testing}>{distance}</Text>
     }
   }
 
-  function middleClose(distance) {
-    if (distance <= middleDistance && distance > closestDistance) {
+  middleClose(distance) {
+    if (distance <= this.middleDistance && distance > this.closestDistance) {
       return <Text style={styles.testing1}>{distance}</Text>
     }
   }
 
-  function endingClass(distance) {
-    if(distance > middleDistance) {
+  endingClass(distance) {
+    if(distance > this.middleDistance) {
       return <Text style={styles.testing2}>{distance}</Text>
     }
   }
 
 
 
-  // if(distance < closestDistance) {
-  //   color = "testing"
-  // } else if (distance < middleDistance && distance > closestDistance) {
-  //   color = "testing1"
-  // }
-  // else {
-  //   color = "testing2"
-  // }
+render() {
 
   return ( 
     <View>
-      {isClose(distance)}
-      {middleClose(distance)}
-      {endingClass(distance)}
+      {this.isClose}
+      {this.middleClose(this.props.distance)}
+      {this.endingClass(this.props.distance)}
     </View>
     
   )
+}
 
 }
 
@@ -73,6 +76,8 @@ function CardOpen(props) {
         </View>
     )
 }
+
+
 
 class Card extends React.Component {
   constructor(props){
