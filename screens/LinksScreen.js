@@ -7,53 +7,39 @@ import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
 
 
-class DistanceColor extends React.Component {
+function DistanceColor(props) {
 
-  constructor(props) {
-    super(props)
+  let distance = props.distance
+  let color = ""
+  let closestDistance = 50;
+  let middleDistance = 100;
 
-    this.state = {
-      closestDistance: 100,
-      middleDistance: 250,
-      currentDistance: this.props.distance
-    }
-
-    this.isClose = this.isClose.bind(this)
-    this.middleClose = this.middleClose.bind(this);
-    this.endingClass = this.endingClass.bind(this);
-  }
-
-  isClose() {
-    if(this.state.currentDistance <= this.closestDistance) {
+  function isClose(distance) {
+    if(distance <= closestDistance) {
       return <Text style={styles.testing}>{distance}</Text>
     }
   }
 
-  middleClose(distance) {
-    if (distance <= this.middleDistance && distance > this.closestDistance) {
+  function middleClose(distance) {
+    if (distance <= middleDistance && distance > closestDistance) {
       return <Text style={styles.testing1}>{distance}</Text>
     }
   }
 
-  endingClass(distance) {
-    if(distance > this.middleDistance) {
+  function endingClass(distance) {
+    if(distance > middleDistance) {
       return <Text style={styles.testing2}>{distance}</Text>
     }
   }
-
-
-
-render() {
-
+ 
   return ( 
     <View>
-      {this.isClose}
-      {this.middleClose(this.props.distance)}
-      {this.endingClass(this.props.distance)}
+      {isClose(distance)}
+      {middleClose(distance)}
+      {endingClass(distance)}
     </View>
     
   )
-}
 
 }
 
@@ -76,8 +62,6 @@ function CardOpen(props) {
         </View>
     )
 }
-
-
 
 class Card extends React.Component {
   constructor(props){
