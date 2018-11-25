@@ -49,7 +49,7 @@ export default class App extends React.Component {
     this.socket.onopen = () => {
       setInterval(()=>{
         this._getLocationAsync();
-      },6000)
+      },2500)
       console.log("connected to server")
     }
     this.getProfileInformation();
@@ -66,7 +66,7 @@ export default class App extends React.Component {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true});
 
     this.setState({
       lat: this.lat_kalman.filter(location.coords.latitude),
@@ -86,12 +86,7 @@ export default class App extends React.Component {
       })
     }
   }
-<<<<<<< HEAD
   
-=======
-
-
->>>>>>> 434faf15f56273bbad3d5f8836a14afb368d8bd8
   sendLocationToServer() {
     var locationData = {
       currentUserId: this.state.currentUserId,

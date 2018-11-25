@@ -32,12 +32,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
-<<<<<<< HEAD
   
-=======
-
-
->>>>>>> 434faf15f56273bbad3d5f8836a14afb368d8bd8
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -56,7 +51,6 @@ class Card extends React.Component {
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
 
-    let distance = this.
     return (
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
@@ -75,10 +69,6 @@ class Card extends React.Component {
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
         </View>
       </TouchableOpacity>
-<<<<<<< HEAD
-
-=======
->>>>>>> 434faf15f56273bbad3d5f8836a14afb368d8bd8
     )
   }
 }
@@ -139,7 +129,6 @@ export default class LinksScreen extends React.Component {
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
-<<<<<<< HEAD
 
         <View style={app.container}>
           <ImageBackground
@@ -153,20 +142,6 @@ export default class LinksScreen extends React.Component {
             </ScrollView>
           </ImageBackground>
         </View>
-=======
-      <View style={app.container}>
-        <ImageBackground
-        source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
-        style={{width: '100%', height: '100%'}}
-        >
-          <ScrollView>
-            { userConnections.map(
-              (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
-            )}
-          </ScrollView>
-        </ImageBackground>
-      </View>
->>>>>>> 434faf15f56273bbad3d5f8836a14afb368d8bd8
 
     );
   }

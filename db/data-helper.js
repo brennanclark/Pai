@@ -86,10 +86,6 @@ module.exports = function(knex) {
                 return {
                   ...user,
                   connected_at: connectedAt[0].connected_at,
-<<<<<<< HEAD
-=======
-                  //TODO: FIX THIS as it is not pulling the RIGHT query
->>>>>>> 434faf15f56273bbad3d5f8836a14afb368d8bd8
                   connection_id: connectedAt[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
