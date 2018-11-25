@@ -151,12 +151,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 5,
+    marginLeft: 15,
+    marginRight: 15,
   },
 
   headerText: {
     fontSize: 25,
     fontWeight: 'bold',
     alignSelf: 'center',
+    color: '#474747'
 
   },
 

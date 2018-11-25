@@ -3,8 +3,31 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, TouchableNative } from 'react-native-elements';
+import { Badge, Icon } from 'react-native-elements';
 import moment from 'moment';
+
+
+function Header(props) {
+  return (
+    <View style={styles.header}>
+      <Icon
+      type='simple-line-icon'
+      name='logout'
+      size= {25}
+      color= 'pink'
+      onPress={()=> props.Nav.navigate('Login')}
+      />
+      <Text style={styles.headerText}> Connections </Text>
+      <Icon
+      type='simple-line-icon'
+      name='settings'
+      size= {25}
+      color= 'pink'
+      />
+    </View>
+  )
+}
+
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
     return (
@@ -24,6 +47,7 @@ function CardOpen(props) {
         </View>
     )
 }
+
 class Card extends React.Component {
   constructor(props){
     super(props)
@@ -51,7 +75,7 @@ class Card extends React.Component {
     return (
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
-        <View style={styles.header}>
+        <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
@@ -70,6 +94,7 @@ export default class LinksScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
   constructor(props){
     super(props)
     this.state = {
@@ -81,6 +106,7 @@ export default class LinksScreen extends React.Component {
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
   }
+
   componentDidMount() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
@@ -88,6 +114,7 @@ export default class LinksScreen extends React.Component {
     })
     .catch(err => console.warn(err))
   }
+
   deleteConnection(conn_id) {
     axios({
       method: 'post',
@@ -102,6 +129,7 @@ export default class LinksScreen extends React.Component {
       })
       .catch((err) => console.warn(err))
   }
+
   distanceFromSource(arr, userId){
     let distance = 0;
     if(arr[0]) {
@@ -115,6 +143,9 @@ export default class LinksScreen extends React.Component {
       null;
     }
   }
+
+
+
   // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;
@@ -125,7 +156,8 @@ export default class LinksScreen extends React.Component {
           source={require('../assets/images/background.png')}
           style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
-            <ScrollView  style={styles.container}>
+            <Header/>
+            <ScrollView>
               { userConnections.map(
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
@@ -142,9 +174,22 @@ export default class LinksScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  container: {
-  },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 15,
+    paddingLeft: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 5,
+  },
+  headerText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    color: '#474747'
+  },
+  cardFlow: {
     flexDirection:'row',
   },
   cardClosed: {
