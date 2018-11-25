@@ -5,11 +5,8 @@ import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHi
 const {ipv4} = require('../config.json');
 import moment from 'moment';
 
-
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-  let testing = props.person
-  // console.log(testing);
 
     return (
         <View style={styles.nuggets}>
@@ -35,8 +32,7 @@ class Card extends React.Component {
   state = {
     open: false,
   }
-
-
+  
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -49,9 +45,8 @@ class Card extends React.Component {
   }
 
   render() {
-    // console.log('================',this.props.screenProps.connectedFriendsDistances)
     const { user = {} } = this.props;
-    const { first_name, profile_picture } = user;
+    const { first_name, profile_picture} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -65,6 +60,8 @@ class Card extends React.Component {
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+        
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -91,6 +88,7 @@ export default class LinksScreen extends React.Component {
       // deleted: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
+    this.distanceFromSource = this.distanceFromSource.bind(this);
   }
 
   componentDidMount() {
@@ -111,33 +109,39 @@ export default class LinksScreen extends React.Component {
       }
     })
       .then((res) => {
-        console.log("USER ID", this.state.currentUserId, "    connection id: ", conn_id);
         this.setState({userConnections: res.data});
       })
       .catch((err) => console.warn("THIS IS AN ERROR", err))
   }
 
+  distanceFromSource(arr, userId){
+    let distance = 0;
+    arr.forEach((item) => {
+      if(item.userId == userId) {
+        distance = item.distance;
+      } 
+    })
+    return distance
+  }
+
   render() {
-    // console.log("USER ID", this.state.currentUserId);
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
-
-    console.log("IS THIS WHERE IT IS COMING FROM?", connectedFriendsDistances)
-
     // Builds out a card for each connection
     return (
-      <View style={app.container}>
-        <ImageBackground
-        source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
-        style={{width: '100%', height: '100%'}}
-        >
-          <ScrollView>
-            { userConnections.map(
-              (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={index} {...this.props}/>
-            )}
-          </ScrollView>
-        </ImageBackground>
-      </View>
+
+        <View style={app.container}>
+          <ImageBackground
+          source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
+          style={{width: '100%', height: '100%'}}
+          >
+            <ScrollView>
+              { userConnections.map(
+                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  distance={ this.distanceFromSource } {...this.props}/>
+              )}
+            </ScrollView>
+          </ImageBackground>
+        </View>
 
     );
   }

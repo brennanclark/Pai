@@ -66,7 +66,7 @@ export default class App extends React.Component {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true});
 
     this.setState({
       lat: this.lat_kalman.filter(location.coords.latitude),
@@ -78,9 +78,7 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const TESTING_userKey = Object.keys(...locationData)[0]
-      const TESTING_distanceFromSource = [...locationData]
-      const distanceFromSource = TESTING_distanceFromSource[0][TESTING_userKey].distance
+      const distanceFromSource = locationData[0].distance
 
       this.setState({
         distance : distanceFromSource,
@@ -88,8 +86,7 @@ export default class App extends React.Component {
       })
     }
   }
-
-
+  
   sendLocationToServer() {
     var locationData = {
       currentUserId: this.state.currentUserId,
