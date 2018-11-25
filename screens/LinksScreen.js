@@ -51,8 +51,11 @@ class Card extends React.Component {
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
+    const distanceOfOneFriend = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
 
+    console.log("DISTANCE", distanceOfOneFriend);
     return (
+      
 
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
 
