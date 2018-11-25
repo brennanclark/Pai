@@ -44,9 +44,7 @@ class Card extends React.Component {
     this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
-  componentWillMount() {
-    this.animateValue = new Animated.Value(0);
-  }
+
 
   changeBackGroundColorDependingOnTheDistance(distance) {
 
@@ -63,27 +61,56 @@ class Card extends React.Component {
     }
   }
 
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+  }
+  componentDidMount() {
+    Animated.timing(this.animatedValue, {
+      toValue: 150,
+      duration: 1500
+    }).start();
+  }
+
   render() {
+
+    const interpoloateColor = this.animatedValue.interpolate({
+      inputRange: [0,150],
+      outputRange: ['rgb(0,0,0)', 'rgb(51,250,170)']
+    })
+    const animatedStyle = {
+      background: interpoloateColor
+    }
+    console.log("WHAT IS THIS", animatedStyle)
+
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
     let distanceOfEachUser = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
-    console.log("DistanceOfEachUser", distanceOfEachUser);
+
     return (
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
+      
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
           <View style={styles.header}>
+          
             <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+            <Animated.View style={[styles.box, animatedStyle]}>
             <Text style={styles.name}> {first_name} </Text>
+            </Animated.View>
             <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+            
           </View>
               {
               this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
               }
-              <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+              <Animated.View style={[styles.testing, animatedStyle]}/>
+            
+                <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+              
         </View>
+        
       </TouchableOpacity>
     ) //this is a Lint error, but everything works;
   }
@@ -104,6 +131,9 @@ export default class LinksScreen extends React.Component {
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
   }
+
+
+
   componentDidMount() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
@@ -134,14 +164,11 @@ export default class LinksScreen extends React.Component {
         }
       })
       return distance
-    } else {
-      alert('Wait for the data to load!');
-    }
+    } 
   }
   // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;
-    const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
         <View style={app.linksContainer}>
@@ -170,6 +197,19 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
   },
+
+  box: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  testing: {
+    backgroundColor: 'red',
+    width: 50,
+    height: 50,
+  },
+
   header: {
     flexDirection:'row',
   },
