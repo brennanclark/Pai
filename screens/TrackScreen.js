@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
 import QRCode from 'react-native-qrcode';
-import { Icon } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 
@@ -10,7 +10,8 @@ import Barcode from '../screens/BarCode';
 function ProfileImage(props) {
   return (
     <View>
-      <Image style={styles.trackImage} source={{uri: props.Image}} />
+      <Image style={styles.trackImage} source={{uri: props.Image}}/>
+      <Text style={styles.instruction}> Tap To Scan </Text>
     </View>
   )
 }
@@ -35,18 +36,31 @@ class QrCode extends React.Component {
     if(this.state.isBarCode) {
     return (
     <View>
-      <QRCode
+      <View style={styles.qr}>
+        <QRCode
           value= '1'
           size={200}
-          bgColor='purple'
-          fgColor='white'/>
-          <TouchableOpacity style={styles.captureBtn} onPress={this.takePicture}>
-            <Button
+          bgColor='black'
+          fgColor='white'
+          borderRadius={5}
+        />
+      </View>
+      <View>
+        <TouchableOpacity
+          name="scan"
+          style={styles.captureBtn}
+          onPress={this.takePicture}>
+
+          <Ionicons
+            name='ios-camera'
+            color='black'
+            size={50}
             onPress={this._onPress}
-            title='Scan'
-            />
-          </TouchableOpacity>
-          </View>
+            style={{alignSelf: 'center'}}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
       )
     }
     return (
@@ -57,17 +71,15 @@ class QrCode extends React.Component {
   }
 }
 
+//-------------------------------------------------------------//
+
 export default class TrackScreen extends React.Component {
-  static navigationOptions = {
-    // Here we can change the title at the top of the page
-    title: 'track',
-  };
 
   constructor(props) {
     super(props);
     this.state = {
       user: {
-        name: 'nonsense',
+        name: '',
         distance: 50,
         isImage: true,
         // more here... except it all comes from props anyway
@@ -83,18 +95,18 @@ export default class TrackScreen extends React.Component {
   }
 
   render() {
-    const connection = this.props.navigation.state.params.user.connection_id;
+    const connection = this.props.navigation.state.params.user;
     return (
       <View style={styles.page}>
+      <Text style={{fontWeight: 'bold'}}>
+          { connection.first_name }
+       </Text>
       <TouchableOpacity onPress={this._handleOnPress}>
       {
-        this.state.isImage ? <QrCode navigation={this.props.navigation}/> : <ProfileImage style={styles.trackImage} Image={this.props.navigation.state.params.user.profile_picture}/>
+        this.state.isImage ? <QrCode navigation={this.props.navigation}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
       }
       </TouchableOpacity>
-       <Text>
-          {this.props.navigation.state.params.user.connection_id}
-          { this.props.navigation.state.params.user.first_name }
-       </Text>
+
      </View>
     );
   }
@@ -109,14 +121,16 @@ const styles = StyleSheet.create({
   },
   trackImage: {
     margin: 9,
-    height: 80,
-    width: 80,
-    borderRadius: 10,
+    width: 200,
+    height: 200,
+    borderRadius: 5,
   },
-  iconCamera: {
-
+  qr: {
+    borderRadius: 5,
   },
-  captureBtn: {
-    backgroundColor: 'grey'
+  instruction: {
+    fontWeight: 'bold',
+    alignSelf: 'center'
   }
+
 });
