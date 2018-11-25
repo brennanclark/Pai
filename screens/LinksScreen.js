@@ -3,12 +3,10 @@ import app from '../styles/container.js';
 import axios from 'react-native-axios';
 import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
+import { Badge, TouchableNative } from 'react-native-elements';
 import moment from 'moment';
-// import { RSA_PKCS1_OAEP_PADDING } from 'constants';
-
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-
     return (
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
@@ -17,23 +15,23 @@ function CardOpen(props) {
             <Text>A:{nugget.answer}</Text>
           </View>
             )) }
-
           <TouchableOpacity>
             <Button
             onPress={() => {props.deleteConnection(props.person.connection_id)} }
-            title= 'Delete 🤗'
+            title= 'Delete'
             />
           </TouchableOpacity>
         </View>
     )
 }
-
-
 class Card extends React.Component {
-  state = {
-    open: false,
+  constructor(props){
+    super(props)
+    this.state = {
+      open: false,
+      // near: false,
+    }
   }
-  
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -44,27 +42,18 @@ class Card extends React.Component {
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
-
   render() {
     const { user = {} } = this.props;
-    const { first_name, profile_picture} = user;
+    const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
-    const distanceOfOneFriend = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
-
-    console.log("DISTANCE", distanceOfOneFriend);
     return (
-      
-
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
-
-        <View style={[styles.cardClosed, this.state.open ? styles.cardOpen : null]}>
-
+        <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
         <View style={styles.header}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-        
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
@@ -77,24 +66,21 @@ class Card extends React.Component {
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------------//
-
 export default class LinksScreen extends React.Component {
-
   static navigationOptions = {
     header: null,
   };
-
   constructor(props){
     super(props)
     this.state = {
       userConnections: [],
       currentUserId: this.props.screenProps.currentUserId,
       // deleted: false,
+      isNear: false,
     }
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
   }
-
   componentDidMount() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
@@ -102,7 +88,6 @@ export default class LinksScreen extends React.Component {
     })
     .catch(err => console.warn(err))
   }
-
   deleteConnection(conn_id) {
     axios({
       method: 'post',
@@ -115,82 +100,74 @@ export default class LinksScreen extends React.Component {
       .then((res) => {
         this.setState({userConnections: res.data});
       })
-      .catch((err) => console.warn("THIS IS AN ERROR", err))
+      .catch((err) => console.warn(err))
   }
-
   distanceFromSource(arr, userId){
     let distance = 0;
     if(arr[0]) {
       arr.forEach((item) => {
         if(item.userId == userId) {
           distance = item.distance;
-        } 
+        }
       })
       return distance
     } else {
       alert('Wait for the data to load!');
     }
   }
-
+  // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
-
-        <View style={app.container}>
+        <View style={app.linksContainer}>
           <ImageBackground
-          source={{uri:'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2770058/580/386/m1/fpnw/wm0/periwing-letter-p-logo-01-.jpg?1496098401&s=155373950722705ba03bec43a75c6dff'}}
+          source={require('../assets/images/background.png')}
           style={{width: '100%', height: '100%'}}
           >
-            <ScrollView>
+            <ScrollView  style={styles.container}>
               { userConnections.map(
-                (user, index) => <Card deleteConnection={this.deleteConnection} user={ user } key={ index }  distance={ this.distanceFromSource } {...this.props}/>
+                (user, index) => <Card
+                isNear={index % 2 === 0 /* Every other user for debug reasons */}
+                deleteConnection={this.deleteConnection}
+                user={ user }
+                key={ user.id }
+                distance={ this.distanceFromSource }
+                {...this.props}
+                />
               )}
             </ScrollView>
           </ImageBackground>
         </View>
-
     );
   }
 }
-
 const styles = StyleSheet.create({
-
+  container: {
+    backgroundColor: 'white',
+  },
   header: {
     flexDirection:'row',
   },
-
-  switch: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-  },
-
-
   cardClosed: {
     height: 100,
-    width: 330,
-    margin: 7,
-    backgroundColor: 'lightsteelblue',
-    borderRadius: 10,
-    shadowOffset: {
-    width: 2,
-    height: 2,
-    },
-    shadowColor: 'grey',
-    shadowOpacity: 0.5,
-    shadowRadius: 0.5,
-    opacity: 0.92,
-
+    width: 'auto',
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 2,
   },
   cardOpen: {
     height: 'auto',
   },
+  near: {
+    // borderColor: 'gold',
+    // borderWidth: 5,
+    // borderStyle: 'solid',
+  },
   connectionImage: {
-    margin: 10,
-    height: 80,
-    width: 80,
-    borderRadius: 10,
+    height: 98,
+    width: 100,
+    alignItems: 'center',
   },
   name: {
     lineHeight: 90,
@@ -209,5 +186,4 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 10,
   },
-
 });
