@@ -150,7 +150,7 @@ export default class LinksScreen extends React.Component {
 
     // Builds out a card for each connection
     return (
-        <View style={app.container}>
+        <View style={app.linksContainer}>
             <ScrollView  style={styles.container}>
               { userConnections.map(
                 (user, index) => <Card
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
   cardOpen: {
     height: 'auto',
   },
-  // near: {
-  //   borderColor: 'gold',
-  //   borderWidth: 5,
-  //   borderStyle: 'solid',
-  // },
+  near: {
+    // borderColor: 'gold',
+    // borderWidth: 5,
+    // borderStyle: 'solid',
+  },
   connectionImage: {
     height: 98,
     width: 100,

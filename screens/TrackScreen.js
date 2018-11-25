@@ -148,18 +148,19 @@ export default class TrackScreen extends React.Component {
 
   componentDidMount() {
     // const distance = this.props.screenProps.distance;
-    const distance = 1000
+    const distance = 2500
 
 
     Animated.timing(this.animatedValue,  {
       toValue: distance,
+      duration: 10000,
 
     }).start();
   }
 
   render() {
     const interpolateColor = this.animatedValue.interpolate({
-      inputRange: [0, 1000],
+      inputRange: [0, 5000],
       outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
     })
 
