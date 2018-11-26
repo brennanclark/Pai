@@ -9,8 +9,6 @@ import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
 // import FlashMessage from "react-native-flash-message";
 
-// const{ width} = Dimensions.get('window');
-
 
 
 export default class Barcode extends React.Component {
@@ -52,15 +50,6 @@ export default class Barcode extends React.Component {
       .catch((err) => console.warn(err))
       alert("CONGRATULATIONS!!! you are now friends");
   }
-
-  //   axios.post(`${ipv4}/connections/${data}/friends`)
-  //   .then(() => {
-  //     //this.props.navigation.navigate('Links');
-  //     this.props.navigation.navigate('Links');
-  //   })
-  //   .catch(err => console.warn(err))
-  //   alert("CONGRATULATIONS!!! you are now friends");
-  // }
 
   render() {
 
