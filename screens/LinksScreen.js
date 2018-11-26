@@ -246,10 +246,6 @@ export default class LinksScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  borderBottom: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -258,7 +254,6 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
-    padding: 5,
   },
   headerText: {
     fontSize: 25,
