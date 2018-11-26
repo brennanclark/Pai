@@ -107,8 +107,8 @@ app.post('/connections/:connection_id/friends', (req, res) => {
     .then((data) => {
       dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
         res.json(data);
+      })
     })
-  })
 });
 
 //-------------------UPDATE USER LOCATION DATABASE ------------//

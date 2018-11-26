@@ -1,11 +1,59 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, ImageBackground } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, Button, Icon } from 'react-native-elements';
+import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
 
+
+
+function DistanceColor(props) {
+  let distance = props.distance
+  let closestDistance = 50;
+  let middleDistance = 100;
+
+  function isClose(distance) {
+    if(distance <= closestDistance) {
+      return <Icon 
+              name='location-on'
+              color="red"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
+    }
+  }
+
+  function middleClose(distance) {
+    if (distance <= middleDistance && distance > closestDistance) {
+      return <Icon 
+              name='location-on'
+              color="blue"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
+    }
+  }
+
+  function endingClass(distance) {
+    if(distance > middleDistance) {
+      return <Icon 
+              name='location-on'
+              color="green"
+              containerStyle={styles.locationIcon}
+              size= {40}
+            />
+    }
+  }
+  return ( 
+    <View style = {{overflow:'hidden'}}>
+      {isClose(distance)}
+      {middleClose(distance)}
+      {endingClass(distance)}
+    </View>
+    
+  )
+}
 
 function Header(props) {
   return (
@@ -86,6 +134,7 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
@@ -270,4 +319,3 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   }
 });
-
