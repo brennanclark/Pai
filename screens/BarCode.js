@@ -41,9 +41,11 @@ export default class Barcode extends React.Component {
       }
     })
       .then((res) => {
-        console.log("WHAT IS THIS DATA", res.data);
-        this.setState({userConnections: res.data}, this.props.navigation.state.params.getConnections(1));
+        this.props.navigation.state.params.getConnections(this.props.currentUserId);
+        setTimeout(() =>{
         this.props.navigation.navigate('Links');
+      },1000);
+
       })
       .catch((err) => console.warn(err))
       alert("CONGRATULATIONS!!! you are now friends");
