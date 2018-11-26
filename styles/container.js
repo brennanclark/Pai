@@ -13,9 +13,10 @@ export default StyleSheet.create({
   linksContainer: {
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 25,
+    paddingTop: 35,
     paddingBottom: 0,
-    backgroundColor: 'white',
+
+
   },
 });
 

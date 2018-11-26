@@ -34,6 +34,7 @@ export default class Barcode extends React.Component {
     this.setState ({ hasCameraPermission: (status === 'granted')});
   }
 
+
   handleBarCodeScanned (conn_id) {
     axios({
       method: 'post',
@@ -41,6 +42,7 @@ export default class Barcode extends React.Component {
       data: {
         userId: this.props.userId,
       }
+
     })
       .then((res) => {
         this.props.navigation.state.params.getConnections(this.props.currentUserId);
