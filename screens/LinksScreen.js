@@ -59,7 +59,6 @@ function DistanceColor(props) {
 
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
-
     return (
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
@@ -68,7 +67,6 @@ function CardOpen(props) {
             <Text>A:{nugget.answer}</Text>
           </View>
             )) }
-
           <TouchableOpacity>
             <Button
             onPress={() => {props.deleteConnection(props.person.connection_id)} }
@@ -79,21 +77,14 @@ function CardOpen(props) {
     )
 }
 
-
 class Card extends React.Component {
-
-
   constructor(props){
     super(props)
     this.state = {
       open: false,
       // near: false,
     }
-
   }
-
-
-
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -102,43 +93,40 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    console.log(this.props.getConnections());
-    this.props.navigation.navigate('Track',
-    { user: this.props.user, navigation: this.props.navigation, getConnections: this.props.getConnections});
+    this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
-
-
   render() {
+
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
-
+    let distanceOfEachUser = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
 
     return (
-
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
-
+      
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
-        <View style={styles.header}>
-          <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.name}> {first_name} </Text>
-          <DistanceColor />
-
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+          <View style={styles.header}>
+          
+            <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+            <Text style={styles.name}> {first_name} </Text>
+            <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+            <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
+            
+          </View>
+              {
+              this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
+              }
+          
+                <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+              
         </View>
-
-            {
-            this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
-            }
-
-            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
-
-        </View>
+        
       </TouchableOpacity>
-    )
+    ) //this is a Lint error, but everything works;
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------------//
@@ -215,7 +203,6 @@ export default class LinksScreen extends React.Component {
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
                 deleteConnection={this.deleteConnection}
-                getConnections={this.getConnections}
                 user={ user }
                 key={ user.id }
                 distance={ this.distanceFromSource }

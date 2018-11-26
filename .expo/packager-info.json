@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://qt-ek5.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.qt-ek5.anonymous.pai.exp.direct",
+  "ngrokPid": 34733,
   "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null
+  "packagerPort": 19005,
+  "packagerPid": 34714
 }
