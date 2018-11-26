@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import { WebBrowser, Permissions, Location } from 'expo';
 import axios from 'react-native-axios';
-import {ipv4} from '../config.json'
 import QRCode from 'react-native-qrcode';
 import { Container, Content, Footer} from 'native-base';
 

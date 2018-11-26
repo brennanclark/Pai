@@ -27,7 +27,6 @@ export default class App extends React.Component {
       distance: 0,
       connectedPotentialFriends: {},
       number_of_friends: 0,
-
     }
 
     this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
@@ -84,7 +83,7 @@ export default class App extends React.Component {
       if(locationData[0]){
         distanceFromSource = locationData[0].distance
       } //fixes bug when there is no connections;
-      
+
       this.setState({
         distance : distanceFromSource,
         connectedPotentialFriends : locationData
@@ -135,7 +134,7 @@ export default class App extends React.Component {
   changeToUserOne() {
     this.setState({
       currentUserId :1,
-    }, this.props.navigation)
+    }, this.getProfileInformation)
   }
   changeToUserTwo() {
     this.setState({
