@@ -7,7 +7,7 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
-import FlashMessage from "react-native-flash-message";
+// import FlashMessage from "react-native-flash-message";
 
 // const{ width} = Dimensions.get('window');
 
