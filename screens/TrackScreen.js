@@ -71,7 +71,12 @@ class QrCode extends React.Component {
     }
     return (
       <View>
-        <Barcode currentUserId={this.props.currentUserId} getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} userId={this.props.userId}/>
+        <Barcode
+        currentUserId={this.props.currentUserId}
+        getConnections={this.props.navigation.state.params.getConnections}
+        navigation={this.props.navigation}
+        getProfile={this.props.getProfile}
+        userId={this.props.userId}/>
       </View>
     )
   }
@@ -99,8 +104,6 @@ export default class TrackScreen extends React.Component {
       },
     };
   }
-
-
 
 
   _handleOnPress = (event) => {
@@ -139,8 +142,6 @@ export default class TrackScreen extends React.Component {
     }
 
     const connection = this.props.navigation.state.params.user;
-    // console.log("User id", connection.id);
-
 
 
     return (
@@ -153,7 +154,18 @@ export default class TrackScreen extends React.Component {
 
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.state.isImage ? <QrCode currentUserId={this.props.screenProps.currentUserId} getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} connection={connection.connection_id} userId={connection.id}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
+            this.state.isImage ?
+            <QrCode
+            getProfile={this.props.screenProps.getProfile}
+            currentUserId={this.props.screenProps.currentUserId}
+            getConnections={this.props.navigation.state.params.getConnections}
+            navigation={this.props.navigation}
+            connection={connection.connection_id}
+            userId={connection.id}/>
+            :
+            <ProfileImage
+            style={styles.trackImage}
+            Image={connection.profile_picture}/>
           }
           </TouchableOpacity>
 

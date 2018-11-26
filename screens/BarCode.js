@@ -42,6 +42,7 @@ export default class Barcode extends React.Component {
     })
       .then((res) => {
         this.props.navigation.state.params.getConnections(this.props.currentUserId);
+        this.props.navigation.state.params.getProfile(this.props.currentUserId);
         setTimeout(() =>{
         this.props.navigation.navigate('Links');
       },1000);

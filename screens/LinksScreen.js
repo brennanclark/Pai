@@ -15,7 +15,7 @@ function DistanceColor(props) {
 
   function isClose(distance) {
     if(distance <= closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="red"
               containerStyle={styles.locationIcon}
@@ -26,7 +26,7 @@ function DistanceColor(props) {
 
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="blue"
               containerStyle={styles.locationIcon}
@@ -37,7 +37,7 @@ function DistanceColor(props) {
 
   function endingClass(distance) {
     if(distance > middleDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="green"
               containerStyle={styles.locationIcon}
@@ -45,13 +45,13 @@ function DistanceColor(props) {
             />
     }
   }
-  return ( 
+  return (
     <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
       {middleClose(distance)}
       {endingClass(distance)}
     </View>
-    
+
   )
 }
 
@@ -120,11 +120,17 @@ class Card extends React.Component {
   _onLongPress = (event) => {
     console.log(this.props.getConnections());
     this.props.navigation.navigate('Track',
-    { user: this.props.user, navigation: this.props.navigation, getConnections: this.props.getConnections});
+    { user: this.props.user,
+      navigation: this.props.navigation,
+      getConnections: this.props.getConnections,
+      getProfile: this.props.getProfile
+    });
   }
   render() {
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
+    let friendsTotal = number_of_friends;
+    console.log("Friends", friendsTotal);
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -134,6 +140,7 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          <Text>friends:{friendsTotal}</Text>
           <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
@@ -212,32 +219,31 @@ export default class LinksScreen extends React.Component {
     }
   }
 
-
-
   // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
-          <ImageBackground
-          source={require('../assets/images/background.png')}
-          style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
-          >
-            <Header Nav={ this.props.navigation }/>
-            <ScrollView
-            showsHorizontalScrollIndicator={false}>
-              { userConnections.map(
-                (user, index) => <Card
-                isNear={index % 2 === 0 /* Every other user for debug reasons */}
-                deleteConnection={this.deleteConnection}
-                getConnections={this.getConnections}
-                user={ user }
-                key={ user.id }
-                distance={ this.distanceFromSource }
-                {...this.props}
-                />
-              )}
+      <ImageBackground
+      source={require('../assets/images/background.png')}
+      style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
+      >
+        <Header Nav={ this.props.navigation }/>
+        <ScrollView
+        showsHorizontalScrollIndicator={false}>
+          { userConnections.map(
+            (user, index) => <Card
+            isNear={index % 2 === 0 /* Every other user for debug reasons */}
+            deleteConnection={this.deleteConnection}
+            getConnections={this.getConnections}
+            user={ user }
+            key={ user.id }
+            distance={ this.distanceFromSource }
+            getProfile={this.props.screenProps.getProfile}
+            {...this.props}
+            />
+          )}
             </ScrollView>
           </ImageBackground>
     );
