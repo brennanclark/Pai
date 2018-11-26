@@ -25,10 +25,32 @@ const Nugget = ({
   answer,
 }) => (
   <View style={styles.nuggetContainer}>
-    <Text style={styles.nugget}>{ question }</Text>
-    <Text style={styles.nugget}>{ answer }</Text>
+    <Text style={styles.question}>{ question }</Text>
+    <Text style={styles.answer}>{ answer }</Text>
   </View>
 )
+
+function Header(props) {
+  return (
+    <View style={styles.header}>
+      <Icon
+      type='simple-line-icon'
+      name='logout'
+      size= {25}
+      color= 'pink'
+      onPress={()=> props.Nav.navigate('Login')}
+      />
+      <Text style={styles.headerText}> Profile </Text>
+      <Icon
+      type='simple-line-icon'
+      name='settings'
+      size= {30}
+      color= 'pink'
+      />
+    </View>
+  )
+}
+
 
 function ProfileImage(props) {
   return (
@@ -50,6 +72,8 @@ function QrCode(props) {
   )
 }
 
+
+
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -70,13 +94,22 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  render() {
-    // console.log("Screen props friends", this.props.screenProps.friends);
+
+  render(props) {
 
     return (
 
-      <View style={app.profileContainer}>
-        <ScrollView>
+        <ImageBackground
+        source={require('../assets/images/background.png')}
+        style={[app.profileContainer, {width: '100%', height: '100%'}]}
+        >
+
+        <Header Nav={this.props.navigation} />
+
+
+        <ScrollView
+        showsHorizontalScrollIndicator={false}>
+
 
           <ProfileImage Image={ this.props.screenProps.profileImage  }/>
 
@@ -86,53 +119,66 @@ export default class ProfileScreen extends React.Component {
               <View style={styles.friendCounter}>
 
                 <Badge
-                textStyle={{ color: 'orange' }}
+                textStyle={{ color: 'pink' }}
                 >
 
                 <Icon
                 type='simple-line-icon'
                 name='badge'
-                size= {25}
-                color= 'gold'
+                size= {35}
+                color= 'pink'
                 />
 
-                  <Text style={{color: 'gold'}}>{this.props.screenProps.friends} Friends</Text>
+
+                <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends</Text>
 
                 </Badge>
 
               </View>
           </View>
 
-          <View style={styles.hline}/>
-
-          <Text style={styles.title}>Nuggets</Text>
-
           <FlatList
             data={this.props.screenProps.nuggets}
             renderItem={({item}) => <Nugget { ...item }/>}
             keyExtractor={(item, index) => index.toString()}
-            style={styles.info}
           />
         </ScrollView>
-      </View>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
 
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+
+  headerText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    color: '#474747'
+
+  },
 
   profileImage: {
-    width: 347,
-    height: 347,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
     alignSelf: 'center',
-    marginBottom: 10,
+    marginBottom: 5,
   },
 
   profileName: {
     fontSize: 50,
     alignSelf: 'center',
     flex: 4,
+    color: '#474747'
   },
   friendCounter: {
     flexDirection: 'column',
@@ -141,24 +187,26 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
 
-  hline: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    marginTop: 15,
+  nuggetContainer: {
+    borderRadius: 10,
+    borderColor: '#474747',
+    borderWidth: 1,
+    marginTop: 10,
+    margin: 5,
+    padding: 5,
+  },
+
+  question: {
+    color: '#474747',
     marginBottom: 5,
   },
 
-  title: {
-    marginTop: 10,
-    textAlign: 'center',
-    fontSize:30,
+  answer: {
+    color: 'black',
+    fontWeight: 'bold',
   },
 
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
+
 
 
 })

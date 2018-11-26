@@ -7,8 +7,8 @@ import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
 
 
-function DistanceColor(props) {
 
+function DistanceColor(props) {
   let distance = props.distance
   let closestDistance = 50;
   let middleDistance = 100;
@@ -45,7 +45,6 @@ function DistanceColor(props) {
             />
     }
   }
- 
   return ( 
     <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
@@ -54,7 +53,27 @@ function DistanceColor(props) {
     </View>
     
   )
+}
 
+function Header(props) {
+  return (
+    <View style={styles.header}>
+      <Icon
+      type='ionicon'
+      name='ios-arrow-back'
+      size= {30}
+      color= 'pink'
+      onPress={()=> props.Nav.navigate('Profile')}
+      />
+      <Text style={styles.headerText}> Connections </Text>
+      <Icon
+      type='ionicon'
+      name='ios-information-circle-outline'
+      size= {35}
+      color= 'pink'
+      />
+    </View>
+  )
 }
 
 function CardOpen(props) {
@@ -62,17 +81,22 @@ function CardOpen(props) {
     return (
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
-          <View key={i}>
-            <Text>Q:{nugget.question}</Text>
-            <Text>A:{nugget.answer}</Text>
+          <View style={styles.nuggetContainer} key={i}>
+            <Text style={styles.question}>{nugget.question}</Text>
+            <Text style={styles.answer}>{nugget.answer}</Text>
           </View>
             )) }
-          <TouchableOpacity>
-            <Button
+          <View style={styles.delete}>
+            <Icon
+            type='font-awesome'
+            name='user-times'
             onPress={() => {props.deleteConnection(props.person.connection_id)} }
-            title= 'Delete'
+            color='pink'
+            backgroundColor='#474747'
+            size={30}
             />
-          </TouchableOpacity>
+          </View>
+
         </View>
     )
 }
@@ -85,6 +109,7 @@ class Card extends React.Component {
       // near: false,
     }
   }
+
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -93,40 +118,32 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
+    console.log(this.props.getConnections());
+    this.props.navigation.navigate('Track',
+    { user: this.props.user, navigation: this.props.navigation, getConnections: this.props.getConnections});
   }
-
   render() {
-
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
-    let distanceOfEachUser = this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)
-
     return (
       <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
-      
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
-          <View style={styles.header}>
-          
-            <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-            <Text style={styles.name}> {first_name} </Text>
-            <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
-            <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
-            
-          </View>
-              {
-              this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
-              }
-          
-                <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
-              
+        <View style={styles.cardFlow}>
+          <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+          <Text style={styles.name}> {first_name} </Text>
+          <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
-        
+            {
+            this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
+            }
+            <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+        </View>
       </TouchableOpacity>
-    ) //this is a Lint error, but everything works;
+    )
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------------//
@@ -134,6 +151,7 @@ export default class LinksScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
   constructor(props){
     super(props)
     this.state = {
@@ -144,9 +162,9 @@ export default class LinksScreen extends React.Component {
     }
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
-    this.getConnections = this.getConnections.bind(this);
+    this.getConnections = this.getConnections.bind(this)
   }
-  
+
   componentDidMount() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
@@ -154,10 +172,11 @@ export default class LinksScreen extends React.Component {
     })
     .catch(err => console.warn(err))
   }
+
   deleteConnection(conn_id) {
     axios({
       method: 'post',
-      url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
+      url: `${ipv4}/connections/${conn_id}/delete`,
       data: {
         userId: this.state.currentUserId,
         currentConnectionId: conn_id,
@@ -170,8 +189,10 @@ export default class LinksScreen extends React.Component {
   }
 
   getConnections() {
+    console.log("FUNCTION WAS CALLED")
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
+      console.log("GET CONNECTIONS WAS SUCCESSFUL");
       this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
@@ -186,23 +207,31 @@ export default class LinksScreen extends React.Component {
         }
       })
       return distance
-    } 
+    } else {
+      return null;
+    }
   }
+
+
+
   // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;
+    const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
-        <View style={app.linksContainer}>
           <ImageBackground
           source={require('../assets/images/background.png')}
-          style={{width: '100%', height: '100%'}}
+          style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
-            <ScrollView>
+            <Header Nav={ this.props.navigation }/>
+            <ScrollView
+            showsHorizontalScrollIndicator={false}>
               { userConnections.map(
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
                 deleteConnection={this.deleteConnection}
+                getConnections={this.getConnections}
                 user={ user }
                 key={ user.id }
                 distance={ this.distanceFromSource }
@@ -211,23 +240,31 @@ export default class LinksScreen extends React.Component {
               )}
             </ScrollView>
           </ImageBackground>
-        </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
-
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 15,
+    paddingLeft: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15,
+  },
+  headerText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    color: '#474747'
+  },
+  cardFlow: {
     flexDirection:'row',
   },
   cardClosed: {
     height: 100,
     width: 'auto',
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 2,
   },
   cardOpen: {
     height: 'auto',
@@ -245,6 +282,7 @@ const styles = StyleSheet.create({
   name: {
     lineHeight: 90,
     fontSize: 27,
+    color: '#474747',
   },
   expiry: {
     marginTop: -20,
@@ -252,6 +290,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'right',
     margin: 10,
+    color: '#474747',
   },
   nuggets: {
     flexDirection: 'column',
@@ -259,35 +298,24 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 10,
   },
-
-  //testing code starts here
-
-  closest: {
-    backgroundColor: 'red',
-    width: 50,
-    height: 50,
+  nuggetContainer: {
     borderRadius: 10,
-    marginTop: 5,
+    borderColor: '#474747',
+    borderWidth: 1,
+    marginTop: 10,
+    margin: 5,
+    padding: 5,
   },
-
-  inBetween: {
-    backgroundColor: 'blue',
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    marginTop: 5,
+  question: {
+    color: '#474747',
+    marginBottom: 5,
   },
-
-  further: {
-    backgroundColor: 'grey',
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    marginTop: 5,
-  }, 
-
-  locationIcon: {
-    margin: 20
-    
+  answer: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  delete: {
+    width: 30,
+    alignSelf: 'center',
   }
 });
