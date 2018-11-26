@@ -61,6 +61,7 @@ LinksStack.navigationOptions = {
 
 
 export default createBottomTabNavigator({
+
   ProfileStack,
   LinksStack,
 });

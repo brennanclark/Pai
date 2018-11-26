@@ -1,9 +1,9 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View, ListItem, Text, Image, TouchableHighlight, TouchableOpacity, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, Icon } from 'react-native-elements';
+import { Badge, Button, Icon } from 'react-native-elements';
 import moment from 'moment';
 
 
@@ -33,17 +33,22 @@ function CardOpen(props) {
     return (
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
-          <View key={i}>
-            <Text>Q:{nugget.question}</Text>
-            <Text>A:{nugget.answer}</Text>
+          <View style={styles.nuggetContainer} key={i}>
+            <Text style={styles.question}>{nugget.question}</Text>
+            <Text style={styles.answer}>{nugget.answer}</Text>
           </View>
             )) }
-          <TouchableOpacity>
-            <Button
+          <View style={styles.delete}>
+            <Icon
+            type='font-awesome'
+            name='user-times'
             onPress={() => {props.deleteConnection(props.person.connection_id)} }
-            title= 'Delete'
+            color='pink'
+            backgroundColor='#474747'
+            size={30}
             />
-          </TouchableOpacity>
+          </View>
+
         </View>
     )
 }
@@ -229,5 +234,25 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 10,
   },
+  nuggetContainer: {
+    borderRadius: 10,
+    borderColor: '#474747',
+    borderWidth: 1,
+    marginTop: 10,
+    margin: 5,
+    padding: 5,
+  },
+  question: {
+    color: '#474747',
+    marginBottom: 5,
+  },
+  answer: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  delete: {
+    width: 30,
+    alignSelf: 'center',
+  }
 });
 
