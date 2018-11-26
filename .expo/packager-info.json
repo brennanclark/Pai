@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 6383,
-  "expoServerNgrokUrl": "https://d7-9b5.bren.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.d7-9b5.bren.pai.exp.direct",
-  "ngrokPid": 6409
+  "packagerPid": 34463,
+  "expoServerNgrokUrl": "https://qt-ek5.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.qt-ek5.anonymous.pai.exp.direct",
+  "ngrokPid": 34488
 }
