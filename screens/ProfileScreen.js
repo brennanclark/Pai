@@ -72,6 +72,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
+    // console.log("Screen props friends", this.props.screenProps.friends);
 
     return (
 
@@ -96,7 +97,7 @@ export default class ProfileScreen extends React.Component {
                 color= 'gold'
                 />
 
-                  <Text style={{color: 'gold'}}>3 Friends</Text>
+                  <Text style={{color: 'gold'}}>{this.props.screenProps.friends} Friends</Text>
 
                 </Badge>
 

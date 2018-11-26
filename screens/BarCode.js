@@ -32,15 +32,31 @@ export default class Barcode extends React.Component {
     this.setState ({ hasCameraPermission: (status === 'granted')});
   }
 
-  handleBarCodeScanned (data) {
-    axios.post(`${ipv4}/connections/${data}/friends`)
-    .then(() => {
-      //this.props.navigation.navigate('Links');
-      this.props.navigation.navigate('Links');
+  handleBarCodeScanned (conn_id) {
+    axios({
+      method: 'post',
+      url: `${ipv4}/connections/${conn_id}/friends`,
+      data: {
+        userId: this.props.userId,
+      }
     })
-    .catch(err => console.warn(err))
-    alert("CONGRATULATIONS!!! you are now friends");
+      .then((res) => {
+        console.log("WHAT IS THIS DATA", res.data);
+        this.setState({userConnections: res.data}, this.props.navigation.state.params.getConnections(1));
+        this.props.navigation.navigate('Links');
+      })
+      .catch((err) => console.warn(err))
+      alert("CONGRATULATIONS!!! you are now friends");
   }
+
+  //   axios.post(`${ipv4}/connections/${data}/friends`)
+  //   .then(() => {
+  //     //this.props.navigation.navigate('Links');
+  //     this.props.navigation.navigate('Links');
+  //   })
+  //   .catch(err => console.warn(err))
+  //   alert("CONGRATULATIONS!!! you are now friends");
+  // }
 
   render() {
 

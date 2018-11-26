@@ -36,12 +36,16 @@ class QrCode extends React.Component {
   }
 
   render() {
+    let qrConnection = this.props.connection;
+    let qrConnectionString = qrConnection.toString();
+    // console.log("connection string", typeof(qrConnectionString))
+
     if(this.state.isBarCode) {
     return (
     <View>
       <View style={styles.qr}>
         <QRCode
-          value= '1'
+          value= {qrConnectionString}
           size={200}
           bgColor='black'
           fgColor='white'
@@ -68,7 +72,7 @@ class QrCode extends React.Component {
     }
     return (
       <View>
-        <Barcode navigation={this.props.navigation} />
+        <Barcode getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} userId={this.props.userId}/>
       </View>
     )
   }
@@ -95,7 +99,6 @@ export default class TrackScreen extends React.Component {
 
       },
     };
-    console.log("===========", props.screenProps.distance);
   }
 
 
@@ -137,20 +140,19 @@ export default class TrackScreen extends React.Component {
     }
 
     const connection = this.props.navigation.state.params.user;
+    // console.log("User id", connection.id);
 
     return (
-
       <Animated.View style={[styles.page, animatedStyle]}>
-
-
         <View style={styles.page}>
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
+              { connection.connection_id}
           </Text>
 
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.state.isImage ? <QrCode navigation={this.props.navigation}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
+            this.state.isImage ? <QrCode getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} connection={connection.connection_id} userId={connection.id}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
           }
           </TouchableOpacity>
 
