@@ -108,8 +108,8 @@ export default class App extends React.Component {
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
-        number_of_friends: data.friends,
-        // number_of_friends: data.number_of_friends,
+        // number_of_friends: data.friends,
+        number_of_friends: data.number_of_friends,
       })
     })
   }
@@ -157,6 +157,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    // console.log("this.state.numberof friends", this.state.number_of_friends)
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

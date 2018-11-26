@@ -37,7 +37,7 @@ app.get('/user/:id', (req,res) => {
 app.get('/user/:id/connections', (req, res) => {
   dataHelpers.getConnectUsersWithNuggets(Number(req.params.id), (data)=> {
     res.json(data);
-  }) 
+  })
 });
 
 //----------------------CREATE NEW CONNECTION --------------------//
@@ -91,8 +91,8 @@ app.post('/user/:id/connections/new', (req,res) => {
 
 
 //----------------------REMOVE CONNECTION ROUTE----------------------//
-app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
-  dataHelpers.deleteConnectionById(Number((req.body.currentConnectionId))) 
+app.post('/connections/:connection_id/delete', (req, res) => {
+  dataHelpers.deleteConnectionById(Number((req.body.currentConnectionId)))
     .then((data) => {
       dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
         res.json(data);
