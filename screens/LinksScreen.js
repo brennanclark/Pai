@@ -15,7 +15,7 @@ function DistanceColor(props) {
 
   function isClose(distance) {
     if(distance <= closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="red"
               containerStyle={styles.locationIcon}
@@ -26,7 +26,7 @@ function DistanceColor(props) {
 
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="blue"
               containerStyle={styles.locationIcon}
@@ -37,7 +37,7 @@ function DistanceColor(props) {
 
   function endingClass(distance) {
     if(distance > middleDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color="green"
               containerStyle={styles.locationIcon}
@@ -45,13 +45,13 @@ function DistanceColor(props) {
             />
     }
   }
-  return ( 
+  return (
     <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
       {middleClose(distance)}
       {endingClass(distance)}
     </View>
-    
+
   )
 }
 
@@ -224,19 +224,21 @@ export default class LinksScreen extends React.Component {
           source={require('../assets/images/background.png')}
           style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
-            <Header Nav={ this.props.navigation }/>
+            <Header Nav={ this.props.navigation }
+            />
             <ScrollView
-            showsHorizontalScrollIndicator={false}>
+              showsVerticalScrollIndicator={false}>
               { userConnections.map(
-                (user, index) => <Card
-                isNear={index % 2 === 0 /* Every other user for debug reasons */}
-                deleteConnection={this.deleteConnection}
-                getConnections={this.getConnections}
-                user={ user }
-                key={ user.id }
-                distance={ this.distanceFromSource }
-                {...this.props}
-                />
+              (user, index) => <Card
+              isNear={index % 2 === 0 /* Every other user for debug reasons */}
+              deleteConnection={this.deleteConnection}
+              getConnections={this.getConnections}
+              user={ user }
+              key={ user.id }
+              distance={ this.distanceFromSource }
+
+              {...this.props}
+            />
               )}
             </ScrollView>
           </ImageBackground>
@@ -244,6 +246,10 @@ export default class LinksScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  borderBottom: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -252,6 +258,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
+    padding: 5,
   },
   headerText: {
     fontSize: 25,
@@ -265,9 +272,11 @@ const styles = StyleSheet.create({
   cardClosed: {
     height: 100,
     width: 'auto',
+
   },
   cardOpen: {
     height: 'auto',
+
   },
   near: {
     // borderColor: 'gold',
@@ -315,7 +324,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   delete: {
-    width: 30,
+    width: 35,
     alignSelf: 'center',
   }
 });

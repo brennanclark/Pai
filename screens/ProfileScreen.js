@@ -108,33 +108,28 @@ export default class ProfileScreen extends React.Component {
 
 
         <ScrollView
-        showsHorizontalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}>
 
 
           <ProfileImage Image={ this.props.screenProps.profileImage  }/>
 
-          <View style={{flexDirection: 'row', justifyConent: 'space-between'}}>
-            <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
+          <View style={styles.badges}>
 
-              <View style={styles.friendCounter}>
+            <Badge>
+              <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
+            </Badge>
 
-                <Badge
-                textStyle={{ color: 'pink' }}
-                >
-
-                <Icon
-                type='simple-line-icon'
-                name='badge'
-                size= {35}
-                color= 'pink'
-                />
-
-
-                <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends</Text>
-
+                <Badge style={styles.friendCounter} textStyle={{ color: 'pink' }}>
+                  <Icon
+                  type='simple-line-icon'
+                  name='badge'
+                  size= {35}
+                  color= 'pink'
+                  />
+                  <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends
+                  </Text>
                 </Badge>
 
-              </View>
           </View>
 
           <FlatList
@@ -173,18 +168,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 5,
   },
+  badges: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 5,
+    marginRight: 5,
+  },
 
   profileName: {
     fontSize: 50,
     alignSelf: 'center',
-    flex: 4,
-    color: '#474747'
+    color: 'pink'
   },
   friendCounter: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 20,
   },
 
   nuggetContainer: {
