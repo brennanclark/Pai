@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
@@ -90,7 +90,19 @@ function CardOpen(props) {
             <Icon
             type='font-awesome'
             name='user-times'
-            onPress={() => {props.deleteConnection(props.person.connection_id)} }
+            onPress={() => {
+                AlertIOS.prompt(
+                  'Remove Connection',
+                  'Are you sure you want to remove this connection?',
+                  [
+                    {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => props.deleteConnection(props.person.connection_id)},
+                  ],
+                    { cancelable: false }
+                  )
+                //
+              }
+            }
             color='pink'
             backgroundColor='#474747'
             size={30}
