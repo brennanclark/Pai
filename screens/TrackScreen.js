@@ -6,9 +6,6 @@ import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
 
-
-
-
 function ProfileImage(props) {
   return (
     <View>
@@ -94,7 +91,7 @@ export default class TrackScreen extends React.Component {
 
       },
       initialColor: 'white',
-      finalColor: 'red'
+      finalColor: 'white'
     };
   }
 
@@ -113,8 +110,6 @@ export default class TrackScreen extends React.Component {
   }
 
   componentDidMount() {
-    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
-    
     // const distance = this.props.screenProps.distance;
     // const distance = 2500
     Animated.timing(this.animatedValue,  {
@@ -123,32 +118,44 @@ export default class TrackScreen extends React.Component {
 
     }).start();
 
-      if(distance <= closestDistance) {
-        this.setState({
-          finalColor: isCloseColor
-        })
-      }
-  
-      if (distance <= middleDistance && distance > closestDistance) {
-        this.setState({
-          finalColor:middleCloseColor
-        })
-      }
+    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
+    
 
-      if(distance > middleDistance) {
-        this.setState({
-          finalColor:farAwayColor
-        })
-      }
+    setInterval(() =>{
+    if(distance <= closestDistance) {
+      this.setState({
+        finalColor: isCloseColor
+      })
+    }
+
+    if (distance <= middleDistance && distance > closestDistance) {
+      this.setState({
+        finalColor:middleCloseColor
+      })
+    }
+
+    if(distance > middleDistance) {
+      this.setState({
+        finalColor:farAwayColor
+      })
+    }
+    })
+
   }
+  
 
   render() {
 
+
+    // console.log("ALJKSHDLKASJDKLAS", this.state.finalColor)
+    console.log("IS THIS CHANGING?", this.props.navigation.state.params.distance)
+
     const interpolateColor = this.animatedValue.interpolate({
       inputRange: [0, 5000],
-      outputRange: [ 'white', this.state.finalColor]
-      // outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
+      outputRange: [ this.state.initialColor, this.state.finalColor]
     })
+
+    //FIXME: Colors do not change when their location is changed
 
     const animatedStyle = {
       backgroundColor: interpolateColor
@@ -156,7 +163,6 @@ export default class TrackScreen extends React.Component {
 
     const connection = this.props.navigation.state.params.user;
     // console.log("User id", connection.id);
-    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
 
     return (
       <Animated.View style={[styles.page, animatedStyle]}>

@@ -254,8 +254,8 @@ export default class LinksScreen extends React.Component {
                 isCloseColor = "red"
                 middleCloseColor = "blue"
                 farAwayColor = "green"
-                closestDistance = '50'
-                middleDistance = '100'
+                closestDistance = '5'
+                middleDistance = '10'
 
                 />
               )}
