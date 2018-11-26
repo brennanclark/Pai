@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 6383,
-  "expoServerNgrokUrl": "https://d7-9b5.bren.pai.exp.direct",
-  "packagerNgrokUrl": "https://packager.d7-9b5.bren.pai.exp.direct",
-  "ngrokPid": 6409
+  "expoServerNgrokUrl": "https://fq-dsi.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.fq-dsi.anonymous.pai.exp.direct",
+  "ngrokPid": 30327,
+  "devToolsPort": 19002,
+  "packagerPort": 19005,
+  "packagerPid": 30297
 }
