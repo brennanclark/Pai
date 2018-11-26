@@ -66,7 +66,7 @@ export default class App extends React.Component {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true});
+    let location = await Location.getCurrentPositionAsync({});
 
     this.setState({
       lat: this.lat_kalman.filter(location.coords.latitude),
@@ -100,13 +100,12 @@ export default class App extends React.Component {
     axios.get(`${ipv4}/user/${this.state.currentUserId}`)
     .then((response)=> {
       const data = response.data
-      console.log(response.data)
       this.setState({
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
-        number_of_friends: data.friends,
-        // number_of_friends: data.number_of_friends,
+        // number_of_friends: data.friends,
+        number_of_friends: data.number_of_friends,
       })
     })
   }
@@ -154,6 +153,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    // console.log("this.state.numberof friends", this.state.number_of_friends)
 
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

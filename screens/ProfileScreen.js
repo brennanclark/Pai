@@ -17,6 +17,9 @@ import { WebBrowser, Permissions, Location } from 'expo';
 import axios from 'react-native-axios';
 import {ipv4} from '../config.json'
 import QRCode from 'react-native-qrcode';
+import { Container, Content, Footer} from 'native-base';
+
+
 
 const Nugget = ({
   question,
@@ -95,7 +98,6 @@ export default class ProfileScreen extends React.Component {
 
   render(props) {
 
-
     return (
 
         <ImageBackground
@@ -128,7 +130,8 @@ export default class ProfileScreen extends React.Component {
                 color= 'pink'
                 />
 
-                  <Text style={{color: 'pink'}}>3 Friends</Text>
+
+                <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends</Text>
 
                 </Badge>
 

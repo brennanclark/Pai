@@ -61,6 +61,7 @@ class Card extends React.Component {
       // near: false,
     }
   }
+
   _onPress = (event) => {
     this.setState((prevState) => {
       return {
@@ -69,7 +70,9 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
+    console.log(this.props.getConnections());
+    this.props.navigation.navigate('Track',
+    { user: this.props.user, navigation: this.props.navigation, getConnections: this.props.getConnections});
   }
   render() {
     const { user = {} } = this.props;
@@ -110,6 +113,7 @@ export default class LinksScreen extends React.Component {
     }
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
+    this.getConnections = this.getConnections.bind(this)
   }
 
   componentDidMount() {
@@ -135,6 +139,16 @@ export default class LinksScreen extends React.Component {
       .catch((err) => console.warn(err))
   }
 
+  getConnections() {
+    console.log("FUNCTION WAS CALLED")
+    axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
+    .then((res) => {
+      console.log("GET CONNECTIONS WAS SUCCESSFUL");
+      this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
+    })
+    .catch(err => console.warn(err))
+  }
+
   distanceFromSource(arr, userId){
     let distance = 0;
     if(arr[0]) {
@@ -145,7 +159,7 @@ export default class LinksScreen extends React.Component {
       })
       return distance
     } else {
-      null;
+      return null;
     }
   }
 
@@ -168,6 +182,7 @@ export default class LinksScreen extends React.Component {
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
                 deleteConnection={this.deleteConnection}
+                getConnections={this.getConnections}
                 user={ user }
                 key={ user.id }
                 distance={ this.distanceFromSource }

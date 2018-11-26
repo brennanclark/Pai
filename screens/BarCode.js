@@ -7,6 +7,9 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
+// import FlashMessage from "react-native-flash-message";
+
+// const{ width} = Dimensions.get('window');
 
 
 
@@ -31,15 +34,35 @@ export default class Barcode extends React.Component {
     this.setState ({ hasCameraPermission: (status === 'granted')});
   }
 
-  handleBarCodeScanned (data) {
-    axios.post(`${ipv4}/connections/${data}/friends`)
-    .then(() => {
-      //this.props.navigation.navigate('Links');
-      this.props.navigation.navigate('Links');
+
+  handleBarCodeScanned (conn_id) {
+    axios({
+      method: 'post',
+      url: `${ipv4}/connections/${conn_id}/friends`,
+      data: {
+        userId: this.props.userId,
+      }
+
     })
-    .catch(err => console.warn(err))
-    alert("CONGRATULATIONS!!! you are now friends");
+      .then((res) => {
+        this.props.navigation.state.params.getConnections(this.props.currentUserId);
+        setTimeout(() =>{
+        this.props.navigation.navigate('Links');
+      },1000);
+
+      })
+      .catch((err) => console.warn(err))
+      alert("CONGRATULATIONS!!! you are now friends");
   }
+
+  //   axios.post(`${ipv4}/connections/${data}/friends`)
+  //   .then(() => {
+  //     //this.props.navigation.navigate('Links');
+  //     this.props.navigation.navigate('Links');
+  //   })
+  //   .catch(err => console.warn(err))
+  //   alert("CONGRATULATIONS!!! you are now friends");
+  // }
 
   render() {
 
@@ -60,8 +83,8 @@ export default class Barcode extends React.Component {
             BarCodeScanner.Constants.BarCodeType.pdf417,
           ]}
           type={this.state.type}
-          style={{ ...StyleSheet.absoluteFillObject }}
-        />
+          style={{ ...StyleSheet.absoluteFill}}
+          />
         <TouchableOpacity
           style={{
             flex: 0.5,
