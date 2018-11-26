@@ -118,13 +118,13 @@ export default class App extends React.Component {
   findConnection() {
     axios({
       method: 'post',
-      url: `${ipv4}/user/${this.state.currentUser}/connections/new`,
+      url: `${ipv4}/user/${this.state.currentUserId}/connections/new`,
       data: {
         userId: this.state.currentUserId,
       }
     })
     .then((res)=>{
-      console.log("FIND CONNECTION  was pressed");
+      console.log("FIND CONNECTION was pressed");
     })
     .catch((err) => {
       console.log(err);

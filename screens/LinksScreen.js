@@ -141,6 +141,7 @@ class Card extends React.Component {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
+
         </View>
       </TouchableOpacity>
     )
@@ -238,6 +239,10 @@ export default class LinksScreen extends React.Component {
                 {...this.props}
                 />
               )}
+                          <Button 
+            onPress={this.props.screenProps.findConnection}
+            title = "find match"
+            />
             </ScrollView>
           </ImageBackground>
     );

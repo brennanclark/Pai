@@ -43,15 +43,19 @@ app.get('/user/:id/connections', (req, res) => {
 //----------------------CREATE NEW CONNECTION --------------------//
 
 app.post('/user/:id/connections/new', (req,res) => {
+  
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
-  .then((response) => {
-    if(response.data.length < 3){  //maximum of 3 connections
+  .then((connectionResponse) => {
+      let poolOfFriendsIds = [];
+
+    // if(connectionResponse.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
-      .then((dataResults) => {
+      .then((allPotentialFriendsIdsExceptCurrentUser) => {
+        console.log(allPotentialFriendsIdsExceptCurrentUser);
 
         let randomUsers = [];
-        dataResults.forEach((user) => {
-          response.data.forEach((otherUser) => {
+        allPotentialFriendsIdsExceptCurrentUser.forEach((user) => {
+          connectionResponse.data.forEach((otherUser) => {
             if(otherUser.id === user.id){
               return null;
             } else {
@@ -65,24 +69,24 @@ app.post('/user/:id/connections/new', (req,res) => {
         })
       })
       .then((result) => {
-        console.log("Array of people", result);
-        let luckyFriend = 0;
-        let indexPicker = Math.floor(Math.random() * result.length);
-        luckyFriend = result[indexPicker];
-        dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((data) => {
-          dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
-            console.log("ARE YOU IN HERE?");
-            res.json(data);
-          })
-        });
-        res.end();
+        // console.log("Array of people", result);
+        // let luckyFriend = 0;
+        // let indexPicker = Math.floor(Math.random() * result.length);
+        // luckyFriend = result[indexPicker];
+        // dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((data) => {
+        //   dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
+        //     console.log("ARE YOU IN HERE?");
+        //     res.json(data);
+        //   })
+        // });
+        // res.end("You have exceeded your connections (Maximum of Three)");
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
       })
-    } else {
-      res.end(); //this code is requried to make sure the app does not freeze
-    }
+    // } else {
+    //   res.end(); //this code is requried to make sure the app does not freeze
+    // }
   })
   .catch((err) => {
     console.log(err);
