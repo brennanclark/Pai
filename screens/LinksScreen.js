@@ -96,25 +96,7 @@ class Card extends React.Component {
     this.props.navigation.navigate('Track', { user: this.props.user, navigation: this.props.navigation});
   }
 
-  componentWillMount() {
-    this.animatedValue = new Animated.Value(0);
-  }
-  componentDidMount() {
-    Animated.timing(this.animatedValue, {
-      toValue: 150,
-      duration: 1500
-    }).start();
-  }
-
   render() {
-
-    const interpolateColor = this.animatedValue.interpolate({
-      inputRange: [0,150],
-      outputRange: ['rgb(0,0,0)', 'rgb(51,250,170)']
-    })
-    const animatedStyle = {
-      background: interpolateColor
-    }
 
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
@@ -163,9 +145,7 @@ export default class LinksScreen extends React.Component {
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
   }
-
-
-
+  
   componentDidMount() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {

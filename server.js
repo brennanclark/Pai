@@ -105,7 +105,9 @@ app.post('/connections/:user_id/:connection_id/delete', (req, res) => {
 app.post('/connections/:connection_id/friends', (req, res) => {
   dataHelpers.setFriendsAt(req.params.connection_id)
     .then((data) => {
-      res.json(data);
+      dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
+        res.json(data);
+      })
     })
 });
 
