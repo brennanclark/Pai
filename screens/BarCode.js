@@ -10,7 +10,6 @@ const {ipv4} = require('../config.json');
 // import FlashMessage from "react-native-flash-message";
 
 
-
 export default class Barcode extends React.Component {
 
   constructor(props) {
