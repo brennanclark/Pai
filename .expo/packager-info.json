@@ -1,9 +1,9 @@
 {
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://mg-jmg.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.mg-jmg.anonymous.pai.exp.direct",
+  "ngrokPid": 35535,
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPort": 19006,
+  "packagerPid": 35502
 }

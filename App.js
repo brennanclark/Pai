@@ -27,7 +27,6 @@ export default class App extends React.Component {
       distance: 0,
       connectedPotentialFriends: {},
       number_of_friends: 0,
-
     }
 
     this.lat_kalman = new KalmanFilter({ R: 0.01, Q: 65 });
@@ -66,7 +65,8 @@ export default class App extends React.Component {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true});
+    let location = await Location.getCurrentPositionAsync({});
+    //DO NOT add enableHighAccuracy = it conflicts with the Kelman and results to inaccurate results
 
     this.setState({
       lat: this.lat_kalman.filter(location.coords.latitude),
@@ -78,7 +78,11 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const distanceFromSource = locationData[0].distance
+      let distanceFromSource = 0
+
+      if(locationData[0]){
+        distanceFromSource = locationData[0].distance
+      } //fixes bug when there is no connections;
 
       this.setState({
         distance : distanceFromSource,
@@ -130,7 +134,7 @@ export default class App extends React.Component {
   changeToUserOne() {
     this.setState({
       currentUserId :1,
-    }, this.props.navigation)
+    }, this.getProfileInformation)
   }
   changeToUserTwo() {
     this.setState({
@@ -172,21 +176,21 @@ export default class App extends React.Component {
 
 
           screenProps = {{
-            user: this.state.user,
-            currentUserId: this.state.currentUserId,
-            profileImage : this.state.profileImage,
-            nuggets: this.state.nuggets,
-            lat : this.state.lat,
-            long: this.state.long,
-            errorMessage: this.state.errorMessage,
-            changeToUserOne: this.changeToUserOne,
-            changeToUserTwo :this.changeToUserTwo,
-            changeToUserThree : this.changeToUserThree,
-            changeToUserFour: this.changeToUserFour,
-            findConnection: this.findConnection,
-            distance: this.state.distance,
-            connectedFriendsDistances: this.state.connectedPotentialFriends,
-            friends: this.state.number_of_friends,
+            user:                       this.state.user,
+            currentUserId:              this.state.currentUserId,
+            profileImage :              this.state.profileImage,
+            nuggets:                    this.state.nuggets,
+            lat :                       this.state.lat,
+            long:                       this.state.long,
+            errorMessage:               this.state.errorMessage,
+            changeToUserOne:            this.changeToUserOne,
+            changeToUserTwo:            this.changeToUserTwo,
+            changeToUserThree:          this.changeToUserThree,
+            changeToUserFour:           this.changeToUserFour,
+            findConnection:             this.findConnection,
+            distance:                   this.state.distance,
+            connectedFriendsDistances:  this.state.connectedPotentialFriends,
+            friends:                    this.state.number_of_friends,
           }}
           />
         </View>

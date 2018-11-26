@@ -67,7 +67,7 @@ wss.on('connection', (ws) => {
 
           var dataToUser = {
             userId: t.data[0].user_id,
-            distance: haversine(sourceUser, otherUser, {unit:'meter'})
+            distance: ~~haversine(sourceUser, otherUser, {unit:'meter'})
           }
           mergedData.push(dataToUser);
         })

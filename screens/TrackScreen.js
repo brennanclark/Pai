@@ -9,7 +9,6 @@ import { Container, Content, Badge} from 'native-base';
 
 
 
-
 function ProfileImage(props) {
   return (
     <View>
