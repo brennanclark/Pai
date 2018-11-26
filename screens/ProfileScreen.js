@@ -42,7 +42,7 @@ function Header(props) {
       <Icon
       type='simple-line-icon'
       name='settings'
-      size= {25}
+      size= {30}
       color= 'pink'
       />
     </View>
@@ -106,7 +106,8 @@ export default class ProfileScreen extends React.Component {
         <Header Nav={this.props.navigation} />
 
 
-        <ScrollView>
+        <ScrollView
+        showsHorizontalScrollIndicator={false}>
 
 
           <ProfileImage Image={ this.props.screenProps.profileImage  }/>
@@ -123,7 +124,7 @@ export default class ProfileScreen extends React.Component {
                 <Icon
                 type='simple-line-icon'
                 name='badge'
-                size= {25}
+                size= {35}
                 color= 'pink'
                 />
 
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 5,
+    marginBottom: 15,
     marginLeft: 15,
     marginRight: 15,
   },

@@ -11,17 +11,17 @@ function Header(props) {
   return (
     <View style={styles.header}>
       <Icon
-      type='simple-line-icon'
-      name='logout'
-      size= {25}
+      type='ionicon'
+      name='ios-arrow-back'
+      size= {30}
       color= 'pink'
-      onPress={()=> props.Nav.navigate('Login')}
+      onPress={()=> props.Nav.navigate('Profile')}
       />
       <Text style={styles.headerText}> Connections </Text>
       <Icon
-      type='simple-line-icon'
-      name='settings'
-      size= {25}
+      type='ionicon'
+      name='ios-information-circle-outline'
+      size= {35}
       color= 'pink'
       />
     </View>
@@ -156,8 +156,9 @@ export default class LinksScreen extends React.Component {
           source={require('../assets/images/background.png')}
           style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
-            <Header/>
-            <ScrollView>
+            <Header Nav={ this.props.navigation }/>
+            <ScrollView
+            showsHorizontalScrollIndicator={false}>
               { userConnections.map(
                 (user, index) => <Card
                 isNear={index % 2 === 0 /* Every other user for debug reasons */}
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginLeft: 15,
     marginRight: 15,
-    marginBottom: 5,
+    marginBottom: 15,
   },
   headerText: {
     fontSize: 25,
@@ -212,6 +213,7 @@ const styles = StyleSheet.create({
   name: {
     lineHeight: 90,
     fontSize: 27,
+    color: '#474747',
   },
   expiry: {
     marginTop: -20,
@@ -219,6 +221,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'right',
     margin: 10,
+    color: '#474747',
   },
   nuggets: {
     flexDirection: 'column',
