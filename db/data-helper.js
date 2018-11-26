@@ -73,22 +73,17 @@ module.exports = function(knex) {
       const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
-          // console.log("USERS============", connections)
-          // console.log("times", times)
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
 
-          // console.log(timesGroupedByUserId[3][0].connected_at)
 
           let promises = users.map(user => {
-            // console.log("user", user)
-            console.log(user.id)
+
             const mutualConnections  = getMutualConnection(user.id, userId)
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
             // const connectedAtPromise = getConnectedAtTime(user.id);
 
             return Promise.all([friendCountPromise, mutualConnections])
               .then(([foafcount, connection]) => {
-                console.log('============', connection.rows[0].id)
                 return {
                   ...user,
                   connected_at: connection.rows[0].connected_at,
@@ -141,21 +136,8 @@ module.exports = function(knex) {
     },
 
     createNewConnection(sourceId, friendId) {
-      // return knex.raw(
-      //   `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
-      //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
-      //   ON CONFLICT (first_user_id) DO NOTHING`
-      // )
-
-      //TODO: YOU HAVE TO FIX THIS PETER
-
       return knex('connections')
       .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
-      .whereNot((builder) => {
-        builder.where('first_user_id', sourceId).and('second_user_id', friendId)
-      }).andWhereNot((builder) =>{
-        builder.where('second_user_id', sourceId).and('first_user_id', friendId)
-      })
     },
 
     setFriendsAt(id) {

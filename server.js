@@ -42,44 +42,36 @@ app.get('/user/:id/connections', (req, res) => {
 
 //----------------------CREATE NEW CONNECTION --------------------//
 
+
 app.post('/user/:id/connections/new', (req,res) => {
   
   axios.get(`${ipv4}/user/${req.body.userId}/connections`)
   .then((connectionResponse) => {
-      let poolOfFriendsIds = [];
-
     // if(connectionResponse.data.length < 3){  //maximum of 3 connections
       dataHelpers.getUsersExcept(Number(req.body.userId))
-      .then((allPotentialFriendsIdsExceptCurrentUser) => {
-        console.log(allPotentialFriendsIdsExceptCurrentUser);
+      .then((allFriendsIdExceptCurrentUser) => {
 
-        let randomUsers = [];
-        allPotentialFriendsIdsExceptCurrentUser.forEach((user) => {
-          connectionResponse.data.forEach((otherUser) => {
-            if(otherUser.id === user.id){
-              return null;
-            } else {
-              randomUsers.push(user.id)
-            }
-          })
+        //this returns the user Ids for non existing connections
+        let allPotentialFriendsId = allFriendsIdExceptCurrentUser.map(potentialFriends => potentialFriends.id);
+        let existingConnectedFriendsId = connectionResponse.data.map(a => a.id)
+
+        const filteredArray = allPotentialFriendsId.filter((x) => {
+          return existingConnectedFriendsId.indexOf(x) < 0;
         })
-        console.log(randomUsers);
-        return new Promise((resolve, reject) => {
-          resolve(randomUsers);
-        })
+        return filteredArray;
       })
       .then((result) => {
-        // console.log("Array of people", result);
-        // let luckyFriend = 0;
-        // let indexPicker = Math.floor(Math.random() * result.length);
-        // luckyFriend = result[indexPicker];
-        // dataHelpers.createNewConnection(req.body.userId, Number(luckyFriend)).then((data) => {
-        //   dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
-        //     console.log("ARE YOU IN HERE?");
-        //     res.json(data);
-        //   })
-        // });
-        // res.end("You have exceeded your connections (Maximum of Three)");
+    
+        let indexPicker = Math.floor(Math.random() * result.length);
+        let luckyFriend = Number(result[indexPicker]);
+
+        dataHelpers.createNewConnection(req.body.userId, luckyFriend).then((data) => {
+          dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
+            res.json(data);
+          })
+        });
+
+        res.end("You have exceeded your connections (Maximum of Three)");
       })
       .catch((err) => {
         console.log("INNER ERROR", err);
