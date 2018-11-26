@@ -110,27 +110,32 @@ export default class ProfileScreen extends React.Component {
         <ScrollView
         showsVerticalScrollIndicator={false}>
 
-
           <ProfileImage Image={ this.props.screenProps.profileImage  }/>
 
-          <View style={styles.badges}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
 
-            <Badge>
+
               <Text style={styles.profileName}>{this.props.screenProps.user}</Text>
-            </Badge>
 
-                <Badge style={styles.friendCounter} textStyle={{ color: 'pink' }}>
-                  <Icon
-                  type='simple-line-icon'
-                  name='badge'
-                  size= {35}
-                  color= 'pink'
-                  />
-                  <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends
-                  </Text>
-                </Badge>
+              <Badge
+              containerStyle={{
+                backgroundColor: 'transparent',
+                marginTop: 10,
+                marginRight: 5,
+              }}
+              >
+                <Icon
+                type='simple-line-icon'
+                name='badge'
+                size= {35}
+                color= '#474747'
+                />
+                <Text style={{color: '#474747'}}>{this.props.screenProps.friends} Friends
+                </Text>
+              </Badge>
 
-          </View>
+            </View>
+
 
           <FlatList
             data={this.props.screenProps.nuggets}
@@ -168,22 +173,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 5,
   },
-  badges: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginLeft: 5,
-    marginRight: 5,
-  },
 
   profileName: {
     fontSize: 50,
+    marginLeft: 10,
     alignSelf: 'center',
-    color: 'pink'
+    color: '#474747',
   },
-  friendCounter: {
+
+  friendBadge: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginRight: 15,
+    paddingTop: 5,
   },
 
   nuggetContainer: {
