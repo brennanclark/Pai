@@ -79,8 +79,12 @@ export default class App extends React.Component {
 
     this.socket.onmessage = (event) => {
       const locationData = JSON.parse(event.data);
-      const distanceFromSource = locationData[0].distance
+      let distanceFromSource = 0
 
+      if(locationData[0]){
+        distanceFromSource = locationData[0].distance
+      } //fixes bug when there is no connections;
+      
       this.setState({
         distance : distanceFromSource,
         connectedPotentialFriends : locationData
