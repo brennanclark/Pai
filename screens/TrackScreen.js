@@ -93,8 +93,12 @@ export default class TrackScreen extends React.Component {
         // more here... except it all comes from props anyway
 
       },
+      initialColor: 'white',
+      finalColor: 'red'
     };
   }
+
+  
 
   _handleOnPress = (event) => {
     this.setState((prevState) => {
@@ -109,22 +113,41 @@ export default class TrackScreen extends React.Component {
   }
 
   componentDidMount() {
+    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
+    
     // const distance = this.props.screenProps.distance;
-    const distance = 2500
-
-
+    // const distance = 2500
     Animated.timing(this.animatedValue,  {
-      toValue: distance,
-      duration: 10000,
+      toValue: 1500,
+      duration: 2000,
 
     }).start();
+
+      if(distance <= closestDistance) {
+        this.setState({
+          finalColor: isCloseColor
+        })
+      }
+  
+      if (distance <= middleDistance && distance > closestDistance) {
+        this.setState({
+          finalColor:middleCloseColor
+        })
+      }
+
+      if(distance > middleDistance) {
+        this.setState({
+          finalColor:farAwayColor
+        })
+      }
   }
 
   render() {
 
     const interpolateColor = this.animatedValue.interpolate({
       inputRange: [0, 5000],
-      outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
+      outputRange: [ 'white', this.state.finalColor]
+      // outputRange: ['rgb(0, 97, 255)', 'rgb(255, 0, 0)']
     })
 
     const animatedStyle = {
@@ -133,8 +156,7 @@ export default class TrackScreen extends React.Component {
 
     const connection = this.props.navigation.state.params.user;
     // console.log("User id", connection.id);
-
-
+    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
 
     return (
       <Animated.View style={[styles.page, animatedStyle]}>

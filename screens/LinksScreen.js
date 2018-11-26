@@ -6,18 +6,16 @@ const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
 
-
-
 function DistanceColor(props) {
   let distance = props.distance
-  let closestDistance = 50;
-  let middleDistance = 100;
+  const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
+
 
   function isClose(distance) {
     if(distance <= closestDistance) {
       return <Icon 
               name='location-on'
-              color="red"
+              color={isCloseColor}
               containerStyle={styles.locationIcon}
               size= {40}
             />
@@ -28,18 +26,18 @@ function DistanceColor(props) {
     if (distance <= middleDistance && distance > closestDistance) {
       return <Icon 
               name='location-on'
-              color="blue"
+              color={middleCloseColor}
               containerStyle={styles.locationIcon}
               size= {40}
             />
     }
   }
 
-  function endingClass(distance) {
+  function farAway(distance) {
     if(distance > middleDistance) {
       return <Icon 
               name='location-on'
-              color="green"
+              color={farAwayColor}
               containerStyle={styles.locationIcon}
               size= {40}
             />
@@ -49,7 +47,7 @@ function DistanceColor(props) {
     <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
       {middleClose(distance)}
-      {endingClass(distance)}
+      {farAway(distance)}
     </View>
     
   )
@@ -118,12 +116,20 @@ class Card extends React.Component {
     });
   }
   _onLongPress = (event) => {
-    console.log(this.props.getConnections());
     this.props.navigation.navigate('Track',
-    { user: this.props.user, navigation: this.props.navigation, getConnections: this.props.getConnections});
+    { user: this.props.user, 
+      navigation: this.props.navigation, 
+      getConnections: this.props.getConnections,
+      isCloseColor : this.props.isCloseColor,
+      middleCloseColor : this.props.middleCloseColor,
+      farAwayColor : this.props.farAwayColor,
+      distance: this.props.distance(this.props.screenProps.connectedFriendsDistances, this.props.user.id),
+      closestDistance: this.props.closestDistance,
+      middleDistance: this.props.middleDistance
+    });
   }
   render() {
-    const { user = {} } = this.props;
+    const { user = {}, isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
@@ -134,7 +140,15 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-          <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
+          <DistanceColor 
+          distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}
+          isCloseColor = {isCloseColor}
+          middleCloseColor = {middleCloseColor}
+          farAwayColor = {farAwayColor}
+          closestDistance = {closestDistance}
+          middleDistance = {middleDistance}
+
+          />
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
@@ -237,6 +251,12 @@ export default class LinksScreen extends React.Component {
                 key={ user.id }
                 distance={ this.distanceFromSource }
                 {...this.props}
+                isCloseColor = "red"
+                middleCloseColor = "blue"
+                farAwayColor = "green"
+                closestDistance = '50'
+                middleDistance = '100'
+
                 />
               )}
                           <Button 
