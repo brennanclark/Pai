@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, Button, Animated} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { Ionicons } from '@expo/vector-icons';
+
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
-
 
 
 
@@ -71,7 +71,12 @@ class QrCode extends React.Component {
     }
     return (
       <View>
-        <Barcode currentUserId={this.props.currentUserId} getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} userId={this.props.userId}/>
+        <Barcode
+        currentUserId={this.props.currentUserId}
+        getConnections={this.props.navigation.state.params.getConnections}
+        navigation={this.props.navigation}
+        getProfile={this.props.getProfile}
+        userId={this.props.userId}/>
       </View>
     )
   }
@@ -81,6 +86,10 @@ class QrCode extends React.Component {
 
 export default class TrackScreen extends React.Component {
 
+  static navigationOptions = {
+    // Here we can change the title at the top of the page
+    title: 'Distance Between',
+  };
 
   constructor(props) {
     super(props);
@@ -95,6 +104,7 @@ export default class TrackScreen extends React.Component {
       },
     };
   }
+
 
   _handleOnPress = (event) => {
     this.setState((prevState) => {
@@ -132,14 +142,11 @@ export default class TrackScreen extends React.Component {
     }
 
     const connection = this.props.navigation.state.params.user;
-    // console.log("User id", connection.id);
-
 
 
     return (
       <Animated.View style={[styles.page, animatedStyle]}>
         <View style={styles.page}>
-
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
               { connection.connection_id}
@@ -147,12 +154,22 @@ export default class TrackScreen extends React.Component {
 
           <TouchableOpacity onPress={this._handleOnPress}>
           {
-            this.state.isImage ? <QrCode currentUserId={this.props.screenProps.currentUserId} getConnections={this.props.navigation.state.params.getConnections} navigation={this.props.navigation} connection={connection.connection_id} userId={connection.id}/> : <ProfileImage style={styles.trackImage} Image={connection.profile_picture}/>
+            this.state.isImage ?
+            <QrCode
+            getProfile={this.props.screenProps.getProfile}
+            currentUserId={this.props.screenProps.currentUserId}
+            getConnections={this.props.navigation.state.params.getConnections}
+            navigation={this.props.navigation}
+            connection={connection.connection_id}
+            userId={connection.id}/>
+            :
+            <ProfileImage
+            style={styles.trackImage}
+            Image={connection.profile_picture}/>
           }
           </TouchableOpacity>
 
         </View>
-
       </Animated.View>
 
     );
