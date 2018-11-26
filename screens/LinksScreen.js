@@ -117,7 +117,7 @@ export default class LinksScreen extends React.Component {
   deleteConnection(conn_id) {
     axios({
       method: 'post',
-      url: `${ipv4}/connections/${this.state.currentUserId}/${conn_id}/delete`,
+      url: `${ipv4}/connections/${conn_id}/delete`,
       data: {
         userId: this.state.currentUserId,
         currentConnectionId: conn_id,
@@ -131,12 +131,16 @@ export default class LinksScreen extends React.Component {
 
   distanceFromSource(arr, userId){
     let distance = 0;
-    arr.forEach((item) => {
-      if(item.userId == userId) {
-        distance = item.distance;
-      }
-    })
-    return distance
+    if(arr[0]) {
+      arr.forEach((item) => {
+        if(item.userId == userId) {
+          distance = item.distance;
+        }
+      })
+      return distance
+    } else {
+      alert('Wait for the data to load!');
+    }
   }
 
   // Need function with websocket data to update state of isNear above.
@@ -146,10 +150,9 @@ export default class LinksScreen extends React.Component {
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
-        <View style={app.linksContainer}>
           <ImageBackground
           source={require('../assets/images/background.png')}
-          style={{width: '100%', height: '100%'}}
+          style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
             <ScrollView  style={styles.container}>
               { userConnections.map(
@@ -164,15 +167,12 @@ export default class LinksScreen extends React.Component {
               )}
             </ScrollView>
           </ImageBackground>
-        </View>
-
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
   },
   header: {
     flexDirection:'row',
@@ -180,8 +180,6 @@ const styles = StyleSheet.create({
   cardClosed: {
     height: 100,
     width: 'auto',
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 2,
   },
   cardOpen: {
     height: 'auto',

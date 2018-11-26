@@ -35,6 +35,7 @@ export default class Barcode extends React.Component {
   handleBarCodeScanned (data) {
     axios.post(`${ipv4}/connections/${data}/friends`)
     .then(() => {
+      console.log(data)
       //this.props.navigation.navigate('Links');
       this.props.navigation.navigate('Links');
     })

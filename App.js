@@ -66,7 +66,7 @@ export default class App extends React.Component {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true});
+    let location = await Location.getCurrentPositionAsync({});
 
     this.setState({
       lat: this.lat_kalman.filter(location.coords.latitude),

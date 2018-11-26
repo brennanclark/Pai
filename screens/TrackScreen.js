@@ -78,10 +78,6 @@ class QrCode extends React.Component {
 
 export default class TrackScreen extends React.Component {
 
-  static navigationOptions = {
-    // Here we can change the title at the top of the page
-    title: 'Distance Between',
-  };
 
   constructor(props) {
     super(props);
@@ -144,6 +140,7 @@ export default class TrackScreen extends React.Component {
 
 
         <View style={styles.page}>
+
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
           </Text>
@@ -155,6 +152,7 @@ export default class TrackScreen extends React.Component {
           </TouchableOpacity>
 
         </View>
+
       </Animated.View>
 
     );

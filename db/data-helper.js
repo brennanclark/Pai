@@ -15,9 +15,9 @@ module.exports = function(knex) {
 
   return {
     getConnectUsersWithNuggets(userId, cb) {
-      
+
       function runConnectedUsers(){
-        this.distinct('first_user_id AS user_id, connected_at')
+        this.select('first_user_id AS user_id')
           .from('connections')
           .where({
             'second_user_id': userId,
@@ -25,7 +25,7 @@ module.exports = function(knex) {
             'friends': false
           })
           .union(function(){
-            this.distinct('second_user_id AS user_id, connected_at')
+            this.select('second_user_id AS user_id')
             .from('connections')
             .where({
               'first_user_id': userId,
@@ -52,15 +52,13 @@ module.exports = function(knex) {
           }).then(x => x))
       }
 
-      function getConnectedAtTime(matchId) {
-        return knex.select('connected_at', 'id')
-          .from('connections')
-          .where('second_user_id', matchId)
-          .union(function(){
-            this.select('connected_at', 'id')
-            .from('connections')
-            .where('first_user_id', matchId)
-          });
+      function getMutualConnection(uid1, uid2){
+
+        return knex.raw(
+          `SELECT * FROM
+          connections WHERE first_user_id IN (${uid1}, ${uid2})
+          AND second_user_id IN  (${uid1}, ${uid2})`
+        )
       }
 
       const myConnectedUsers = knex('users')
@@ -75,18 +73,26 @@ module.exports = function(knex) {
       const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
       return usersAndNuggets
         .then(([users, nuggets]) => {
-          // console.log("USERS============", users) //
+          // console.log("USERS============", connections)
+          // console.log("times", times)
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
+
+          // console.log(timesGroupedByUserId[3][0].connected_at)
+
           let promises = users.map(user => {
+            // console.log("user", user)
+            console.log(user.id)
+            const mutualConnections  = getMutualConnection(user.id, userId)
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
-            const currentConnsPromise = getConnectedAtTime(user.id);
-            return Promise.all([friendCountPromise, currentConnsPromise])
-              .then(([foafcount, connectedAt]) => {
-                // console.log('============', connectedAt)
+            // const connectedAtPromise = getConnectedAtTime(user.id);
+
+            return Promise.all([friendCountPromise, mutualConnections])
+              .then(([foafcount, connection]) => {
+                console.log('============', connection.rows[0].id)
                 return {
                   ...user,
-                  connected_at: connectedAt[0].connected_at,
-                  connection_id: connectedAt[0].id,
+                  connected_at: connection.rows[0].connected_at,
+                  connection_id: connection.rows[0].id,
                   number_of_friends: foafcount,
                   nuggets: nuggetsGroupedByUserId[user.id] || []
                 }
