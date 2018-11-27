@@ -106,11 +106,10 @@ export default class TrackScreen extends React.Component {
 
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
-
-  
   }
 
   componentDidMount() {
+    this.mounted = true;
 
     Animated.timing(this.animatedValue,  {
       toValue: 1500,
@@ -128,14 +127,9 @@ export default class TrackScreen extends React.Component {
       distanceTesting.forEach((user) => {
         if(user.userId == this.props.navigation.state.params.user.id) {
           userDistance = user.distance
-          this.setState({
-            distance: user.distance,
-          })
         }
       })
 
-      console.log("HELLO WHAT ARE YOU", userDistance);
-  
       if(userDistance <= closestDistance) {
         this.setState({
           finalColor: isCloseColor,
@@ -154,8 +148,11 @@ export default class TrackScreen extends React.Component {
         })
       }
     },3000)
-  
 
+  }
+
+  componentWillUnmount() {
+    this.state = false;
   }
 
   render() {
