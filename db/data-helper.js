@@ -53,7 +53,6 @@ module.exports = function(knex) {
       }
 
       function getMutualConnection(uid1, uid2){
-
         return knex.raw(
           `SELECT * FROM
           connections WHERE first_user_id IN (${uid1}, ${uid2})
@@ -70,25 +69,17 @@ module.exports = function(knex) {
         .innerJoin('questions', 'nuggets.question_id', 'questions.id')
         .whereIn('nuggets.user_id', runConnectedUsers);
 
-      const usersAndNuggets = Promise.all([myConnectedUsers, myConnectedUsersNuggets]); //, theirFriends
-      return usersAndNuggets
+
+      //resolves the promisses
+      return Promise.all([myConnectedUsers, myConnectedUsersNuggets]) //, theirFriends
         .then(([users, nuggets]) => {
-          // console.log("USERS============", connections)
-          // console.log("times", times)
           const nuggetsGroupedByUserId = groupBy(nuggets, (nugget) => nugget.user_id);
 
-          // console.log(timesGroupedByUserId[3][0].connected_at)
-
           let promises = users.map(user => {
-            // console.log("user", user)
-            console.log(user.id)
             const mutualConnections  = getMutualConnection(user.id, userId)
             const friendCountPromise = getTheirFriends(user.id).then(list => list.length);
-            // const connectedAtPromise = getConnectedAtTime(user.id);
-
             return Promise.all([friendCountPromise, mutualConnections])
               .then(([foafcount, connection]) => {
-                console.log('============', connection.rows[0].id)
                 return {
                   ...user,
                   connected_at: connection.rows[0].connected_at,
@@ -129,8 +120,7 @@ module.exports = function(knex) {
         })
       });
 
-      const profileAndNuggetsAndFriends = Promise.all([myProfile, myNuggets, myFriends]);
-      return profileAndNuggetsAndFriends
+      return Promise.all([myProfile, myNuggets, myFriends])
         .then(([user, nuggets, friends]) => {
             return {
               ...user,
@@ -140,22 +130,48 @@ module.exports = function(knex) {
         });
     },
 
-    createNewConnection(sourceId, friendId) {
-      // return knex.raw(
-      //   `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
-      //   VALUES (${sourceId}, ${friendId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})
-      //   ON CONFLICT (first_user_id) DO NOTHING`
-      // )
+    createNewConnection(userId) {
+      const runConnectedUsers = knex('connections')
+        .select('first_user_id AS user_id')
+        .where({
+          'second_user_id': userId,
+        })
+        .union(function(){
+          this.select('second_user_id AS user_id')
+            .from('connections')
+            .where({
+              'first_user_id': userId,
+            })
+          });
 
-      //TODO: YOU HAVE TO FIX THIS PETER
+      function getNewConnectionId(connectedUserIdArray) {
+        return(knex.select('id')
+          .from('users')
+          .whereNotIn('id', connectedUserIdArray)
+          .andWhereNot('id', userId)
+        )
+      }
 
-      return knex('connections')
-      .insert({first_user_id: sourceId, second_user_id: friendId, connected_at: new Date(), friends: false, is_connected: true})
-      .whereNot((builder) => {
-        builder.where('first_user_id', sourceId).and('second_user_id', friendId)
-      }).andWhereNot((builder) =>{
-        builder.where('second_user_id', sourceId).and('first_user_id', friendId)
-      })
+      function createNewConnection(theirId) {
+        return knex.raw(
+          `INSERT INTO connections(first_user_id, second_user_id, connected_at, friends, is_connected)
+          VALUES (${userId}, ${theirId}, current_timestamp AT TIME ZONE 'PST', ${false}, ${true})`)
+      }
+
+      return Promise.all([runConnectedUsers])
+        .then(([users]) => {
+          let IdArray = users.map((user)=> user.user_id)
+          return IdArray
+        })
+        .then((array) => {
+          getNewConnectionId(array)
+          .then((availableUsers) => {
+            let randUser = availableUsers[Math.floor(Math.random() * availableUsers.length)]
+            console.log(randUser.id, userId)
+            createNewConnection(randUser.id)
+            .then()
+          })
+        })
     },
 
     setFriendsAt(id) {
