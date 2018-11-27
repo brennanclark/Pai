@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Text, TouchableHighlight, View, Alert} from 'react-native';
 
-export default class Info extends Component {
+class Info extends React.Component {
   state = {
     modalVisible: false,
   };

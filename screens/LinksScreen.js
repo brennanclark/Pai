@@ -56,8 +56,8 @@ function DistanceColor(props) {
   )
 }
 
+
 function Header(props) {
-  console.log('============',props)
   return (
     <View style={styles.header}>
       <Icon
@@ -73,7 +73,7 @@ function Header(props) {
       name='ios-information-circle-outline'
       size= {35}
       color= 'pink'
-      onPress={()=> {}}
+      onPress={()=> {console.log("info Pressed", viewInfo())}}
       />
     </View>
   )
@@ -144,7 +144,7 @@ class Card extends React.Component {
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let friendsTotal = number_of_friends;
-    console.log("Friends", friendsTotal);
+    // console.log("Friends", friendsTotal);
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
