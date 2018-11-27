@@ -84,18 +84,17 @@ export default class TrackScreen extends React.Component {
     this.state = {
       user: {
         name: '',
-        distance: 50,
+        
         isImage: true,
 
         // more here... except it all comes from props anyway
 
       },
+      distance: 50,
       initialColor: 'white',
-      finalColor: 'white'
+      finalColor: 'red'
     };
   }
-
-  
 
   _handleOnPress = (event) => {
     this.setState((prevState) => {
@@ -107,52 +106,54 @@ export default class TrackScreen extends React.Component {
 
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
+
+      const distanceTesting = this.props.screenProps.connectedFriendsDistances;
+    const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
+
+    const { distance } = this.state
+
+    setInterval(()=> {
+      distanceTesting.forEach((user) => {
+        if(user.userId == this.props.navigation.state.params.user.id) {
+          this.setState({
+            distance: user.distance,
+          })
+        }
+      })
+  
+      if(distance <= closestDistance) {
+        this.setState({
+          finalColor: isCloseColor
+        })
+      }
+  
+      if (distance <= middleDistance && distance > closestDistance) {
+        this.setState({
+          finalColor:middleCloseColor
+        })
+      }
+  
+      if(distance > middleDistance) {
+        this.setState({
+          finalColor:farAwayColor
+        })
+      }
+    },3000)
   }
 
   componentDidMount() {
-    // const distance = this.props.screenProps.distance;
-    // const distance = 2500
+
     Animated.timing(this.animatedValue,  {
       toValue: 1500,
       duration: 2000,
-
     }).start();
 
-    const {isCloseColor, middleCloseColor, farAwayColor, distance, closestDistance, middleDistance } = this.props.navigation.state.params;
-    
 
-    setInterval(() =>{
-    if(distance <= closestDistance) {
-      this.setState({
-        finalColor: isCloseColor
-      })
-    }
-
-    if (distance <= middleDistance && distance > closestDistance) {
-      this.setState({
-        finalColor:middleCloseColor
-      })
-    }
-
-    if(distance > middleDistance) {
-      this.setState({
-        finalColor:farAwayColor
-      })
-    }
-    })
-
-  }
   
 
+  }
+
   render() {
-
-    console.log("===========================================")
-    console.log(this.props.navigation.state.params.distance);
-    console.log("===========================================")
-
-
-    // console.log("ALJKSHDLKASJDKLAS", this.state.finalColor)
-    // console.log("IS THIS CHANGING?", this.props.navigation.state.params.distance)
 
     const interpolateColor = this.animatedValue.interpolate({
       inputRange: [0, 5000],
@@ -166,7 +167,6 @@ export default class TrackScreen extends React.Component {
     }
 
     const connection = this.props.navigation.state.params.user;
-    // console.log("User id", connection.id);
 
     return (
       <Animated.View style={[styles.page, animatedStyle]}>

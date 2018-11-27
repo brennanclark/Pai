@@ -147,6 +147,7 @@ class Card extends React.Component {
           farAwayColor = {farAwayColor}
           closestDistance = {closestDistance}
           middleDistance = {middleDistance}
+          userId = {user.id}
 
           />
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
