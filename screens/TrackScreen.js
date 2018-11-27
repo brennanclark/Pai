@@ -146,9 +146,13 @@ export default class TrackScreen extends React.Component {
 
   render() {
 
+    console.log("===========================================")
+    console.log(this.props.navigation.state.params.distance);
+    console.log("===========================================")
+
 
     // console.log("ALJKSHDLKASJDKLAS", this.state.finalColor)
-    console.log("IS THIS CHANGING?", this.props.navigation.state.params.distance)
+    // console.log("IS THIS CHANGING?", this.props.navigation.state.params.distance)
 
     const interpolateColor = this.animatedValue.interpolate({
       inputRange: [0, 5000],
