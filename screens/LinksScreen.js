@@ -1,10 +1,11 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
+import Info from '../screens/Info.js';
 
 
 
@@ -56,6 +57,7 @@ function DistanceColor(props) {
 }
 
 function Header(props) {
+  console.log('============',props)
   return (
     <View style={styles.header}>
       <Icon
@@ -71,6 +73,7 @@ function Header(props) {
       name='ios-information-circle-outline'
       size= {35}
       color= 'pink'
+      onPress={()=> {}}
       />
     </View>
   )
@@ -90,7 +93,18 @@ function CardOpen(props) {
             <Icon
             type='font-awesome'
             name='user-times'
-            onPress={() => {props.deleteConnection(props.person.connection_id)} }
+            onPress={() => {
+                AlertIOS.prompt(
+                  'Remove Connection',
+                  `Are you sure you want to remove ${props.person.first_name} as a connection?`,
+                  [
+                    {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => props.deleteConnection(props.person.connection_id)},
+                  ],
+                    { cancelable: false }
+                  )
+                //
+              }}
             color='pink'
             backgroundColor='#474747'
             size={30}
@@ -140,9 +154,11 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+
           <Text>friends:{friendsTotal}</Text>
           <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -225,6 +241,7 @@ export default class LinksScreen extends React.Component {
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
+
       <ImageBackground
       source={require('../assets/images/background.png')}
       style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
@@ -244,8 +261,9 @@ export default class LinksScreen extends React.Component {
             {...this.props}
             />
           )}
-            </ScrollView>
-          </ImageBackground>
+
+        </ScrollView>
+      </ImageBackground>
     );
   }
 }
@@ -271,9 +289,11 @@ const styles = StyleSheet.create({
   cardClosed: {
     height: 100,
     width: 'auto',
+
   },
   cardOpen: {
     height: 'auto',
+
   },
   near: {
     // borderColor: 'gold',
@@ -321,7 +341,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   delete: {
-    width: 30,
+    width: 35,
+    height: 35,
     alignSelf: 'center',
   }
 });
