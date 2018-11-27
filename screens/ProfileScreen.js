@@ -125,8 +125,6 @@ export default class ProfileScreen extends React.Component {
                 size= {35}
                 color= 'pink'
                 />
-
-
                 <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends</Text>
 
                 </Badge>

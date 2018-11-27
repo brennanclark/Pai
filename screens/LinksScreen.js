@@ -142,7 +142,6 @@ class Card extends React.Component {
           <Text style={styles.name}> {first_name} </Text>
           <Text>friends:{friendsTotal}</Text>
           <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
