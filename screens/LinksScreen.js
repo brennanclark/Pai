@@ -153,10 +153,23 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-
-          <Text>friends:{friendsTotal}</Text>
-          <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+          <Badge
+          containerStyle={{
+            backgroundColor: 'transparent',
+            marginTop: 10,
+            marginRight: 5,
+            alignSelf: 'flex-end'
+          }}
+          >
+            <Icon
+            type='simple-line-icon'
+            name='badge'
+            size= {35}
+            color= '#474747'
+            />
+            <Text style={{color: '#474747', fontWeight: 'bold'}}>{this.props.screenProps.friends}
+            </Text>
+          </Badge>
 
         </View>
             {
