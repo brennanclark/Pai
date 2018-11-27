@@ -9,6 +9,14 @@
   "packagerPid": 36031
 =======
   "devToolsPort": 19002,
+<<<<<<< HEAD
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
+=======
   "expoServerPort": 19000,
   "packagerPort": 19003,
   "packagerPid": 4591,
@@ -16,4 +24,5 @@
   "packagerNgrokUrl": "https://packager.2s-dg3.bren.pai.exp.direct",
   "ngrokPid": 4607
 >>>>>>> 64e18be7466650bd78f3605d81b8374e633ca7f7
+>>>>>>> bc7995f8f4f02df38a4c3cf7e3de6a0f0bdf881b
 }

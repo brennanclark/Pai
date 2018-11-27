@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
+import { AlertIOS, Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import app from '../styles/container.js';
 import { Icon } from 'react-native-elements';
@@ -7,6 +7,8 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
+// import DropdownAlert from 'react-native-dropdownalert';
+
 // import FlashMessage from "react-native-flash-message";
 
 
@@ -48,7 +50,8 @@ export default class Barcode extends React.Component {
 
       })
       .catch((err) => console.warn(err))
-      alert("CONGRATULATIONS!!! you are now friends");
+      // this.dropdown.alertWithType('success', 'Success', "CONGRATULATIONS!!! you are now friends");
+      AlertIOS.alert("CONGRATULATIONS!!! you are now friends");
   }
 
   render() {
@@ -95,7 +98,9 @@ const opacity = 'rgba(0, 0, 0, .6)';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
   },
   layerTop: {
     flex: 2,

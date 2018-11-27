@@ -157,7 +157,7 @@ export default class App extends React.Component {
 
   render() {
     // console.log("this.state.numberof friends", this.state.number_of_friends)
-    
+
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
