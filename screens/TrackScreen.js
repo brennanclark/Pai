@@ -17,10 +17,8 @@ class TESTING extends React.Component {
     }
   }
 
-
-  componentWillReceiveProps() {
-    setInterval(()=> {
-      const {testing, isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, userId } = this.props
+  componentWillReceiveProps(props) {
+      const {testing, isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, userId } = props
         let userDistance = 0;
   
         if(testing[0]){
@@ -50,12 +48,7 @@ class TESTING extends React.Component {
             })
           }
         }
-      
-      },3000)
-  }
-  componentDidMount() {
-
-   
+    
   }
 
   render() {
