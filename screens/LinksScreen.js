@@ -57,7 +57,6 @@ function DistanceColor(props) {
 }
 
 function Header(props) {
-  console.log('============',props)
   return (
     <View style={styles.header}>
       <Icon
@@ -69,11 +68,11 @@ function Header(props) {
       />
       <Text style={styles.headerText}> Connections </Text>
       <Icon
-      type='ionicon'
-      name='ios-information-circle-outline'
-      size= {35}
+      type='entypo'
+      name='add-user'
+      size= {30}
       color= 'pink'
-      onPress={()=> {}}
+      onPress={props.connect}
       />
     </View>
   )
@@ -185,7 +184,8 @@ export default class LinksScreen extends React.Component {
     }
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
-    this.getConnections = this.getConnections.bind(this)
+    this.getConnections = this.getConnections.bind(this);
+    this.addConnection = this.addConnection.bind(this);
   }
 
   componentDidMount() {
@@ -211,11 +211,20 @@ export default class LinksScreen extends React.Component {
       .catch((err) => console.warn(err))
   }
 
+  addConnection(){
+    axios({
+      method: 'post',
+      url: `${ipv4}/user/${this.props.screenProps.currentUserId}/connections/new`,
+    })
+    .then((res) => {
+      this.setState({userConnections: res.data}, this.getConnections);
+    })
+    .catch((err) => console.log.warn(err))
+  }
+
   getConnections() {
-    console.log("FUNCTION WAS CALLED")
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
-      console.log("GET CONNECTIONS WAS SUCCESSFUL");
       this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
@@ -237,6 +246,7 @@ export default class LinksScreen extends React.Component {
 
   // Need function with websocket data to update state of isNear above.
   render() {
+    console.log(this.props.screenProps.currentUserId)
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
@@ -246,7 +256,7 @@ export default class LinksScreen extends React.Component {
       source={require('../assets/images/background.png')}
       style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
       >
-        <Header Nav={ this.props.navigation }/>
+        <Header Nav={ this.props.navigation } connect={this.addConnection}/>
         <ScrollView
         showsHorizontalScrollIndicator={false}>
           { userConnections.map(
@@ -261,7 +271,6 @@ export default class LinksScreen extends React.Component {
             {...this.props}
             />
           )}
-
         </ScrollView>
       </ImageBackground>
     );

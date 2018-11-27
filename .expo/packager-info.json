@@ -1,1 +1,9 @@
-{}
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19003,
+  "packagerPid": 4591,
+  "expoServerNgrokUrl": "https://2s-dg3.bren.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.2s-dg3.bren.pai.exp.direct",
+  "ngrokPid": 4607
+}

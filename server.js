@@ -43,9 +43,12 @@ app.get('/user/:id/connections', (req, res) => {
 //----------------------CREATE NEW CONNECTION --------------------//
 
 app.post('/user/:id/connections/new', (req,res) => {
-  dataHelpers.createNewConnection(Number(req.params.id), (data) => {
-    res.json(data)
-  })
+  dataHelpers.createNewConnection(Number((req.params.id)))
+    .then((data) => {
+      dataHelpers.getConnectUsersWithNuggets(Number(req.params.id), (data)=> {
+        res.json(data);
+      })
+    })
 })
 
 
