@@ -69,8 +69,10 @@ wss.on('connection', (ws) => {
             userId: t.data[0].user_id,
             distance: ~~haversine(sourceUser, otherUser, {unit:'meter'})
           }
+          
           mergedData.push(dataToUser);
         })
+        console.log(mergedData);
         ws.send(JSON.stringify(mergedData));
       });
     });

@@ -163,7 +163,7 @@ class Card extends React.Component {
           userId = {user.id}
 
           />
-          {/* <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text> */}
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
           <Badge
           containerStyle={{
             backgroundColor: 'transparent',
