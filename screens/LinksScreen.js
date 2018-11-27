@@ -5,6 +5,7 @@ import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
+import Info from '../screens/Info.js';
 
 
 
@@ -56,6 +57,7 @@ function DistanceColor(props) {
 }
 
 function Header(props) {
+  console.log('============',props)
   return (
     <View style={styles.header}>
       <Icon
@@ -71,6 +73,7 @@ function Header(props) {
       name='ios-information-circle-outline'
       size= {35}
       color= 'pink'
+      onPress={()=> {}}
       />
     </View>
   )
@@ -93,16 +96,15 @@ function CardOpen(props) {
             onPress={() => {
                 AlertIOS.prompt(
                   'Remove Connection',
-                  'Are you sure you want to remove this connection?',
+                  `Are you sure you want to remove ${props.person.first_name} as a connection?`,
                   [
-                    {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
                     {text: 'Yes', onPress: () => props.deleteConnection(props.person.connection_id)},
                   ],
                     { cancelable: false }
                   )
                 //
-              }
-            }
+              }}
             color='pink'
             backgroundColor='#474747'
             size={30}
@@ -146,8 +148,8 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-          <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
-          {/*<Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>*/}
+         {/* <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
+          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text> */}
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -332,6 +334,7 @@ const styles = StyleSheet.create({
   },
   delete: {
     width: 35,
+    height: 35,
     alignSelf: 'center',
   }
 });

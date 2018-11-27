@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,
     alignSelf: 'center',
-    marginBottom: 5,
   },
 
   profileName: {
