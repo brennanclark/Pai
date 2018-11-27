@@ -7,43 +7,99 @@ import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
 import Pulse from 'react-native-pulse';
 
-function ShowPulse(props) {  
 
-  // console.log(props)
-  let distance = props.distance
+class TESTING extends React.Component {
 
-  console.log(props.testing);
-
-  const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
-  // console.log(distance);
-
-  function isClose(distance) {
-    if(distance <= closestDistance) {
-      return <Pulse color={isCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentColor: 'grey'
     }
   }
 
-  function middleClose(distance) {
-    if (distance <= middleDistance && distance > closestDistance) {
-      return <Pulse color={middleCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-    }
+
+  componentWillReceiveProps() {
+    setInterval(()=> {
+      const {testing, isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, userId } = this.props
+        let userDistance = 0;
+  
+        if(testing[0]){
+          testing.forEach((user) => {
+            if(user.userId == userId) {
+              userDistance = user.distance
+            }
+          })
+          if(userDistance <= closestDistance) {
+            console.log("CLOSEST")
+            this.setState({
+              currentColor: isCloseColor,
+            })
+          }
+      
+          if (userDistance <= middleDistance && userDistance > closestDistance) {
+            console.log(("middle away"))
+            this.setState({
+              currentColor:middleCloseColor
+            })
+          }
+      
+          if(userDistance > middleDistance) {
+            console.log("further away")
+            this.setState({
+              currentColor:farAwayColor
+            })
+          }
+        }
+      
+      },3000)
+  }
+  componentDidMount() {
+
+   
   }
 
-  function farAway(distance) {
-    if(distance > middleDistance) {
-      return <Pulse color={farAwayColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-    }
-  }
+  render() {
+    console.log(this.state.currentColor)
 
-  return ( 
-    <React.Fragment>
-      {isClose(distance)}
-      {middleClose(distance)}
-      {farAway(distance)}
-    </React.Fragment>
+    return (
+      
+        <Pulse color={this.state.currentColor} numPulses={3} diameter={600} speed={10} duration={2000} />
     
-  )
+    )
+  }
 }
+
+// function ShowPulse(props) {  
+
+//   // console.log(props)
+//   let distance = props.testing;
+//   let userDistance = 0;
+//   const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
+//   distance.forEach((user) => {
+    
+//     // console.log(distance);
+//       if(distance <= closestDistance) {
+//         return <Pulse color={isCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
+//       }
+  
+//       if (distance <= middleDistance && distance > closestDistance) {
+//         return <Pulse color={middleCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
+//       }
+    
+//       if(distance > middleDistance) {
+//         return <Pulse color={farAwayColor} numPulses={3} diameter={600} speed={10} duration={2000} />
+//       }
+//   })
+
+//   return ( 
+//     <React.Fragment>
+//       {isClose(distance)}
+//       {middleClose(distance)}
+//       {farAway(distance)}
+//     </React.Fragment>
+    
+//   )
+// }
 
 function ProfileImage(props) {
   return (
@@ -162,7 +218,6 @@ export default class TrackScreen extends React.Component {
             userDistance = user.distance
           }
         })
-  
         if(userDistance <= closestDistance) {
           this.setState({
             finalColor: isCloseColor,
@@ -205,9 +260,9 @@ export default class TrackScreen extends React.Component {
 
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
 
-    const connection = this.props.navigation.state.params.user;
+    
 
-    console.log(this.props.screenProps.connectedFriendsDistances);
+    const connection = this.props.navigation.state.params.user;
 
     return (
       // <Animated.View style={[styles.page, animatedStyle]}>
@@ -221,12 +276,13 @@ export default class TrackScreen extends React.Component {
 
           {/* <Pulse color={isCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} /> */}
           
-          <ShowPulse 
+          <TESTING 
           isCloseColor = {isCloseColor} middleCloseColor={middleCloseColor} farAwayColor = {farAwayColor}
           distance = {this.props.navigation.state.params.distance}
           closestDistance = {closestDistance}
           middleDistance = {middleDistance}
           testing = {this.props.screenProps.connectedFriendsDistances}
+          userId = {user.id}
           />
 
           <TouchableOpacity onPress={this._handleOnPress}>
