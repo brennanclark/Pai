@@ -1,4 +1,13 @@
 {
+<<<<<<< HEAD
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://m2-8az.anonymous.pai.exp.direct",
+  "packagerNgrokUrl": "https://packager.m2-8az.anonymous.pai.exp.direct",
+  "ngrokPid": 36063,
+  "devToolsPort": 19002,
+  "packagerPort": 19006,
+  "packagerPid": 36031
+=======
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19003,
@@ -6,4 +15,5 @@
   "expoServerNgrokUrl": "https://2s-dg3.bren.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.2s-dg3.bren.pai.exp.direct",
   "ngrokPid": 4607
+>>>>>>> 64e18be7466650bd78f3605d81b8374e633ca7f7
 }

@@ -1,12 +1,10 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
-import Info from '../screens/Info.js';
-
 
 
 function DistanceColor(props) {
@@ -56,6 +54,7 @@ function DistanceColor(props) {
   )
 }
 
+
 function Header(props) {
   return (
     <View style={styles.header}>
@@ -68,8 +67,8 @@ function Header(props) {
       />
       <Text style={styles.headerText}> Connections </Text>
       <Icon
-      type='entypo'
-      name='add-user'
+      type='feather'
+      name='user-plus'
       size= {30}
       color= 'pink'
       onPress={props.connect}
@@ -90,8 +89,8 @@ function CardOpen(props) {
             )) }
           <View style={styles.delete}>
             <Icon
-            type='font-awesome'
-            name='user-times'
+            type='feather'
+            name='user-x'
             onPress={() => {
                 AlertIOS.prompt(
                   'Remove Connection',
@@ -143,7 +142,7 @@ class Card extends React.Component {
     const { user = {} } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
     let friendsTotal = number_of_friends;
-    console.log("Friends", friendsTotal);
+    // console.log("Friends", friendsTotal);
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -258,7 +257,7 @@ export default class LinksScreen extends React.Component {
       >
         <Header Nav={ this.props.navigation } connect={this.addConnection}/>
         <ScrollView
-        showsHorizontalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}>
           { userConnections.map(
             (user, index) => <Card
             isNear={index % 2 === 0 /* Every other user for debug reasons */}
