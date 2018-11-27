@@ -149,7 +149,6 @@ export default class TrackScreen extends React.Component {
         <View style={styles.page}>
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
-              { connection.connection_id}
           </Text>
 
           <TouchableOpacity onPress={this._handleOnPress}>
