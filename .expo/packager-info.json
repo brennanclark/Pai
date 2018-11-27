@@ -2,8 +2,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://hn-tk4.anonymous.pai.exp.direct",
   "packagerNgrokUrl": "https://packager.hn-tk4.anonymous.pai.exp.direct",
-  "ngrokPid": 42713,
+  "ngrokPid": 46592,
   "devToolsPort": 19002,
   "packagerPort": 19006,
-  "packagerPid": 42678
+  "packagerPid": 46557
 }

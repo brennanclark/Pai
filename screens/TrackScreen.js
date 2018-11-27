@@ -5,6 +5,43 @@ import { Ionicons } from '@expo/vector-icons';
 import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
 import { Container, Content, Badge} from 'native-base';
+import Pulse from 'react-native-pulse';
+
+function ShowPulse(props) {  
+  let distance = props.distance
+
+  const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
+
+  function isClose(distance) {
+    if(distance <= closestDistance) {
+      console.log('ISCLOSE')
+      return <Pulse color={isCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+    }
+  }
+
+  function middleClose(distance) {
+    if (distance <= middleDistance && distance > closestDistance) {
+      console.log('MiddleClose')
+      return <Pulse color={middleCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+    }
+  }
+
+  function farAway(distance) {
+    if(distance > middleDistance) {
+      console.log("FARAWAY");
+      return <Pulse color={farAwayColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+    }
+  }
+
+  return ( 
+    <React.Fragment>
+      {isClose(distance)}
+      {middleClose(distance)}
+      {farAway(distance)}
+    </React.Fragment>
+    
+  )
+}
 
 function ProfileImage(props) {
   return (
@@ -77,22 +114,18 @@ class QrCode extends React.Component {
 //-------------------------------------------------------------//
 
 export default class TrackScreen extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
       user: {
         name: '',
-        
         isImage: true,
 
         // more here... except it all comes from props anyway
 
       },
-      distance: 50,
       initialColor: 'white',
-      finalColor: 'red'
+      finalColor: 'red',
     };
   }
 
@@ -120,10 +153,6 @@ export default class TrackScreen extends React.Component {
     setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
-
-    const { distance } = this.state
-
-    
       let userDistance = 0;
       if(distanceTesting[0]){
         distanceTesting.forEach((user) => {
@@ -172,16 +201,28 @@ export default class TrackScreen extends React.Component {
       backgroundColor: interpolateColor
     }
 
+    const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
+
     const connection = this.props.navigation.state.params.user;
 
     return (
-      <Animated.View style={[styles.page, animatedStyle]}>
+      // <Animated.View style={[styles.page, animatedStyle]}>
         <View style={styles.page}>
 
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
               { connection.connection_id}
           </Text>
+
+
+          {/* <Pulse color={isCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} /> */}
+          
+          <ShowPulse 
+          isCloseColor = {isCloseColor} middleCloseColor={middleCloseColor} farAwayColor = {farAwayColor}
+          distance = {this.props.navigation.state.params.distance}
+          closestDistance = {closestDistance}
+          middleDistance = {middleDistance}
+          />
 
           <TouchableOpacity onPress={this._handleOnPress}>
           {
@@ -191,7 +232,7 @@ export default class TrackScreen extends React.Component {
 
         </View>
 
-      </Animated.View>
+      // </Animated.View>
 
     );
   }
@@ -201,7 +242,7 @@ const styles = StyleSheet.create({
 
   page: {
     flex: 1,
-    borderRadius: 125,
+    borderRadius: 500,
     justifyContent: 'center',
     alignItems: 'center',
   },
