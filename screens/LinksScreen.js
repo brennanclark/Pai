@@ -202,10 +202,8 @@ export default class LinksScreen extends React.Component {
   }
 
   getConnections() {
-    console.log("FUNCTION WAS CALLED")
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
-      console.log("GET CONNECTIONS WAS SUCCESSFUL");
       this.setState({ userConnections: res.data , currentUserId: this.props.screenProps.currentUserId})
     })
     .catch(err => console.warn(err))
@@ -224,9 +222,6 @@ export default class LinksScreen extends React.Component {
       return null;
     }
   }
-
-
-
   // Need function with websocket data to update state of isNear above.
   render() {
     const { userConnections } = this.state;

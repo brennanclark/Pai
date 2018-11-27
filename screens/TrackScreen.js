@@ -8,7 +8,7 @@ import { Container, Content, Badge} from 'native-base';
 import Pulse from 'react-native-pulse';
 
 
-class TESTING extends React.Component {
+class PulseLocation extends React.Component {
 
   constructor(props) {
     super(props)
@@ -59,38 +59,6 @@ class TESTING extends React.Component {
   }
 }
 
-// function ShowPulse(props) {  
-
-//   // console.log(props)
-//   let distance = props.testing;
-//   let userDistance = 0;
-//   const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
-//   distance.forEach((user) => {
-    
-//     // console.log(distance);
-//       if(distance <= closestDistance) {
-//         return <Pulse color={isCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-//       }
-  
-//       if (distance <= middleDistance && distance > closestDistance) {
-//         return <Pulse color={middleCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-//       }
-    
-//       if(distance > middleDistance) {
-//         return <Pulse color={farAwayColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-//       }
-//   })
-
-//   return ( 
-//     <React.Fragment>
-//       {isClose(distance)}
-//       {middleClose(distance)}
-//       {farAway(distance)}
-//     </React.Fragment>
-    
-//   )
-// }
-
 function ProfileImage(props) {
   return (
     <View>
@@ -119,7 +87,6 @@ class QrCode extends React.Component {
   render() {
     let qrConnection = this.props.connection;
     let qrConnectionString = qrConnection.toString();
-    // console.log("connection string", typeof(qrConnectionString))
 
     if(this.state.isBarCode) {
     return (
@@ -185,18 +152,8 @@ export default class TrackScreen extends React.Component {
     });
   }
 
-  componentWillMount() {
-    this.animatedValue = new Animated.Value(0);
-  }
-
   componentDidMount() {
     this.mounted = true;
-    Animated.loop(
-      Animated.spring(this.animatedValue,  {
-        toValue: 1500,
-        duration: 5000,
-      })
-    ).start()
     
     setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
@@ -237,25 +194,11 @@ export default class TrackScreen extends React.Component {
 
   render() {
 
-    const interpolateColor = this.animatedValue.interpolate({
-      inputRange: [0, 5000],
-      outputRange: [ this.state.initialColor, this.state.finalColor]
-    })
-
-    //FIXME: Colors do not change when their location is changed
-
-    const animatedStyle = {
-      backgroundColor: interpolateColor
-    }
-
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
-
-    
-
     const connection = this.props.navigation.state.params.user;
 
     return (
-      // <Animated.View style={[styles.page, animatedStyle]}>
+  
         <View style={styles.page}>
 
           <Text style={{fontWeight: 'bold'}}>
@@ -263,10 +206,7 @@ export default class TrackScreen extends React.Component {
               { connection.connection_id}
           </Text>
 
-
-          {/* <Pulse color={isCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} /> */}
-          
-          <TESTING 
+          <PulseLocation 
           isCloseColor = {isCloseColor} middleCloseColor={middleCloseColor} farAwayColor = {farAwayColor}
           distance = {this.props.navigation.state.params.distance}
           closestDistance = {closestDistance}
@@ -282,8 +222,6 @@ export default class TrackScreen extends React.Component {
           </TouchableOpacity>
 
         </View>
-
-      // </Animated.View>
 
     );
   }
