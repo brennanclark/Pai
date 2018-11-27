@@ -109,7 +109,6 @@ export default class App extends React.Component {
         user: data.first_name,
         profileImage: data.profile_picture,
         nuggets: data.nuggets,
-        // number_of_friends: data.friends,
         number_of_friends: data.number_of_friends,
       })
     })
@@ -175,7 +174,6 @@ export default class App extends React.Component {
 
           <AppNavigator
 
-
           screenProps = {{
             user:                       this.state.user,
             currentUserId:              this.state.currentUserId,
@@ -192,6 +190,7 @@ export default class App extends React.Component {
             distance:                   this.state.distance,
             connectedFriendsDistances:  this.state.connectedPotentialFriends,
             friends:                    this.state.number_of_friends,
+            getProfile:                 this.getProfileInformation
           }}
           />
         </View>

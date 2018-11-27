@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import LoginScreen from '../screens/LoginScreen';
@@ -23,6 +23,7 @@ const ProfileStack = createStackNavigator({
 ProfileStack.navigationOptions = {
   // Name of tabs on nav bar
   tabBarLabel: 'Profile',
+
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -48,6 +49,7 @@ const LinksStack = createStackNavigator({
 LinksStack.navigationOptions = {
   // Name of tabs on nav bar
   tabBarLabel: 'Connections',
+
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       onPress={() => {
@@ -60,8 +62,23 @@ LinksStack.navigationOptions = {
 };
 
 
-export default createBottomTabNavigator({
+export default createMaterialTopTabNavigator(
+  {
 
-  ProfileStack,
-  LinksStack,
-});
+    ProfileStack,
+    LinksStack,
+  },
+  {
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+      activeTintColor: 'black',
+      style: {
+        backgroundColor: 'tomato',
+        opacity: .5
+      },
+      indicatorStyle: {
+        backgroundColor: 'black'
+      }
+    }
+  }
+);

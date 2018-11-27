@@ -44,43 +44,12 @@ app.get('/user/:id/connections', (req, res) => {
 
 
 app.post('/user/:id/connections/new', (req,res) => {
-  
-  axios.get(`${ipv4}/user/${req.body.userId}/connections`)
-  .then((connectionResponse) => {
-    if(connectionResponse.data.length < 3){  //maximum of 3 connections
-      dataHelpers.getUsersExcept(Number(req.body.userId))
-      .then((allFriendsIdExceptCurrentUser) => {
-        //this returns the user Ids for non existing connections
-        let allPotentialFriendsId = allFriendsIdExceptCurrentUser.map(potentialFriends => potentialFriends.id);
-        let existingConnectedFriendsId = connectionResponse.data.map(a => a.id)
-
-        const filteredArray = allPotentialFriendsId.filter((x) => {
-          return existingConnectedFriendsId.indexOf(x) < 0;
-        })
-        return filteredArray;
+  dataHelpers.createNewConnection(Number((req.params.id)))
+    .then((data) => {
+      dataHelpers.getConnectUsersWithNuggets(Number(req.params.id), (data)=> {
+        res.json(data);
       })
-      .then((result) => {
-    
-        let indexPicker = Math.floor(Math.random() * result.length);
-        let luckyFriend = Number(result[indexPicker]);
-
-        dataHelpers.createNewConnection(req.body.userId, luckyFriend).then((data) => {
-          dataHelpers.getConnectUsersWithNuggets(Number(req.body.userId), (data)=> {
-            res.json(data);
-          })
-        });
-        res.end("You have exceeded your connections (Maximum of Three)");
-      })
-      .catch((err) => {
-        console.log("INNER ERROR", err);
-      })
-    } else {
-      res.end(); //this code is requried to make sure the app does not freeze
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+    })
 })
 
 

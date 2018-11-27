@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
 const {ipv4} = require('../config.json');
 import { Badge, TouchableNative, Icon } from 'react-native-elements';
 import moment from 'moment';
@@ -12,7 +12,7 @@ function DistanceColor(props) {
 
   function isClose(distance) {
     if(distance <= closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color={isCloseColor}
               containerStyle={styles.locationIcon}
@@ -22,7 +22,7 @@ function DistanceColor(props) {
   }
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color={middleCloseColor}
               containerStyle={styles.locationIcon}
@@ -33,7 +33,7 @@ function DistanceColor(props) {
 
   function farAway(distance) {
     if(distance > middleDistance) {
-      return <Icon 
+      return <Icon
               name='location-on'
               color={farAwayColor}
               containerStyle={styles.locationIcon}
@@ -41,7 +41,7 @@ function DistanceColor(props) {
             />
     }
   }
-  return ( 
+  return (
     <View style = {{overflow:'hidden'}}>
       {isClose(distance)}
       {middleClose(distance)}
@@ -49,6 +49,7 @@ function DistanceColor(props) {
     </View>
   )
 }
+
 
 function Header(props) {
   return (
@@ -62,10 +63,11 @@ function Header(props) {
       />
       <Text style={styles.headerText}> Connections </Text>
       <Icon
-      type='ionicon'
-      name='ios-information-circle-outline'
-      size= {35}
+      type='feather'
+      name='user-plus'
+      size= {30}
       color= 'pink'
+      onPress={props.connect}
       />
     </View>
   )
@@ -83,9 +85,20 @@ function CardOpen(props) {
             )) }
           <View style={styles.delete}>
             <Icon
-            type='font-awesome'
-            name='user-times'
-            onPress={() => {props.deleteConnection(props.person.connection_id)} }
+            type='feather'
+            name='user-x'
+            onPress={() => {
+                AlertIOS.prompt(
+                  'Remove Connection',
+                  `Are you sure you want to remove ${props.person.first_name} as a connection?`,
+                  [
+                    {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+                    {text: 'Yes', onPress: () => props.deleteConnection(props.person.connection_id)},
+                  ],
+                    { cancelable: false }
+                  )
+                //
+              }}
             color='pink'
             backgroundColor='#474747'
             size={30}
@@ -117,6 +130,7 @@ class Card extends React.Component {
     { user: this.props.user, 
       navigation: this.props.navigation, 
       getConnections: this.props.getConnections,
+      getProfile: this.props.getProfile,
       isCloseColor : this.props.isCloseColor,
       middleCloseColor : this.props.middleCloseColor,
       farAwayColor : this.props.farAwayColor,
@@ -128,6 +142,8 @@ class Card extends React.Component {
   render() {
     const { user = {}, isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance } = this.props;
     const { first_name, profile_picture, number_of_friends} = user;
+    let friendsTotal = number_of_friends;
+    // console.log("Friends", friendsTotal);
     let connectedAt = user.connected_at;
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
@@ -147,7 +163,25 @@ class Card extends React.Component {
           userId = {user.id}
 
           />
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+          {/* <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text> */}
+          <Badge
+          containerStyle={{
+            backgroundColor: 'transparent',
+            marginTop: 10,
+            marginRight: 5,
+            alignSelf: 'flex-end'
+          }}
+          >
+            <Icon
+            type='simple-line-icon'
+            name='badge'
+            size= {35}
+            color= '#474747'
+            />
+            <Text style={{color: '#474747', fontWeight: 'bold'}}>{this.props.screenProps.friends}
+            </Text>
+          </Badge>
+
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
@@ -175,7 +209,8 @@ export default class LinksScreen extends React.Component {
     }
     this.deleteConnection = this.deleteConnection.bind(this);
     this.distanceFromSource = this.distanceFromSource.bind(this);
-    this.getConnections = this.getConnections.bind(this)
+    this.getConnections = this.getConnections.bind(this);
+    this.addConnection = this.addConnection.bind(this);
   }
 
   componentDidMount() {
@@ -201,6 +236,17 @@ export default class LinksScreen extends React.Component {
       .catch((err) => console.warn(err))
   }
 
+  addConnection(){
+    axios({
+      method: 'post',
+      url: `${ipv4}/user/${this.props.screenProps.currentUserId}/connections/new`,
+    })
+    .then((res) => {
+      this.setState({userConnections: res.data}, this.getConnections);
+    })
+    .catch((err) => console.log.warn(err))
+  }
+
   getConnections() {
     axios.get(`${ipv4}/user/${this.props.screenProps.currentUserId}/connections`)
     .then((res) => {
@@ -224,6 +270,7 @@ export default class LinksScreen extends React.Component {
   }
   // Need function with websocket data to update state of isNear above.
   render() {
+    console.log(this.props.screenProps.currentUserId)
     const { userConnections } = this.state;
     const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
@@ -232,7 +279,7 @@ export default class LinksScreen extends React.Component {
           source={require('../assets/images/background.png')}
           style={[ {width: '100%', height: '100%'}, app.linksContainer ]}
           >
-            <Header Nav={ this.props.navigation }/>
+            <Header Nav={ this.props.navigation } connect={this.addConnection}/>
             <ScrollView
             showsHorizontalScrollIndicator={false}>
               { userConnections.map(
@@ -243,6 +290,7 @@ export default class LinksScreen extends React.Component {
                 user={ user }
                 key={ user.id }
                 distance={ this.distanceFromSource }
+                getProfile={this.props.screenProps.getProfile}
                 {...this.props}
                 isCloseColor = "red"
                 middleCloseColor = "blue"
@@ -252,10 +300,6 @@ export default class LinksScreen extends React.Component {
 
                 />
               )}
-                          <Button 
-            onPress={this.props.screenProps.findConnection}
-            title = "find match"
-            />
             </ScrollView>
           </ImageBackground>
     );
@@ -283,9 +327,11 @@ const styles = StyleSheet.create({
   cardClosed: {
     height: 100,
     width: 'auto',
+
   },
   cardOpen: {
     height: 'auto',
+
   },
   near: {
     // borderColor: 'gold',
@@ -333,7 +379,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   delete: {
-    width: 30,
+    width: 35,
+    height: 35,
     alignSelf: 'center',
   }
 });
