@@ -159,9 +159,8 @@ export default class TrackScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.mounted = true;
     
-    setInterval(()=> {
+    this.timer = setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
       let userDistance = 0;
@@ -184,7 +183,8 @@ export default class TrackScreen extends React.Component {
         }
     
         if(userDistance > middleDistance) {
-          this.setState({
+          console.log("I AM BEING CALLED");
+          this.setState({            
             finalColor:farAwayColor
           })
         }
@@ -195,7 +195,7 @@ export default class TrackScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    this.state = false;
+    clearInterval(this.timer)
   }
 
   render() {
