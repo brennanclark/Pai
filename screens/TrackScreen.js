@@ -110,11 +110,12 @@ export default class TrackScreen extends React.Component {
 
   componentDidMount() {
     this.mounted = true;
-
-    Animated.timing(this.animatedValue,  {
-      toValue: 1500,
-      duration: 15000,
-    }).start();
+    Animated.loop(
+      Animated.spring(this.animatedValue,  {
+        toValue: 1500,
+        duration: 5000,
+      })
+    ).start()
     
     setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
@@ -124,29 +125,32 @@ export default class TrackScreen extends React.Component {
 
     
       let userDistance = 0;
-      distanceTesting.forEach((user) => {
-        if(user.userId == this.props.navigation.state.params.user.id) {
-          userDistance = user.distance
+      if(distanceTesting[0]){
+        distanceTesting.forEach((user) => {
+          if(user.userId == this.props.navigation.state.params.user.id) {
+            userDistance = user.distance
+          }
+        })
+  
+        if(userDistance <= closestDistance) {
+          this.setState({
+            finalColor: isCloseColor,
+          })
         }
-      })
-
-      if(userDistance <= closestDistance) {
-        this.setState({
-          finalColor: isCloseColor,
-        })
+    
+        if (userDistance <= middleDistance && userDistance > closestDistance) {
+          this.setState({
+            finalColor:middleCloseColor
+          })
+        }
+    
+        if(userDistance > middleDistance) {
+          this.setState({
+            finalColor:farAwayColor
+          })
+        }
       }
-  
-      if (userDistance <= middleDistance && userDistance > closestDistance) {
-        this.setState({
-          finalColor:middleCloseColor
-        })
-      }
-  
-      if(userDistance > middleDistance) {
-        this.setState({
-          finalColor:farAwayColor
-        })
-      }
+    
     },3000)
 
   }
@@ -197,6 +201,7 @@ const styles = StyleSheet.create({
 
   page: {
     flex: 1,
+    borderRadius: 125,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -212,6 +217,9 @@ const styles = StyleSheet.create({
   instruction: {
     fontWeight: 'bold',
     alignSelf: 'center'
+  },
+  trackScreen: {
+
   }
 
 });
