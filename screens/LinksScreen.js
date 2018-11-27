@@ -73,7 +73,7 @@ function Header(props) {
       name='ios-information-circle-outline'
       size= {35}
       color= 'pink'
-      onPress={()=> {}}
+      onPress={()=> console.log("Icon was pressed")}
       />
     </View>
   )
@@ -157,11 +157,8 @@ class Card extends React.Component {
 
           <Text>friends:{friendsTotal}</Text>
           <DistanceColor distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}/>
-<<<<<<< HEAD
-=======
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
 
->>>>>>> e6dc4a62d0734b235e060ff5876800e1d6dccdb4
         </View>
             {
             this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null

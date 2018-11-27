@@ -127,21 +127,12 @@ export default class ProfileScreen extends React.Component {
                 size= {35}
                 color= '#474747'
                 />
-<<<<<<< HEAD
-                <Text style={{color: 'pink'}}>{this.props.screenProps.friends} Friends</Text>
-
-                </Badge>
-
-              </View>
-          </View>
-=======
                 <Text style={{color: '#474747'}}>{this.props.screenProps.friends} Friends
                 </Text>
               </Badge>
 
             </View>
 
->>>>>>> e6dc4a62d0734b235e060ff5876800e1d6dccdb4
 
           <FlatList
             data={this.props.screenProps.nuggets}
