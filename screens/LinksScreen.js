@@ -10,7 +10,6 @@ function DistanceColor(props) {
   let distance = props.distance
   const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
 
-
   function isClose(distance) {
     if(distance <= closestDistance) {
       return <Icon 
@@ -21,7 +20,6 @@ function DistanceColor(props) {
             />
     }
   }
-
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
       return <Icon 
@@ -49,7 +47,6 @@ function DistanceColor(props) {
       {middleClose(distance)}
       {farAway(distance)}
     </View>
-    
   )
 }
 

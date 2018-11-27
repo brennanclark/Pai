@@ -42,22 +42,19 @@ class TESTING extends React.Component {
           }
       
           if(userDistance > middleDistance) {
-            console.log("further away")
+            // console.log("further away")
             this.setState({
               currentColor:farAwayColor
             })
           }
         }
-    
   }
 
   render() {
-    console.log(this.state.currentColor)
+    console.log("THIS IS THE CURRENT COLOR", this.state.currentColor)
 
     return (
-      
         <Pulse color={this.state.currentColor} numPulses={3} diameter={600} speed={10} duration={2000} />
-    
     )
   }
 }
