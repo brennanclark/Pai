@@ -270,9 +270,7 @@ export default class LinksScreen extends React.Component {
   }
   // Need function with websocket data to update state of isNear above.
   render() {
-    console.log(this.props.screenProps.currentUserId)
     const { userConnections } = this.state;
-    const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
           <ImageBackground

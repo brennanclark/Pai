@@ -43,7 +43,7 @@ wss.on('connection', (ws) => {
         latitude: latitude
       }
     }).then((response) => {
-      console.log(response);
+      
     }).catch((err) => {
       console.log(err.message);
     })
@@ -71,7 +71,6 @@ wss.on('connection', (ws) => {
           }
           mergedData.push(dataToUser);
         })
-        console.log(mergedData)
         ws.send(JSON.stringify(mergedData));
       });
     });

@@ -1,10 +1,6 @@
 import React from 'react';
-import { AlertIOS, Text, StyleSheet, View, Image, TouchableOpacity, Button} from 'react-native';
-import QRCode from 'react-native-qrcode';
-import app from '../styles/container.js';
-import { Icon } from 'react-native-elements';
+import { AlertIOS, Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
-import { createStackNavigator } from 'react-navigation';
 import axios from 'react-native-axios';
 const {ipv4} = require('../config.json');
 // import DropdownAlert from 'react-native-dropdownalert';
