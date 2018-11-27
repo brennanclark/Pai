@@ -73,7 +73,6 @@ function QrCode(props) {
 }
 
 
-
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -94,8 +93,8 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-
   render(props) {
+    // console.log("Login screen", this.props.screenProps.getProfile);
 
     return (
 
@@ -103,9 +102,7 @@ export default class ProfileScreen extends React.Component {
         source={require('../assets/images/background.png')}
         style={[app.profileContainer, {width: '100%', height: '100%'}]}
         >
-
         <Header Nav={this.props.navigation} />
-
 
         <ScrollView
         showsVerticalScrollIndicator={false}>
