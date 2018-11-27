@@ -88,7 +88,7 @@ export default class TrackScreen extends React.Component {
 
   static navigationOptions = {
     // Here we can change the title at the top of the page
-    title: 'Distance Between',
+    header: null,
   };
 
   constructor(props) {
@@ -149,7 +149,6 @@ export default class TrackScreen extends React.Component {
         <View style={styles.page}>
           <Text style={{fontWeight: 'bold'}}>
               { connection.first_name }
-              { connection.connection_id}
           </Text>
 
           <TouchableOpacity onPress={this._handleOnPress}>

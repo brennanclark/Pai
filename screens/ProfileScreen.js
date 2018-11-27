@@ -99,7 +99,7 @@ export default class ProfileScreen extends React.Component {
     return (
 
         <ImageBackground
-        source={require('../assets/images/background.png')}
+        source={require('../assets/images/background1.png')}
         style={[app.profileContainer, {width: '100%', height: '100%'}]}
         >
         <Header Nav={this.props.navigation} />
