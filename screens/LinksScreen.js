@@ -127,8 +127,8 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track',
-    { user: this.props.user, 
-      navigation: this.props.navigation, 
+    { user: this.props.user,
+      navigation: this.props.navigation,
       getConnections: this.props.getConnections,
       getProfile: this.props.getProfile,
       isCloseColor : this.props.isCloseColor,
@@ -153,7 +153,7 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
-          <DistanceColor 
+          <DistanceColor
           distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}
           isCloseColor = {isCloseColor}
           middleCloseColor = {middleCloseColor}
@@ -178,7 +178,7 @@ class Card extends React.Component {
             size= {35}
             color= '#474747'
             />
-            <Text style={{color: '#474747', fontWeight: 'bold'}}>{this.props.screenProps.friends}
+            <Text style={{color: '#474747', fontWeight: 'bold'}}>{this.props.user.number_of_friends}
             </Text>
           </Badge>
 
