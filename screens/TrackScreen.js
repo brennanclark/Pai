@@ -107,48 +107,53 @@ export default class TrackScreen extends React.Component {
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
 
-      const distanceTesting = this.props.screenProps.connectedFriendsDistances;
-    const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
-
-    const { distance } = this.state
-
-    setInterval(()=> {
-      distanceTesting.forEach((user) => {
-        if(user.userId == this.props.navigation.state.params.user.id) {
-          this.setState({
-            distance: user.distance,
-          })
-        }
-      })
   
-      if(distance <= closestDistance) {
-        this.setState({
-          finalColor: isCloseColor
-        })
-      }
-  
-      if (distance <= middleDistance && distance > closestDistance) {
-        this.setState({
-          finalColor:middleCloseColor
-        })
-      }
-  
-      if(distance > middleDistance) {
-        this.setState({
-          finalColor:farAwayColor
-        })
-      }
-    },3000)
   }
 
   componentDidMount() {
 
     Animated.timing(this.animatedValue,  {
       toValue: 1500,
-      duration: 2000,
+      duration: 15000,
     }).start();
+    
+    setInterval(()=> {
+    const distanceTesting = this.props.screenProps.connectedFriendsDistances;
+    const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
 
+    const { distance } = this.state
 
+    
+      let userDistance = 0;
+      distanceTesting.forEach((user) => {
+        if(user.userId == this.props.navigation.state.params.user.id) {
+          userDistance = user.distance
+          this.setState({
+            distance: user.distance,
+          })
+        }
+      })
+
+      console.log("HELLO WHAT ARE YOU", userDistance);
+  
+      if(userDistance <= closestDistance) {
+        this.setState({
+          finalColor: isCloseColor,
+        })
+      }
+  
+      if (userDistance <= middleDistance && userDistance > closestDistance) {
+        this.setState({
+          finalColor:middleCloseColor
+        })
+      }
+  
+      if(userDistance > middleDistance) {
+        this.setState({
+          finalColor:farAwayColor
+        })
+      }
+    },3000)
   
 
   }
