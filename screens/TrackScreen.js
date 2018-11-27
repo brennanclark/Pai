@@ -8,28 +8,30 @@ import { Container, Content, Badge} from 'native-base';
 import Pulse from 'react-native-pulse';
 
 function ShowPulse(props) {  
+
+  // console.log(props)
   let distance = props.distance
 
+  console.log(props.testing);
+
   const {isCloseColor,middleCloseColor,farAwayColor, closestDistance, middleDistance} = props
+  // console.log(distance);
 
   function isClose(distance) {
     if(distance <= closestDistance) {
-      console.log('ISCLOSE')
-      return <Pulse color={isCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+      return <Pulse color={isCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
     }
   }
 
   function middleClose(distance) {
     if (distance <= middleDistance && distance > closestDistance) {
-      console.log('MiddleClose')
-      return <Pulse color={middleCloseColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+      return <Pulse color={middleCloseColor} numPulses={3} diameter={600} speed={10} duration={2000} />
     }
   }
 
   function farAway(distance) {
     if(distance > middleDistance) {
-      console.log("FARAWAY");
-      return <Pulse color={farAwayColor} numPulses={3} diameter={400} speed={20} duration={2000} />
+      return <Pulse color={farAwayColor} numPulses={3} diameter={600} speed={10} duration={2000} />
     }
   }
 
@@ -205,6 +207,8 @@ export default class TrackScreen extends React.Component {
 
     const connection = this.props.navigation.state.params.user;
 
+    console.log(this.props.screenProps.connectedFriendsDistances);
+
     return (
       // <Animated.View style={[styles.page, animatedStyle]}>
         <View style={styles.page}>
@@ -222,6 +226,7 @@ export default class TrackScreen extends React.Component {
           distance = {this.props.navigation.state.params.distance}
           closestDistance = {closestDistance}
           middleDistance = {middleDistance}
+          testing = {this.props.screenProps.connectedFriendsDistances}
           />
 
           <TouchableOpacity onPress={this._handleOnPress}>
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     margin: 9,
     width: 200,
     height: 200,
-    borderRadius: 5,
+    borderRadius: 100,
   },
   qr: {
     borderRadius: 5,
@@ -259,8 +264,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center'
   },
-  trackScreen: {
 
-  }
 
 });
