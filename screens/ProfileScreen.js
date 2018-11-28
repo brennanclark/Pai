@@ -3,20 +3,15 @@ import app from '../styles/container.js';
 import { Badge, Icon } from 'react-native-elements';
 import {
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   FlatList,
-  TouchableOpacity,
   View,
-  Button,
   ImageBackground,
 } from 'react-native';
-import { WebBrowser, Permissions, Location } from 'expo';
-import axios from 'react-native-axios';
 import QRCode from 'react-native-qrcode';
-import { Container, Content, Footer} from 'native-base';
+
 
 
 
@@ -93,8 +88,7 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
-  render(props) {
-    // console.log("Login screen", this.props.screenProps.getProfile);
+  render() {
 
     return (
 

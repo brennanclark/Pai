@@ -167,7 +167,6 @@ module.exports = function(knex) {
           getNewConnectionId(array)
           .then((availableUsers) => {
             let randUser = availableUsers[Math.floor(Math.random() * availableUsers.length)]
-            console.log(randUser.id, userId)
             createNewConnection(randUser.id)
             .then()
           })
@@ -184,7 +183,6 @@ module.exports = function(knex) {
     },
 
     deleteConnectionById(id) {
-      console.log("rohit connection test ",id);
       return knex('connections')
       .where('id', id)
       .update({

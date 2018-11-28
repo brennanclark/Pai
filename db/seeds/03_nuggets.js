@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('nuggets').insert([
         {id: 1, user_id: 1, question_id: 1, answer: 'Tokyo'},
-        {id: 2, user_id: 1, question_id: 2, answer: 'Kayne circa Highschool Dropout'},
+        {id: 2, user_id: 1, question_id: 2, answer: 'Kanye circa College Dropout'},
         {id: 3, user_id: 1, question_id: 3, answer: 'Mr.T'},
         {id: 4, user_id: 1, question_id: 4, answer: 'My Age'},
 
@@ -19,10 +19,19 @@ exports.seed = function(knex, Promise) {
         {id: 11, user_id: 3, question_id: 2, answer: 'Nima Boscarino'},
         {id: 12, user_id: 3, question_id: 3, answer: 'Billionaire'},
 
-        {id: 13, user_id: 4, question_id: 4, answer: 'Where I hid the drugs'},
+        {id: 13, user_id: 4, question_id: 4, answer: 'The weather'},
         {id: 14, user_id: 4, question_id: 9, answer: 'My awesome looks!'},
         {id: 15, user_id: 4, question_id: 6, answer: 'Walking in Style'},
-        {id: 16, user_id: 4, question_id: 1, answer: 'New York'},
+        {id: 16, user_id: 4, question_id: 1, answer: 'Seoul'},
+
+        {id: 17, user_id: 5, question_id: 1, answer: 'Too Many Places'},
+        {id: 18, user_id: 5, question_id: 4, answer: 'NOTHING'},
+
+        {id: 19, user_id: 6, question_id: 9, answer: 'Both'},
+
+        {id: 20, user_id: 7, question_id: 6, answer: 'Teleportation'},
+        {id: 21, user_id: 7, question_id: 7, answer: 'Microsoft, Teaching, Databases'},
+        {id: 22, user_id: 7, question_id: 3, answer: 'Still Searching'},
       ]);
     });
 };

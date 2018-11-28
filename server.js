@@ -11,7 +11,6 @@ const app         = express();
 const knexConfig  = require('./knexfile');
 const knex        = require('knex')(knexConfig[ENV]);
 const dataHelpers = require('./db/data-helper.js')(knex);
-const axios       = require('axios');
 const {ipv4}      = require('./config.json')
 
 app.use(bodyParser.urlencoded({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput, StyleSheet, View, Image, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Button } from 'react-native';
 
 
 
@@ -23,9 +23,14 @@ export default class LoginScreen extends React.Component {
   render() {
 
     return (
+
+ 
       <View style={styles.page}>
-      <Text style={styles.animatedLogo}> mamihlapinatapai </Text>
         <TouchableOpacity onPress={()=> this.props.navigation.navigate('Profile')}>
+        <Image
+      source={require('../assets/images/pai_logo.png')}
+      style={ styles.logo }
+      />
           <Image
             source={{uri: 'https://mbtskoudsalg.com/images/login-with-facebook-button-png-1.png'}}
             style={styles.fblogin}
@@ -57,6 +62,7 @@ export default class LoginScreen extends React.Component {
             />
         </View>
       </View>
+      
     )
   }
 }
@@ -78,5 +84,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
   },
+  logo: {
+    width: 250, 
+    height: 250,
+    alignSelf:'center',
+  }
 
 });

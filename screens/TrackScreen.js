@@ -2,10 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, Button, Animated} from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { Ionicons } from '@expo/vector-icons';
-
-import { BarCodeScanner, Permissions } from 'expo';
 import Barcode from '../screens/BarCode';
-import { Container, Content, Badge} from 'native-base';
 import Pulse from 'react-native-pulse';
 
 
@@ -29,21 +26,18 @@ class PulseLocation extends React.Component {
             }
           })
           if(userDistance <= closestDistance) {
-            console.log("CLOSEST")
             this.setState({
               currentColor: isCloseColor,
             })
           }
       
           if (userDistance <= middleDistance && userDistance > closestDistance) {
-            console.log(("middle away"))
             this.setState({
               currentColor:middleCloseColor
             })
           }
       
           if(userDistance > middleDistance) {
-            // console.log("further away")
             this.setState({
               currentColor:farAwayColor
             })
@@ -52,7 +46,6 @@ class PulseLocation extends React.Component {
   }
 
   render() {
-    console.log("THIS IS THE CURRENT COLOR", this.state.currentColor)
 
     return (
         <Pulse color={this.state.currentColor} numPulses={3} diameter={600} speed={10} duration={2000} />
@@ -166,8 +159,8 @@ export default class TrackScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.mounted = true;
     
+    // this.timer = 
     setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
@@ -191,7 +184,7 @@ export default class TrackScreen extends React.Component {
         }
     
         if(userDistance > middleDistance) {
-          this.setState({
+          this.setState({            
             finalColor:farAwayColor
           })
         }
@@ -202,7 +195,9 @@ export default class TrackScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    this.state = false;
+    setTimeout(()=> {})
+    clearInterval(this.timer)
+    //this removes the setState error orange yellow BUT, causes issues with 
   }
 
   render() {

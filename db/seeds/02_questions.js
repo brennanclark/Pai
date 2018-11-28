@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('questions').insert([
         {id: 1, question: 'If you could travel anywhere in the world, where would you go?'},
-        {id: 2, question: 'Who is your favourite musician'},
+        {id: 2, question: 'Who is your favourite musician?'},
         {id: 3, question: 'When you were a child, what did you want to be when you grew up?'},
         {id: 4, question: 'What is the one thing that you consider OK to lie about?'},
         {id: 5, question: 'Do you know where your birth certificate is at this very minute?'},

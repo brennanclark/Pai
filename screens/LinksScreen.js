@@ -1,9 +1,9 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { AlertIOS, Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, TouchableNative, Icon } from 'react-native-elements';
+import { Badge, Icon } from 'react-native-elements';
 import moment from 'moment';
 
 function DistanceColor(props) {
@@ -168,7 +168,6 @@ class Card extends React.Component {
         style={{
           borderBottomWidth: 1,
           borderBottomColor: '#918f8f',
-
         }}
         underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
@@ -199,8 +198,7 @@ class Card extends React.Component {
             this.state.open ? <CardOpen friendsNum={this.props.screenProps.friends} deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
-
-        </View>
+          </View>
       </TouchableOpacity>
     )
   }
@@ -282,9 +280,7 @@ export default class LinksScreen extends React.Component {
   }
   // Need function with websocket data to update state of isNear above.
   render() {
-    console.log(this.props.screenProps.currentUserId)
     const { userConnections } = this.state;
-    const { connectedFriendsDistances} = this.props.screenProps
     // Builds out a card for each connection
     return (
           <ImageBackground
@@ -404,5 +400,5 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     alignSelf: 'center',
-  }
+  },
 });
