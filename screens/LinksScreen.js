@@ -153,6 +153,8 @@ class Card extends React.Component {
         <View style={styles.cardFlow}>
           <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
           <Text style={styles.name}> {first_name} </Text>
+          
+
           <DistanceColor 
           distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}
           isCloseColor = {isCloseColor}
@@ -161,9 +163,9 @@ class Card extends React.Component {
           closestDistance = {closestDistance}
           middleDistance = {middleDistance}
           userId = {user.id}
-
           />
           <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
+  
           <Badge
           containerStyle={{
             backgroundColor: 'transparent',
@@ -291,10 +293,10 @@ export default class LinksScreen extends React.Component {
                 getProfile={this.props.screenProps.getProfile}
                 {...this.props}
                 isCloseColor = "red"
-                middleCloseColor = "blue"
-                farAwayColor = "green"
-                closestDistance = '5'
-                middleDistance = '10'
+                middleCloseColor = "violet"
+                farAwayColor = "blue"
+                closestDistance = '17'
+                middleDistance = '500'
 
                 />
               )}
@@ -380,5 +382,10 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     alignSelf: 'center',
+  },
+
+  locationIcon: {
+    marginTop: 10,
+    justifyContent: 'flex-end',
   }
 });

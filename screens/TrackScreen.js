@@ -160,7 +160,8 @@ export default class TrackScreen extends React.Component {
 
   componentDidMount() {
     
-    this.timer = setInterval(()=> {
+    // this.timer = 
+    setInterval(()=> {
     const distanceTesting = this.props.screenProps.connectedFriendsDistances;
     const {isCloseColor, middleCloseColor, farAwayColor, closestDistance, middleDistance, user } = this.props.navigation.state.params;
       let userDistance = 0;
@@ -183,7 +184,6 @@ export default class TrackScreen extends React.Component {
         }
     
         if(userDistance > middleDistance) {
-          console.log("I AM BEING CALLED");
           this.setState({            
             finalColor:farAwayColor
           })
@@ -195,7 +195,9 @@ export default class TrackScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    setTimeout(()=> {})
     clearInterval(this.timer)
+    //this removes the setState error orange yellow BUT, causes issues with 
   }
 
   render() {

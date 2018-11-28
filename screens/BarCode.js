@@ -46,7 +46,6 @@ export default class Barcode extends React.Component {
 
       })
       .catch((err) => console.warn(err))
-      // this.dropdown.alertWithType('success', 'Success', "CONGRATULATIONS!!! you are now friends");
       AlertIOS.alert("CONGRATULATIONS!!! you are now friends");
   }
 
