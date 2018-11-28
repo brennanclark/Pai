@@ -24,14 +24,14 @@ exports.seed = function(knex, Promise) {
         {id: 15, user_id: 4, question_id: 6, answer: 'Walking in Style'},
         {id: 16, user_id: 4, question_id: 1, answer: 'Seoul'},
 
-        {id: 16, user_id: 5, question_id: 1, answer: 'Too Many Places'},
-        {id: 16, user_id: 5, question_id: 4, answer: 'NOTHING'},
+        {id: 17, user_id: 5, question_id: 1, answer: 'Too Many Places'},
+        {id: 18, user_id: 5, question_id: 4, answer: 'NOTHING'},
 
-        {id: 16, user_id: 6, question_id: 9, answer: 'Both'},
+        {id: 19, user_id: 6, question_id: 9, answer: 'Both'},
 
-        {id: 16, user_id: 7, question_id: 6, answer: 'Teleportation'},
-        {id: 16, user_id: 7, question_id: 7, answer: 'Microsoft, Teaching, Databases'},
-        {id: 16, user_id: 7, question_id: 3, answer: 'Still Searching'},
+        {id: 20, user_id: 7, question_id: 6, answer: 'Teleportation'},
+        {id: 21, user_id: 7, question_id: 7, answer: 'Microsoft, Teaching, Databases'},
+        {id: 22, user_id: 7, question_id: 3, answer: 'Still Searching'},
       ]);
     });
 };

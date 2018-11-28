@@ -1,9 +1,9 @@
 import React from 'react';
 import app from '../styles/container.js';
 import axios from 'react-native-axios';
-import { AlertIOS, Alert, ScrollView, StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Button, ImageBackground, Animated } from 'react-native';
+import { AlertIOS, ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 const {ipv4} = require('../config.json');
-import { Badge, TouchableNative, Icon } from 'react-native-elements';
+import { Badge, Icon } from 'react-native-elements';
 import moment from 'moment';
 
 function DistanceColor(props) {
@@ -15,8 +15,8 @@ function DistanceColor(props) {
       return <Icon
               name='location-on'
               color={isCloseColor}
-              containerStyle={styles.locationIcon}
-              size= {40}
+              size= {35}
+              style = {styles.locationIcon}
             />
     }
   }
@@ -25,8 +25,8 @@ function DistanceColor(props) {
       return <Icon
               name='location-on'
               color={middleCloseColor}
-              containerStyle={styles.locationIcon}
-              size= {40}
+              size= {35}
+              style = {styles.locationIcon}
             />
     }
   }
@@ -36,13 +36,13 @@ function DistanceColor(props) {
       return <Icon
               name='location-on'
               color={farAwayColor}
-              containerStyle={styles.locationIcon}
-              size= {40}
+              size= {35}
+              style = {styles.locationIcon}
             />
     }
   }
   return (
-    <View style = {{overflow:'hidden'}}>
+    <View style = {styles.locationIcon}>
       {isClose(distance)}
       {middleClose(distance)}
       {farAway(distance)}
@@ -76,6 +76,22 @@ function Header(props) {
 function CardOpen(props) {
   let nuggets = props.person.nuggets;
     return (
+      <View>
+        <Badge
+          containerStyle={{
+            backgroundColor: 'transparent',
+            marginRight: 10,
+          }}
+          >
+          <Icon
+          type='simple-line-icon'
+          name='badge'
+          size= {35}
+          color= '#474747'
+          />
+          <Text style={{color: '#474747', fontWeight: 'bold'}}>{props.friendsNum}
+          </Text>
+        </Badge>
         <View style={styles.nuggets}>
           { nuggets.map((nugget, i) => (
           <View style={styles.nuggetContainer} key={i}>
@@ -104,8 +120,8 @@ function CardOpen(props) {
             size={30}
             />
           </View>
-
         </View>
+      </View>
     )
 }
 
@@ -127,8 +143,8 @@ class Card extends React.Component {
   }
   _onLongPress = (event) => {
     this.props.navigation.navigate('Track',
-    { user: this.props.user, 
-      navigation: this.props.navigation, 
+    { user: this.props.user,
+      navigation: this.props.navigation,
       getConnections: this.props.getConnections,
       getProfile: this.props.getProfile,
       isCloseColor : this.props.isCloseColor,
@@ -148,49 +164,41 @@ class Card extends React.Component {
     let expiryAt = (moment(connectedAt).add(7,'days').format('YYYYMMDD'));
     let daysRemaining = moment(expiryAt).fromNow();
     return (
-      <TouchableOpacity underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
+      <TouchableOpacity
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: '#918f8f',
+        }}
+        underLayColor="white" onPress={this._onPress} onLongPress={this._onLongPress}>
         <View style={styles.cardClosed, this.state.open ? styles.cardOpen : null}>
         <View style={styles.cardFlow}>
-          <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
-          <Text style={styles.name}> {first_name} </Text>
-          
 
-          <DistanceColor 
-          distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}
-          isCloseColor = {isCloseColor}
-          middleCloseColor = {middleCloseColor}
-          farAwayColor = {farAwayColor}
-          closestDistance = {closestDistance}
-          middleDistance = {middleDistance}
-          userId = {user.id}
-          />
-          <Text>Distance: {this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}</Text>
-  
-          <Badge
-          containerStyle={{
-            backgroundColor: 'transparent',
-            marginTop: 10,
-            marginRight: 5,
-            alignSelf: 'flex-end'
-          }}
-          >
-            <Icon
-            type='simple-line-icon'
-            name='badge'
-            size= {35}
-            color= '#474747'
+          <View style={styles.imgAndName}>
+            <Image style={styles.connectionImage} source={{uri: profile_picture}}/>
+            <Text style={styles.name}> {first_name} </Text>
+          </View>
+
+          <View style={styles.icons}>
+            <DistanceColor
+            distance={this.props.distance(this.props.screenProps.connectedFriendsDistances, user.id)}
+            isCloseColor = {isCloseColor}
+            middleCloseColor = {middleCloseColor}
+            farAwayColor = {farAwayColor}
+            closestDistance = {closestDistance}
+            middleDistance = {middleDistance}
+            userId = {user.id}
+
             />
-            <Text style={{color: '#474747', fontWeight: 'bold'}}>{this.props.screenProps.friends}
-            </Text>
-          </Badge>
+
+          </View>
 
         </View>
+
             {
-            this.state.open ? <CardOpen deleteConnection={this.props.deleteConnection} person={ user } /> : null
+            this.state.open ? <CardOpen friendsNum={this.props.screenProps.friends} deleteConnection={this.props.deleteConnection} person={ user } /> : null
             }
             <Text style={styles.expiry}> Expiring {daysRemaining} </Text>
-
-        </View>
+          </View>
       </TouchableOpacity>
     )
   }
@@ -281,6 +289,7 @@ export default class LinksScreen extends React.Component {
           >
             <Header Nav={ this.props.navigation } connect={this.addConnection}/>
             <ScrollView
+            style={{paddingTop: 10}}
             showsHorizontalScrollIndicator={false}>
               { userConnections.map(
                 (user, index) => <Card
@@ -292,11 +301,11 @@ export default class LinksScreen extends React.Component {
                 distance={ this.distanceFromSource }
                 getProfile={this.props.screenProps.getProfile}
                 {...this.props}
-                isCloseColor = "red"
-                middleCloseColor = "violet"
-                farAwayColor = "blue"
-                closestDistance = '17'
-                middleDistance = '500'
+                isCloseColor = "#e54b4b"
+                middleCloseColor = "#e0a3f7"
+                farAwayColor = "#4b64e5"
+                closestDistance = '5'
+                middleDistance = '10'
 
                 />
               )}
@@ -322,21 +331,26 @@ const styles = StyleSheet.create({
     color: '#474747'
   },
   cardFlow: {
+    // marginTop: -5,
     flexDirection:'row',
+    justifyContent: 'space-between',
+    margin: 0
   },
   cardClosed: {
     height: 100,
     width: 'auto',
-
   },
   cardOpen: {
     height: 'auto',
 
   },
-  near: {
-    // borderColor: 'gold',
-    // borderWidth: 5,
-    // borderStyle: 'solid',
+  imgAndName: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  icons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   connectionImage: {
     height: 98,
@@ -347,13 +361,13 @@ const styles = StyleSheet.create({
     lineHeight: 90,
     fontSize: 27,
     color: '#474747',
+    alignSelf: 'flex-start',
   },
   expiry: {
-    marginTop: -20,
-    fontSize: 12,
+    marginTop: -17,
     fontStyle: 'italic',
     textAlign: 'right',
-    margin: 10,
+    paddingRight: 10,
     color: '#474747',
   },
   nuggets: {
@@ -366,9 +380,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#474747',
     borderWidth: 1,
-    marginTop: 10,
+    marginTop: 5,
     margin: 5,
     padding: 5,
+  },
+  locationIcon: {
+    marginTop: 30,
+    marginRight: 30,
   },
   question: {
     color: '#474747',
@@ -383,9 +401,4 @@ const styles = StyleSheet.create({
     height: 35,
     alignSelf: 'center',
   },
-
-  locationIcon: {
-    marginTop: 10,
-    justifyContent: 'flex-end',
-  }
 });
